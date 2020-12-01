@@ -1,0 +1,51 @@
+@import '../../styles//variable';
+.market {
+  background: $itemBg;
+  grid-area: market;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+  .current-coin {
+    font-size: 16px;
+    color: #f4f9ff;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .market-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 10px;
+    font-size: 12px;
+    label {
+      display: inline-block;
+      color: #788aae;
+    }
+    span {
+      display: inline-block;
+      color: #f4f9ff;
+    }
+  }
+}
+.coin-list {
+  display: flex;
+  flex-direction: column;
+  background: #252b44;
+  border-radius: 4px;
+  li {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 16px;
+    &:hover {
+      background-color: #20253c;
+    }
+  }
+  .active {
+    background-color: #20253c;
+  }
+}

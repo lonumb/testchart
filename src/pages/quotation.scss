@@ -1,0 +1,23 @@
+$itemBg: #141826;
+$bodyBg: #252b44;
+
+/* autoprefixer grid: on */
+.quotation-page {
+  box-sizing: border-box;
+  display: grid;
+  margin: 0px;
+  grid-gap: 4px 4px;
+  width: 100vw;
+  background-color: $bodyBg;
+  color: #f4f9ff;
+
+  height: 100%;
+  min-height: 100vh;
+  grid-template-columns: 1fr 142px 358px 270px;
+  grid-template-rows: 50px 48px 1fr 250px;
+  grid-template-areas:
+    'header header header header'
+    'market market market order'
+    'chart pool record order'
+    'entrust entrust entrust order';
+}

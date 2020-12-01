@@ -1,0 +1,231 @@
+@import '../../styles//variable';
+
+.header {
+  background: $itemBg;
+  grid-area: header;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+  margin-bottom: 4px;
+  .nav {
+    display: flex;
+    flex: 1;
+    margin: 0 0 0 50px;
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 15px;
+      a {
+        font-size: 14px;
+        color: #aeb9d8;
+        position: relative;
+        display: flex;
+        align-items: center;
+        &:hover {
+          color: #ffffff;
+          &::after {
+            content: ' ';
+            position: absolute;
+            background: #0081ff;
+            height: 3px;
+            width: 100%;
+            left: 0;
+            bottom: -15px;
+          }
+        }
+      }
+      .active {
+        color: #ffffff;
+        &::after {
+          content: ' ';
+          position: absolute;
+          background: #0081ff;
+          height: 3px;
+          width: 100%;
+          left: 0;
+          bottom: -15px;
+        }
+      }
+    }
+  }
+  .news {
+    color: #aeb9d8;
+  }
+  .language {
+    margin: 0 16px;
+    color: #aeb9d8;
+    padding-right: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &::after {
+      content: ' ';
+      position: absolute;
+      width: 1px;
+      height: 18px;
+      background: #788aae;
+      right: 0;
+    }
+  }
+  .wallet {
+    background: #252b44;
+    height: 30px;
+    border-radius: 4px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    cursor: pointer;
+    .addr {
+      font-size: 12px;
+      color: #ffffff;
+      padding: 0 8px;
+    }
+    .network {
+      height: 18px;
+      line-height: 18px;
+      padding: 0 8px;
+      color: #ffffff;
+      font-size: 12px;
+      border-radius: 2px;
+      background: #ffcd00;
+    }
+    .error {
+      background: #ff5778;
+    }
+  }
+  .order-status {
+    background: #252b44;
+    padding: 0 8px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 2px;
+    color: #ffffff;
+    cursor: pointer;
+  }
+}
+
+.order-status-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  background: #252b44;
+  border-radius: 4px;
+  padding: 8px 12px;
+  min-width: 240px;
+  .item,
+  .title,
+  .no-data {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .title {
+    color: #0081ff;
+  }
+  .item {
+    svg {
+      font-size: 20px;
+      color: #59c166;
+    }
+  }
+  .no-data {
+    color: #788aae;
+    justify-content: center;
+    height: 90px;
+  }
+}
+
+.lang-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  background: #252b44;
+  border-radius: 4px;
+  li {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 16px;
+    color: #f4f9ff;
+    &:hover {
+      background-color: #20253c;
+    }
+  }
+  .active {
+    background-color: #20253c;
+  }
+}
+
+.wallet-popover {
+  margin-top: 14px;
+  min-width: 240px;
+  background: #252b44;
+  border-radius: 4px;
+  .recharge-box {
+    margin-top: 8px;
+    display: flex;
+    padding: 12px;
+    justify-content: space-between;
+    box-sizing: border-box;
+    button {
+      width: 47%;
+    }
+    .btn-default {
+      background: #434d65;
+    }
+  }
+  .wallet-menu-list {
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+    li {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 0 12px;
+      font-size: 14px;
+      color: #f4f9ff;
+      svg {
+        color: #aeb9d8;
+        font-size: 16px;
+        margin-right: 10px;
+      }
+      &:hover {
+        background-color: #20253c;
+      }
+    }
+  }
+  .line {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 12px;
+      height: 1px;
+      background: #f0f0f0;
+      width: 216px;
+    }
+  }
+  .btn-box {
+    padding: 20px 12px;
+    button {
+      background: #fb5867;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 4px;
+      width: 100%;
+      color: #ffffff;
+      font-size: 14px;
+    }
+  }
+}

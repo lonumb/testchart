@@ -1,0 +1,201 @@
+@import '../../styles//variable';
+.order {
+  background: $itemBg;
+  grid-area: order;
+  overflow: hidden;
+  .order-box {
+    box-sizing: border-box;
+    padding: 8px 16px;
+    overflow: auto;
+    .form-ele-select,
+    .form-ele-input,
+    .form-ele-sl {
+      background: #141826;
+      border: 1px solid #455069;
+      border-radius: 2px;
+      height: 30px;
+      padding: 0 12px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      label {
+        color: #f4f9ff;
+        font-weight: 500;
+      }
+    }
+
+    .form-ele-input {
+      input {
+        display: flex;
+        width: 100%;
+        flex: 1;
+        color: #f4f9ff;
+        text-align: right;
+        padding: 0;
+      }
+      .unit {
+        color: #788aae;
+        padding: 0 0 0 2px;
+      }
+    }
+
+    .form-ele-select {
+      padding-left: 8px;
+      select {
+        display: flex;
+        width: 100%;
+        flex: 1;
+        color: #f4f9ff;
+        text-align: right;
+        padding: 0;
+      }
+    }
+
+    .form-ele-sl {
+      span {
+        display: flex;
+        width: 100%;
+        flex: 1;
+      }
+      select {
+        color: #f4f9ff;
+      }
+    }
+
+    .form-ele-disable {
+      background: #788aae;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 2px;
+      height: 30px;
+      padding: 0 12px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      label {
+        color: #f4f9ff;
+        font-weight: 500;
+      }
+      input {
+        display: flex;
+        width: 100%;
+        flex: 1;
+        color: #f4f9ff;
+        text-align: right;
+        padding: 0;
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
+    }
+
+    .form-ele-desc {
+      background: #141826;
+      height: 18px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      label {
+        color: #f4f9ff;
+        font-weight: 500;
+      }
+      .sd {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        color: #f4f9ff;
+        align-items: center;
+      }
+      .recharge-btn {
+        color: #0081ff;
+        margin-left: 6px;
+        cursor: pointer;
+      }
+    }
+
+    .form-list-c6,
+    .form-list-c5,
+    .form-list-c4,
+    .form-list-c3 {
+      display: grid;
+      margin: 0 0 10px 0;
+      grid-gap: 7px;
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #252b44;
+        height: 28px;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        cursor: pointer;
+      }
+      .active {
+        border-color: #0081ff;
+        background: #141826;
+        color: #0081ff;
+      }
+    }
+    .form-list-c6 {
+      grid-template-columns: repeat(6, 1fr);
+    }
+    .form-list-c5 {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .form-list-c4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .form-list-c3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .btn-box {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 0 10px 0;
+      button {
+        width: 48%;
+        flex: 0 0 48%;
+      }
+    }
+
+    .mb24 {
+      margin-bottom: 24px;
+    }
+
+    .form-slider {
+      margin: 0 0 8px 0;
+      padding: 0 4px;
+    }
+
+    .form-ele-more {
+      margin: 0 0 10px 0;
+      display: flex;
+      flex-direction: column;
+      border-top: 4px solid #0f121f;
+      border-bottom: 4px solid #0f121f;
+      .more-title {
+        display: flex;
+        justify-content: space-between;
+        height: 38px;
+        align-items: center;
+        label {
+          color: #f4f9ff;
+          font-weight: 500;
+        }
+        .svgdown {
+          transform: rotate(90deg);
+          color: #455069;
+          cursor: pointer;
+        }
+        .svgup {
+          transform: rotate(-90deg);
+          color: #455069;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

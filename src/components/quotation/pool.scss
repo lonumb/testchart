@@ -1,0 +1,74 @@
+@import '../../styles//variable';
+
+.pool {
+  grid-area: pool;
+  background: $itemBg;
+  .title-box {
+    background: #0f121f;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 10px;
+    color: #f4f9ff;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .rate-box {
+    display: flex;
+    box-sizing: border-box;
+    margin: 12px 10px;
+    .block-column {
+      width: 12px;
+      background: linear-gradient(180deg, #424c71 0%, #1f253d 100%);
+      border-radius: 2px;
+      border: 1px solid #455069;
+      margin-right: 12px;
+      position: relative;
+      .block {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 12px;
+      }
+    }
+    .block-red {
+      .block {
+        background: #fb5867;
+      }
+    }
+
+    .block-green {
+      .block {
+        background: #59c166;
+      }
+    }
+
+    .block-info {
+      display: flex;
+      flex-direction: column;
+      .row {
+        display: flex;
+        flex-direction: column;
+        height: 50%;
+        .label0 {
+          font-size: 14px;
+          color: #f4f9ff;
+          position: relative;
+        }
+        .label1 {
+          font-size: 12px;
+          color: #788aae;
+        }
+        .label2 {
+          font-size: 16px;
+          color: #f4f9ff;
+        }
+        .label3 {
+          color: #f4f9ff;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

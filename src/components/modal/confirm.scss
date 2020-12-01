@@ -1,0 +1,15 @@
+.confirm-btn {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  button {
+    width: 48%;
+    height: 48px;
+  }
+  .btn-default {
+    border: 1px solid #0081ff;
+  }
+  .btn-primary {
+    border: 1px solid #0081ff;
+  }
+}

@@ -1,0 +1,33 @@
+.user-setting {
+  padding: 16px;
+  .title {
+    font-size: 16px;
+    color: #8a94a6;
+    margin: 10px 0 20px 0;
+  }
+  .action-list {
+    display: flex;
+    flex-direction: column;
+    .item {
+      width: 474px;
+      height: 60px;
+      background: #1f253d;
+      border: 1px solid #455069;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      color: #f4f9ff;
+      font-size: 14px;
+      label {
+        display: flex;
+        align-items: center;
+        svg {
+          font-size: 18px;
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}

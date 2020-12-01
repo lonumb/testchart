@@ -1,0 +1,162 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  background: transparent;
+  line-height: 1.5;
+}
+li {
+  list-style: none;
+}
+
+textarea {
+  resize: none;
+}
+a {
+  text-decoration: none;
+}
+
+html {
+  body {
+    font-size: 12px;
+    font-family: Arial, PingFangSC-Regular, 'Microsoft YaHei', sans-serif !important; // PingFangSC-Medium, PingFang SC
+
+    height: 100%;
+    width: 100vw;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-tap-highlight-color: transparent;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+// 滚动条
+* {
+  position: relative;
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 90px;
+    background: rgb(94, 102, 115);
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+.green {
+  color: #59c166 !important;
+}
+
+.red {
+  color: #fb5867 !important;
+}
+
+.bg-red {
+  background: #fb5867 !important;
+}
+.bg-green {
+  background: #59c166 !important;
+}
+
+.fz16 {
+  font-size: 16px;
+}
+.fz14 {
+  font-size: 14px;
+}
+.fz12 {
+  font-size: 12px;
+}
+
+.tip-text {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.btn-default {
+  height: 30px;
+  border-radius: 4px;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 14px;
+  background: #252b44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-primary {
+  height: 30px;
+  background: #0081ff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.colorDefault {
+  color: #f4f9ff;
+}
+.colorSecond {
+  color: #788aae;
+}
+
+.gap-row {
+  background: #242a42;
+  height: 4px;
+  width: 100%;
+}
+.gap-column {
+  background: #242a42;
+  width: 4px;
+  height: 100%;
+}
+
+.link {
+  font-size: 12px;
+  color: #0081ff;
+  cursor: pointer;
+}
+
+.table-wrap {
+  padding: 16px;
+  .table-title {
+    font-size: 16px;
+    color: #8a94a6;
+    margin-bottom: 20px;
+  }
+  .table-link {
+    font-size: 14px;
+    color: #0081ff;
+    padding-right: 20px;
+    cursor: pointer;
+  }
+}
+
+// 重写 设置页面 后期优化
+.MuiNativeSelect-icon {
+  color: #788aae !important;
+}

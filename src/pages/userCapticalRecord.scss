@@ -1,0 +1,65 @@
+.user-capital-record {
+  .head-box {
+    padding: 16px 16px 0;
+    background: #141826;
+    .title {
+      font-size: 16px;
+      color: #8a94a6;
+    }
+    .tab-box {
+      display: flex;
+      margin-top: 30px;
+      font-size: 14px;
+      .item {
+        height: 40px;
+        background: #1b2031;
+        border-radius: 2px 2px 0px 0px;
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        color: #788aae;
+        cursor: pointer;
+        &:hover {
+          background: #252b44;
+          color: #f4f9ff;
+        }
+      }
+      .active {
+        background: #252b44;
+        color: #f4f9ff;
+      }
+    }
+  }
+  .search-box {
+    display: flex;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    border-bottom: 4px solid #1b2031;
+    .form-ele-box {
+      display: flex;
+      flex-direction: column;
+      margin-right: 24px;
+      label {
+        font-size: 14px;
+        color: #8a94a6;
+        margin-bottom: 8px;
+        height: 20px;
+        display: inline-block;
+      }
+      .from-ele {
+        display: flex;
+        button {
+          height: 38px;
+          padding: 0 24px;
+        }
+        .btn-default {
+          border: 1px solid #0081ff;
+          margin-right: 12px;
+        }
+        .btn-primary {
+          border: 1px solid #0081ff;
+        }
+      }
+    }
+  }
+}

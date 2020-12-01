@@ -1,0 +1,28 @@
+.wallet-connect {
+  width: 336px;
+  ul {
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      background: #1f253d;
+      border-radius: 4px;
+      border: 1px solid #455069;
+      font-size: 18px;
+      font-weight: 500;
+      padding: 0 20px;
+      margin: 0 0 8px 0;
+      cursor: pointer;
+      img {
+        width: 30px;
+      }
+      &:hover {
+        background: linear-gradient(180deg, #424c71 0%, #1f253d 100%);
+      }
+    }
+    .active {
+      background: linear-gradient(180deg, #424c71 0%, #1f253d 100%);
+    }
+  }
+}

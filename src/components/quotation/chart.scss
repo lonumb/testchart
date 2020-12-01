@@ -1,0 +1,12 @@
+@import '../../styles//variable';
+
+.chart {
+  background: $itemBg;
+  grid-area: chart;
+  color: #788aae;
+  display: flex;
+  flex: 1;
+  #tvChart {
+    width: 100%;
+  }
+}

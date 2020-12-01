@@ -1,0 +1,57 @@
+.rw-form-wrap {
+  width: 335px;
+  .form-ele-wrap {
+    display: flex;
+    flex-direction: column;
+    label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #f4f9ff;
+      margin-bottom: 10px;
+    }
+    .form-ele-box {
+      display: flex;
+      box-sizing: border-box;
+      height: 40px;
+      background: #1f253d;
+      border-radius: 2px;
+      border: 1px solid #455069;
+      width: 100%;
+      padding: 0 12px;
+      align-items: center;
+      input,
+      select {
+        display: flex;
+        flex: 1;
+        color: #f4f9ff;
+      }
+      .link-btn {
+        font-size: 14px;
+        color: #0081ff;
+        cursor: pointer;
+        margin-left: 12px;
+      }
+    }
+
+    .form-ele-desc {
+      word-break: break-all;
+      word-wrap: break-word;
+      width: 335px;
+    }
+  }
+  .form-ele-tip {
+    height: 20px;
+  }
+  .form-ele-btn {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    button {
+      width: 48%;
+      height: 48px;
+      border-radius: 3px;
+      border: 1px solid #0081ff;
+    }
+  }
+}
