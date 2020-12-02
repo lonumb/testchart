@@ -1,11 +1,11 @@
 import React from 'react';
-import Table from '../components/table/OwnTable';
-import TableHead from '../components/table/OwnTableHead';
-import TableBody from '../components/table/OwnTableBody';
-import TableRow from '../components/table/OwnTableRow';
-import TableCell from '../components/table/OwnTableCell';
+import Table from '../../components/table/OwnTable';
+import TableHead from '../../components/table/OwnTableHead';
+import TableBody from '../../components/table/OwnTableBody';
+import TableRow from '../../components/table/OwnTableRow';
+import TableCell from '../../components/table/OwnTableCell';
 import { useSelector, useDispatch } from 'react-redux';
-import * as Types from '../store/types';
+import * as Types from '../../store/types';
 import './userAccount.scss';
 
 function createData(name, calories, fat, carbs, protein) {
@@ -81,7 +81,7 @@ const UserAccount = () => {
             {rows.map((row) => (
               <TableRow key={row.name}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.name}-TLP
                 </TableCell>
                 <TableCell>{row.calories}</TableCell>
                 <TableCell>

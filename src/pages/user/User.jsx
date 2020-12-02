@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ListAltIcon from '@material-ui/icons/ListAlt';
-import HeaderComponent from '../components/quotation/HeaderComponent';
+import HeaderComponent from '../../components/quotation/HeaderComponent';
 import './user.scss';
 
 const User = (props) => {

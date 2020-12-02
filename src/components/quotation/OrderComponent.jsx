@@ -52,13 +52,6 @@ const OrderComponent = () => {
     setOrderHeight(() => orderRef.current.clientHeight);
   }, []);
 
-  //
-  const valuetext = useCallback((value) => {
-    console.log(value);
-    // setLevel(value);
-    return value;
-  }, []);
-
   return (
     <div className="order" ref={orderRef}>
       <div className="order-box" style={{ height: `${orderHeight}px` }}>
@@ -149,7 +142,7 @@ const OrderComponent = () => {
         </div>
 
         <div className="form-slider">
-          <OwnSlider disabled={levelMax} defaultValue={20} getAriaValueText={valuetext} step={10} valueLabelDisplay="off" marks={marks} />
+          <OwnSlider disabled={levelMax} value={levelRate} onChange={(e, val) => setLevelRate(val)} step={10} marks={marks} />
         </div>
 
         <div className="form-ele-desc">

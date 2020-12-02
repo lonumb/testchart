@@ -4,7 +4,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import SwapVertIcon from '@material-ui/icons/SwapVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import OwnInput from '../components/form/OwnInput';
+import OwnInput from '../../components/form/OwnInput';
 import './userSetting.scss';
 
 const UserSetting = () => {

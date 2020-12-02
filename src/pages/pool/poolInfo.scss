@@ -1,0 +1,38 @@
+.pool-info-wrap {
+  .pool-info-box {
+    width: 1200px;
+    margin: 0 auto;
+
+    .pool-title-box {
+      display: flex;
+      align-items: center;
+      .name {
+        font-size: 24px;
+        font-weight: 500;
+        color: #f4f9ff;
+        min-width: 130px;
+      }
+      .line {
+        width: 2px;
+        height: 48px;
+        background: #242a42;
+        margin: 0 48px 0 16px;
+      }
+      .title-item {
+        display: flex;
+        flex-direction: column;
+        &:not(:last-child) {
+          margin: 0 48px 0 0;
+        }
+        label {
+          font-size: 14px;
+          color: #788aae;
+        }
+        .num {
+          font-size: 16px;
+          color: #f4f9ff;
+        }
+      }
+    }
+  }
+}

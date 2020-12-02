@@ -63,7 +63,7 @@ const HeaderComponent = () => {
           <NavLink to="/trade">交易</NavLink>
         </li>
         <li className="item">
-          <a href="">流动池</a>
+          <NavLink to="/pool/info">流动池</NavLink>
         </li>
         <li className="item">
           <NavLink

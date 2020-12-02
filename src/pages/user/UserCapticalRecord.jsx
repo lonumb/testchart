@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Table from '../components/table/OwnTable';
-import TableHead from '../components/table/OwnTableHead';
-import TableBody from '../components/table/OwnTableBody';
-import TableRow from '../components/table/OwnTableRow';
-import TableCell from '../components/table/OwnTableCell';
+import Table from '../../components/table/OwnTable';
+import TableHead from '../../components/table/OwnTableHead';
+import TableBody from '../../components/table/OwnTableBody';
+import TableRow from '../../components/table/OwnTableRow';
+import TableCell from '../../components/table/OwnTableCell';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import OwnInput from '../components/form/OwnInput';
+import OwnInput from '../../components/form/OwnInput';
 
 import './userCapticalRecord.scss';
 
