@@ -48,10 +48,12 @@
       }
       .from-ele {
         display: flex;
-        button {
+        .btn-primary,
+        .btn-default {
           height: 38px;
           padding: 0 24px;
         }
+
         .btn-default {
           border: 1px solid #0081ff;
           margin-right: 12px;

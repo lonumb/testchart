@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import './style.scss';
 
 const AsyncImportComponent = function (importComp) {
@@ -23,7 +24,14 @@ const AsyncImportComponent = function (importComp) {
         isUnmounted = true;
       };
     }, []);
-    return Comp ? <Comp {...props} /> : <div className="loading">加载中...</div>;
+    return Comp ? (
+      <Comp {...props} />
+    ) : (
+      <div className="loading">
+        <CircularProgress />
+        <span>加载中...</span>
+      </div>
+    );
   }
   return AsyncComponent;
 };

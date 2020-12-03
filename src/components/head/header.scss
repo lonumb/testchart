@@ -1,14 +1,19 @@
 @import '../../styles//variable';
 
 .header {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
   background: $itemBg;
-  grid-area: header;
+  // grid-area: header;
   height: 50px;
   display: flex;
   align-items: center;
   box-sizing: border-box;
   padding: 0 16px;
   margin-bottom: 4px;
+  z-index: 1;
   .nav {
     display: flex;
     flex: 1;
@@ -186,7 +191,8 @@
     display: flex;
     flex-direction: column;
     min-width: 220px;
-    li {
+    li,
+    a {
       height: 36px;
       display: flex;
       align-items: center;
@@ -202,6 +208,9 @@
       &:hover {
         background-color: #20253c;
       }
+    }
+    a {
+      padding: 0;
     }
   }
   .line {

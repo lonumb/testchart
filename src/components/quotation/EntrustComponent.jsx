@@ -5,12 +5,17 @@ import OwnTooltip from '../tooltip/OwnTooltip';
 import OwnDialogModal from '../modal/OwnDialog';
 import './entrust.scss';
 
+import { useWeb3React } from '@web3-react/core';
+
 // 止盈比例列表
 const profitRateList = [25, 50, 75, 100, 150, 200];
 // 止损比例列表
 const stopRateList = [30, 40, 50, 60, 70, 80];
 
 const EntrustComponent = () => {
+  const context = useWeb3React();
+  const { active } = context;
+
   const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
   const [type, setType] = useState(1);
 
@@ -85,33 +90,37 @@ const EntrustComponent = () => {
           </div>
           <div className="table-column">操作</div>
         </div>
-        {/* <div className="no-login">
-          <button className="btn-primary">连接钱包后查看</button>
-        </div> */}
-        {recordList.map((item, index) => {
-          return (
-            <div className="table-row" key={`en${index}`}>
-              <div className="table-column">BTCUSDT</div>
-              <div className="table-column green">买涨</div>
-              <div className="table-column">17526.22</div>
-              <div className="table-column">9129.22 USDT</div>
-              <div className="table-column">10x</div>
-              <div className="table-column">+7182.92 USDT</div>
-              <div className="table-column">88.88 USDT</div>
-              <div className="table-column">171292.11</div>
-              <div className="table-column">+9128.23 USDT</div>
-              <div className="table-column" onClick={() => setVisible(true)}>
-                18101.22 <Edit style={{ fontSize: '14px' }} />
+
+        {active ? (
+          recordList.map((item, index) => {
+            return (
+              <div className="table-row" key={`en${index}`}>
+                <div className="table-column">BTCUSDT</div>
+                <div className="table-column green">买涨</div>
+                <div className="table-column">17526.22</div>
+                <div className="table-column">9129.22 USDT</div>
+                <div className="table-column">10x</div>
+                <div className="table-column">+7182.92 USDT</div>
+                <div className="table-column">88.88 USDT</div>
+                <div className="table-column">171292.11</div>
+                <div className="table-column">+9128.23 USDT</div>
+                <div className="table-column" onClick={() => setVisible(true)}>
+                  18101.22 <Edit style={{ fontSize: '14px' }} />
+                </div>
+                <div className="table-column" onClick={() => setVisible(true)}>
+                  未设置 <Edit style={{ fontSize: '14px' }} />
+                </div>
+                <div className="table-column">
+                  <span className="link">平仓</span>
+                </div>
               </div>
-              <div className="table-column" onClick={() => setVisible(true)}>
-                未设置 <Edit style={{ fontSize: '14px' }} />
-              </div>
-              <div className="table-column">
-                <span className="link">平仓</span>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <div className="no-login">
+            <button className="btn-primary">连接钱包后查看</button>
+          </div>
+        )}
       </div>
 
       <OwnDialogModal onClose={() => setVisible(false)} visible={visible} title="修改止盈止损">

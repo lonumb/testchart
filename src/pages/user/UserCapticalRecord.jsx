@@ -6,6 +6,7 @@ import TableRow from '../../components/table/OwnTableRow';
 import TableCell from '../../components/table/OwnTableCell';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import OwnInput from '../../components/form/OwnInput';
+import OwnDateRange from '../../components/form/OwnDateRange';
 
 import './userCapticalRecord.scss';
 
@@ -16,14 +17,16 @@ const rows = [createData('BTC', 882931.762814, '0.000000', '0.000000', '0.000000
 
 const UserAccount = () => {
   const [type, setType] = useState(1); // 类型
-  const [startDate, setStartDate] = useState('2017-05-24'); // 开始时间
-  const [endDate, setEndDate] = useState('2017-05-24'); // 结束时间
   const [currency, setCurrency] = useState(''); // 币种
+  const [dateRange, setDateRange] = useState([new Date(), new Date()]);
+
   const currencyChange = (event) => {
     setCurrency(event.target.value);
   };
   // 搜索查询
-  function handleSearch() {}
+  function handleSearch() {
+    console.log(dateRange);
+  }
 
   // 重置
   function handleReset() {}
@@ -52,15 +55,9 @@ const UserAccount = () => {
       </div>
       <div className="search-box">
         <div className="form-ele-box">
-          <label htmlFor="">开始时间(UTC+8)</label>
+          <label htmlFor="">时间(UTC+8)</label>
           <div className="from-ele">
-            <OwnInput type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-          </div>
-        </div>
-        <div className="form-ele-box">
-          <label htmlFor="">结束时间(UTC+8)</label>
-          <div className="from-ele">
-            <OwnInput type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+            <OwnDateRange onChange={setDateRange} value={dateRange} clearIcon={null} format="y-MM-dd" />
           </div>
         </div>
         <div className="form-ele-box">

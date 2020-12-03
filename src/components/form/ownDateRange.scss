@@ -1,0 +1,68 @@
+.react-daterange-picker__wrapper {
+  padding: 0 10px;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #455069;
+  .react-daterange-picker__range-divider,
+  .react-date-picker__inputGroup__divider,
+  .react-daterange-picker__inputGroup__leadingZero {
+    color: #788aae;
+    font-size: 16px;
+  }
+  input {
+    color: #788aae;
+    font-size: 16px;
+  }
+  .react-daterange-picker__button {
+    color: #788aae;
+  }
+  svg {
+    stroke: #788aae;
+  }
+}
+.react-calendar__navigation {
+  // height: 32px;
+  margin-bottom: 0;
+}
+.react-calendar__navigation button[disabled] {
+  background-color: #0081ff;
+}
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #0081ff;
+}
+.react-calendar {
+  background: #141826;
+  border: 1px solid #455069;
+  border-radius: 4px;
+  // width: 260px;
+  // 默认字体颜色
+  button {
+    color: rgba(255, 255, 255, 0.65);
+    // height: 32px;
+    // width: 32px;
+  }
+  // .react-calendar__tile {
+  //   padding: 0;
+  // }
+  // 周六日字体颜色
+  .react-calendar__month-view__days__day--weekend {
+    color: rgba(255, 255, 255, 0.65);
+  }
+  // 上月和下月字体颜色
+  .react-calendar__month-view__days__day--neighboringMonth {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .react-calendar__tile--now {
+    background-color: #0081ff;
+    border: 1px solid #0081ff;
+  }
+  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile:enabled:focus {
+    background-color: #0081ff;
+  }
+}
+.react-calendar--selectRange .react-calendar__tile--hover {
+  background-color: #0081ff !important;
+}

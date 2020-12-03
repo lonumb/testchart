@@ -1,4 +1,5 @@
 .pool-info-wrap {
+  margin: 54px 0 0;
   .pool-info-box {
     width: 1200px;
     margin: 0 auto;
@@ -32,6 +33,139 @@
           font-size: 16px;
           color: #f4f9ff;
         }
+      }
+    }
+  }
+  .pool-detail-box {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 16px;
+    .title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #f4f9ff;
+    }
+    .info-columns {
+      display: flex;
+      margin: 8px 0;
+      li {
+        display: flex;
+        flex-direction: column;
+        margin-right: 40px;
+        label {
+          font-size: 14px;
+          color: #788aae;
+        }
+        span {
+          font-size: 16px;
+          color: #f4f9ff;
+        }
+      }
+    }
+    .progress-box {
+      width: 70%;
+      position: relative;
+      margin: 0 0 28px 0;
+      .progress-one {
+        width: 100%;
+        height: 16px;
+        background: linear-gradient(180deg, #424c71 0%, #1f253d 100%);
+        border-radius: 12px;
+        border: 1px solid #455069;
+      }
+      .progress-red {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 16px;
+        background: linear-gradient(180deg, #fb5867 0%, #fb7a58 100%);
+        border-radius: 12px;
+        border: 1px solid #455069;
+      }
+      .progress-green {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 16px;
+        background: linear-gradient(180deg, #59c166 0%, #59c19b 100%);
+        border-radius: 12px;
+        border: 1px solid #455069;
+      }
+    }
+    .loss-profit {
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .form-wrap {
+      display: flex;
+      border-top: 2px solid #252b44;
+      margin: 18px 0 0 0;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 28px 0 0;
+      .form-box {
+        min-width: 335px;
+        display: flex;
+        flex-direction: column;
+        .title {
+          font-size: 18px;
+          font-weight: 500;
+          margin: 0 0 18px;
+        }
+        label {
+          font-size: 14px;
+          font-weight: 500;
+          color: #f4f9ff;
+          margin-bottom: 10px;
+        }
+        .form-ele-box {
+          display: flex;
+          box-sizing: border-box;
+          height: 40px;
+          background: #1f253d;
+          border-radius: 2px;
+          border: 1px solid #455069;
+          width: 100%;
+          padding: 0 12px;
+          align-items: center;
+          input,
+          select {
+            display: flex;
+            flex: 1;
+            color: #f4f9ff;
+          }
+        }
+        .link-btn {
+          font-size: 14px;
+          color: #0081ff;
+          cursor: pointer;
+          margin-left: 12px;
+        }
+        .form-ele-desc {
+          word-break: break-all;
+          word-wrap: break-word;
+          width: 335px;
+          margin: 4px 0 0;
+        }
+        .form-ele-gain {
+          margin: 18px 0 28px;
+          font-size: 14px;
+        }
+        button {
+          height: 48px;
+          border: 1px solid #0081ff;
+        }
+      }
+      .line {
+        width: 2px;
+        height: 48px;
+        background: #242a42;
+      }
+      .w180 {
+        width: 120px;
       }
     }
   }

@@ -1,7 +1,6 @@
 import React from 'react';
 import './quotation.scss';
 
-import HeaderComponent from '../components/quotation/HeaderComponent';
 import MarketComponent from '../components/quotation/MarketComponent';
 import ChartComponent from '../components/quotation/ChartComponent';
 import PoolComponent from '../components/quotation/PoolComponent';
@@ -12,7 +11,6 @@ import EntrustComponent from '../components/quotation/EntrustComponent';
 function Quotation() {
   return (
     <div className="quotation-page">
-      <HeaderComponent></HeaderComponent>
       <MarketComponent></MarketComponent>
       <ChartComponent></ChartComponent>
       <PoolComponent></PoolComponent>

@@ -125,67 +125,72 @@ const HeaderComponent = () => {
       </div>
 
       {active ? (
-        <div className="wallet" {...bindToggle(popupStateWallet)}>
-          <img src={`/imgs/wallet/${library.connection.url}.png`} width="20" alt="" />
-          <span className="addr">{`${account.substring(0, 6)}…${account.substring(account.length, account.length - 4)}`}</span>
-          {!network ? <span className="network">{NETWORK_LIST[chainId]}</span> : <span className="network error">Wrong Network</span>}
+        <React.Fragment>
+          <div className="wallet" {...bindToggle(popupStateWallet)}>
+            <img src={`/imgs/wallet/${library.connection.url}.png`} width="20" alt="" />
+            <span className="addr">{`${account.substring(0, 6)}…${account.substring(account.length, account.length - 4)}`}</span>
+            {!network ? <span className="network">{NETWORK_LIST[chainId]}</span> : <span className="network error">Wrong Network</span>}
 
-          <ArrowDropDownRoundedIcon style={{ fontSize: 32, margin: '0 -6px 0 -5px' }} />
-        </div>
+            <ArrowDropDownRoundedIcon style={{ fontSize: 32, margin: '0 -6px 0 -5px' }} />
+          </div>
+          <OwnPopover {...bindPopover(popupStateWallet)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
+            <div className="wallet-popover">
+              <div className="recharge-box line">
+                <button className="btn-primary" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible } })}>
+                  充值(Layer2)
+                </button>
+                <button className="btn-default" onClick={() => dispatch({ type: Types.WITHDRAW_VISIBLE, payload: { visible: !withdrawVisible } })}>
+                  提现
+                </button>
+              </div>
+              <ul className="wallet-menu-list">
+                <li onClick={() => history.push('/user/rw-record')}>
+                  <ListAltIcon />
+                  交易记录
+                </li>
+                <li onClick={() => history.push('/user/center')}>
+                  <AccountBalanceWalletIcon />
+                  钱包详情
+                </li>
+                <li className="line" onClick={() => history.push('/user/setting')}>
+                  <SettingsIcon />
+                  个人设置
+                </li>
+                <li>
+                  <FileCopyIcon />
+                  复制地址
+                </li>
+                <li>
+                  <a href={`https://etherscan.io/address/${account}`} target="_blank" rel="noopener noreferrer">
+                    <StorageIcon />
+                    在Etherscan中查看
+                  </a>
+                </li>
+              </ul>
+              <div className="btn-box">
+                <button
+                  onClick={() => {
+                    popupStateWallet.close();
+                    try {
+                      if (connector === walletconnect) {
+                        connector.close();
+                      } else {
+                        deactivate();
+                      }
+                    } catch (error) {}
+                  }}
+                >
+                  断开钱包
+                </button>
+              </div>
+            </div>
+          </OwnPopover>
+        </React.Fragment>
       ) : (
         <button className="btn-primary" onClick={() => dispatch({ type: Types.WALLET_VISIBLE, payload: { visible: true } })}>
           连接钱包
         </button>
       )}
-      <OwnPopover {...bindPopover(popupStateWallet)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <div className="wallet-popover">
-          <div className="recharge-box line">
-            <button className="btn-primary" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible } })}>
-              充值(Layer2)
-            </button>
-            <button className="btn-default" onClick={() => dispatch({ type: Types.WITHDRAW_VISIBLE, payload: { visible: !withdrawVisible } })}>
-              提现
-            </button>
-          </div>
-          <ul className="wallet-menu-list">
-            <li onClick={() => history.push('/user/rw-record')}>
-              <ListAltIcon />
-              交易记录
-            </li>
-            <li onClick={() => history.push('/user/center')}>
-              <AccountBalanceWalletIcon />
-              钱包详情
-            </li>
-            <li className="line" onClick={() => history.push('/user/setting')}>
-              <SettingsIcon />
-              个人设置
-            </li>
-            <li>
-              <FileCopyIcon />
-              复制地址
-            </li>
-            <li>
-              <StorageIcon />
-              在Etherscan中查看
-            </li>
-          </ul>
-          <div className="btn-box">
-            <button
-              onClick={() => {
-                try {
-                  if (connector === walletconnect) {
-                    connector.close();
-                  } else {
-                    deactivate();
-                  }
-                } catch (error) {}
-              }}
-            >
-              断开钱包
-            </button>
-          </div>
-        </div>
-      </OwnPopover>
 
       <WithdrawModal></WithdrawModal>
       <RechargeModal></RechargeModal>
