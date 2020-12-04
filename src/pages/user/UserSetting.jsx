@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@material-ui/icons/Language';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import SwapVertIcon from '@material-ui/icons/SwapVert';
@@ -8,6 +9,7 @@ import OwnInput from '../../components/form/OwnInput';
 import './userSetting.scss';
 
 const UserSetting = () => {
+  const { t } = useTranslation();
   const [ud, setUd] = useState(1);
   const [lang, setLang] = useState('en-US');
   const [cp, setCp] = useState(1);
@@ -19,12 +21,12 @@ const UserSetting = () => {
 
   return (
     <div className="user-setting">
-      <div className="title">个人设置</div>
+      <div className="title">{t('menuPersonSetting')}</div>
       <ul className="action-list">
         <li className="item">
           <label htmlFor="">
             <LanguageIcon />
-            语言
+            {t('language')}
           </label>
           <NativeSelect
             value={lang}
@@ -40,7 +42,7 @@ const UserSetting = () => {
         <li className="item">
           <label htmlFor="">
             <SwapVertIcon />
-            涨跌色
+            {t('upDownColor')}
           </label>
           <NativeSelect
             value={ud}
@@ -49,23 +51,23 @@ const UserSetting = () => {
             }}
             input={<OwnInput />}
           >
-            <option value={1}>红涨绿跌</option>
-            <option value={2}>绿涨红跌</option>
+            <option value={1}>{t('upDown')}</option>
+            <option value={2}>{t('downUp')}</option>
           </NativeSelect>
         </li>
         <li className="item">
           <label htmlFor="">
             <AccessTimeIcon />
-            时间
+            {t('textTime')}
           </label>
           <NativeSelect value={age} onChange={handleChange} input={<OwnInput />}>
-            <option value="">本地时间</option>
+            <option value="">{t('localeTime')}</option>
           </NativeSelect>
         </li>
         <li className="item">
           <label htmlFor="">
             <NotificationsIcon />
-            平仓确认
+            {t('textCloseConfirm')}
           </label>
           <NativeSelect
             value={cp}
@@ -74,8 +76,8 @@ const UserSetting = () => {
             }}
             input={<OwnInput />}
           >
-            <option value={1}>开启</option>
-            <option value={2}>关闭</option>
+            <option value={1}>{t('textOn')}</option>
+            <option value={2}>{t('textOff')}</option>
           </NativeSelect>
         </li>
       </ul>

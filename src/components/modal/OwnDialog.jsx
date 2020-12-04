@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import OwnBase from './OwnBase';
 
 const OwnDialog = (props) => {

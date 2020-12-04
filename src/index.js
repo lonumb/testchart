@@ -6,6 +6,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import store from './store/index';
 import App from './pages/App';
 import './styles/style.scss';
+import './i18n/I18n';
 import reportWebVitals from './reportWebVitals';
 
 const getLibrary = (provider) => {

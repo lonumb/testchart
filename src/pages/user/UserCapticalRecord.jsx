@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Table from '../../components/table/OwnTable';
 import TableHead from '../../components/table/OwnTableHead';
 import TableBody from '../../components/table/OwnTableBody';
@@ -16,6 +17,7 @@ function createData(name, calories, fat, carbs, protein) {
 const rows = [createData('BTC', 882931.762814, '0.000000', '0.000000', '0.000000'), createData('USDT', 11.000128, '0.000000', '0.000000', '0.000000')];
 
 const UserAccount = () => {
+  const { t } = useTranslation();
   const [type, setType] = useState(1); // 类型
   const [currency, setCurrency] = useState(''); // 币种
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
@@ -34,37 +36,37 @@ const UserAccount = () => {
   return (
     <div className="user-capital-record">
       <div className="head-box">
-        <div className="title">交易账户总价值</div>
+        <div className="title">{t('menuRecord')}</div>
         <ul className="tab-box">
           <li className={`item ${type === 1 ? 'active' : ''}`} onClick={() => setType(1)}>
-            充值
+            {t('textRecharge')}
           </li>
           <li className={`item ${type === 2 ? 'active' : ''}`} onClick={() => setType(2)}>
-            提现
+            {t('textWithdraw')}
           </li>
           <li className={`item ${type === 3 ? 'active' : ''}`} onClick={() => setType(3)}>
-            委托
+            {t('textEntrust')}
           </li>
           <li className={`item ${type === 4 ? 'active' : ''}`} onClick={() => setType(4)}>
-            平仓
+            {t('textClose')}
           </li>
           <li className={`item ${type === 5 ? 'active' : ''}`} onClick={() => setType(5)}>
-            流动池
+            {t('navPool')}
           </li>
         </ul>
       </div>
       <div className="search-box">
         <div className="form-ele-box">
-          <label htmlFor="">时间(UTC+8)</label>
+          <label htmlFor="">{t('textTime')}(UTC+8)</label>
           <div className="from-ele">
             <OwnDateRange onChange={setDateRange} value={dateRange} clearIcon={null} format="y-MM-dd" />
           </div>
         </div>
         <div className="form-ele-box">
-          <label htmlFor="">币种</label>
+          <label htmlFor="">{t('textCurrency')}</label>
           <div className="from-ele">
             <NativeSelect value={currency} onChange={currencyChange} input={<OwnInput />}>
-              <option value="">请选择</option>
+              <option value="">{t('textSelectTip')}</option>
               <option value="BTC">BTC</option>
               <option value="USDT">USDT</option>
             </NativeSelect>
@@ -75,10 +77,10 @@ const UserAccount = () => {
           <label htmlFor=""></label>
           <div className="from-ele">
             <button className="btn-default" onClick={() => handleReset()}>
-              重置
+              {t('btnReset')}
             </button>
             <button className="btn-primary" onClick={() => handleSearch()}>
-              搜索
+              {t('btnSearch')}
             </button>
           </div>
         </div>
@@ -88,11 +90,11 @@ const UserAccount = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>时间</TableCell>
-                <TableCell>币种</TableCell>
-                <TableCell>数量</TableCell>
+                <TableCell>{t('textTime')}</TableCell>
+                <TableCell>{t('textCurrency')}</TableCell>
+                <TableCell>{t('textNum')}</TableCell>
                 <TableCell>Txid</TableCell>
-                <TableCell>状态</TableCell>
+                <TableCell>{t('textStatus')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -114,17 +116,17 @@ const UserAccount = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>时间(UTC+8)</TableCell>
-                <TableCell>交易对</TableCell>
-                <TableCell>类型</TableCell>
-                <TableCell>方向</TableCell>
-                <TableCell>价格</TableCell>
-                <TableCell>保证金</TableCell>
-                <TableCell>杠杆</TableCell>
-                <TableCell>止盈</TableCell>
-                <TableCell>止损</TableCell>
+                <TableCell>{t('textTime')}(UTC+8)</TableCell>
+                <TableCell>{t('textProductCode')}</TableCell>
+                <TableCell>{t('textType')}</TableCell>
+                <TableCell>{t('textDir')}</TableCell>
+                <TableCell>{t('textPrice')}</TableCell>
+                <TableCell>{t('textBond')}</TableCell>
+                <TableCell>{t('textLever')}</TableCell>
+                <TableCell>{t('textProfit')}</TableCell>
+                <TableCell>{t('textStop')}</TableCell>
                 <TableCell>Txid</TableCell>
-                <TableCell>状态</TableCell>
+                <TableCell>{t('textStatus')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -152,14 +154,14 @@ const UserAccount = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>平仓时间(UTC+8)</TableCell>
-                <TableCell>交易对</TableCell>
-                <TableCell>平仓价</TableCell>
-                <TableCell>保证金</TableCell>
-                <TableCell>杠杆</TableCell>
-                <TableCell>盈亏</TableCell>
+                <TableCell>{t('textCloseTime')}(UTC+8)</TableCell>
+                <TableCell>{t('textProductCode')}</TableCell>
+                <TableCell>{t('textClosePrice')}</TableCell>
+                <TableCell>{t('textBond')}</TableCell>
+                <TableCell>{t('textLever')}</TableCell>
+                <TableCell>{t('textProfitStop')}</TableCell>
                 <TableCell>Txid</TableCell>
-                <TableCell>平仓类型</TableCell>
+                <TableCell>{t('textCloseType')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -184,10 +186,10 @@ const UserAccount = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>平仓时间(UTC+8)</TableCell>
-                <TableCell>流动池</TableCell>
-                <TableCell>类型</TableCell>
-                <TableCell>数量</TableCell>
+                <TableCell>{t('textCloseTime')}(UTC+8)</TableCell>
+                <TableCell>{t('navPool')}</TableCell>
+                <TableCell>{t('textType')}</TableCell>
+                <TableCell>{t('textNum')}</TableCell>
                 <TableCell>LPToken</TableCell>
                 <TableCell>Txid</TableCell>
               </TableRow>

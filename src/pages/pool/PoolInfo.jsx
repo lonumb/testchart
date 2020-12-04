@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
@@ -41,9 +42,10 @@ const AccordionDetails = withStyles((theme) => ({
 }))(MuiAccordionDetails);
 
 const PoolInfo = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const rechargeVisible = useSelector((state) => state.common.rechargeVisible);
-  
+
   const [dataList] = useState(new Array(10).fill(1));
   const [amount, setAmount] = useState('');
 
@@ -54,46 +56,46 @@ const PoolInfo = () => {
           <Accordion key={`ddd${index}`}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <div className="pool-title-box">
-                <h1 className="name">USDT{index}池</h1>
+                <h1 className="name">{t('poolName', { p: `USDT${index}` })}</h1>
                 <div className="line"></div>
                 <div className="title-item">
-                  <label htmlFor="">总量</label>
+                  <label htmlFor="">{t('poolTotal')}</label>
                   <div className="num">1728402.736192 USDT</div>
                 </div>
                 <div className="title-item">
-                  <label htmlFor="">年化收益</label>
+                  <label htmlFor="">{t('poolYearProfit')}</label>
                   <div className="num green">+172.91%</div>
                 </div>
                 <div className="title-item">
-                  <label htmlFor="">我质押的</label>
+                  <label htmlFor="">{t('poolPledge')}</label>
                   <div className="num">81920.000000 USDT</div>
                 </div>
                 <div className="title-item">
-                  <label htmlFor="">盈亏</label>
+                  <label htmlFor="">{t('textProfitStop')}</label>
                   <div className="num">
                     <span className="green">18469.48</span> USDT
                   </div>
                 </div>
                 <div className="title-item">
-                  <label htmlFor="">占比</label>
+                  <label htmlFor="">{t('textProportion')}</label>
                   <div className="num">12.870%</div>
                 </div>
               </div>
             </AccordionSummary>
             <AccordionDetails>
               <div className="pool-detail-box">
-                <span className="title">多头</span>
+                <span className="title">{t('poolMany')}</span>
                 <ul className="info-columns">
                   <li>
-                    <label htmlFor="">流通</label>
+                    <label htmlFor="">{t('poolCirculate')}</label>
                     <span>81949.736192</span>
                   </li>
                   <li>
-                    <label htmlFor="">头寸</label>
+                    <label htmlFor="">{t('poolPosition')}</label>
                     <span>172849.736192</span>
                   </li>
                   <li>
-                    <label htmlFor="">头寸占比</label>
+                    <label htmlFor="">{t('poolPositionRate')}</label>
                     <span>50.10%</span>
                   </li>
                 </ul>
@@ -101,18 +103,18 @@ const PoolInfo = () => {
                   <div className="progress-one"></div>
                   <div className="progress-red" style={{ width: '60%' }}></div>
                 </div>
-                <span className="title">空头</span>
+                <span className="title">{t('poolEmpty')}</span>
                 <ul className="info-columns">
                   <li>
-                    <label htmlFor="">流通</label>
+                    <label htmlFor="">{t('poolCirculate')}</label>
                     <span>81949.736192</span>
                   </li>
                   <li>
-                    <label htmlFor="">头寸</label>
+                    <label htmlFor="">{t('poolPosition')}</label>
                     <span>172849.736192</span>
                   </li>
                   <li>
-                    <label htmlFor="">头寸占比</label>
+                    <label htmlFor="">{t('poolPositionRate')}</label>
                     <span>50.10%</span>
                   </li>
                 </ul>
@@ -121,40 +123,40 @@ const PoolInfo = () => {
                   <div className="progress-green" style={{ width: '30%' }}></div>
                 </div>
                 <div className="loss-profit">
-                  多空浮动盈亏： <span className="red">-9829.112930</span>
+                  {t('poolFloatProfitStop')}： <span className="red">-9829.112930</span>
                 </div>
                 <div className="form-wrap">
                   <div className="form-box">
-                    <span className="title">质押</span>
-                    <label htmlFor="">数量</label>
+                    <span className="title">{t('btnPledge')}</span>
+                    <label htmlFor="">{t('textNum')}</label>
                     <div className="form-ele-box">
-                      <input type="text" placeholder="请输入数量" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                      <input type="text" placeholder={t('textNumTip')} value={amount} onChange={(e) => setAmount(e.target.value)} />
                       <span className="link-btn" onClick={() => setAmount('')}>
                         MAX
                       </span>
                     </div>
                     <div className="form-ele-desc">
-                      可用(Layer 2):18272.129492
+                      {t('textAvailable')}(Layer 2):18272.129492
                       <span className="link-btn" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible, code: 'BTC' } })}>
-                        充值
+                        {t('textRecharge')}
                       </span>
                     </div>
-                    <div className="form-ele-gain">获得:- -</div>
-                    <button className="btn-default">质押</button>
+                    <div className="form-ele-gain">{t('poolGain')}:- -</div>
+                    <button className="btn-default">{t('btnPledge')}</button>
                   </div>
                   <div className="line"></div>
                   <div className="form-box">
-                    <span className="title">解锁</span>
-                    <label htmlFor="">数量</label>
+                    <span className="title">{t('btnUnlock')}</span>
+                    <label htmlFor="">{t('textNum')}</label>
                     <div className="form-ele-box">
-                      <input type="text" placeholder="请输入数量" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                      <input type="text" placeholder={t('textNumTip')} value={amount} onChange={(e) => setAmount(e.target.value)} />
                       <span className="link-btn" onClick={() => setAmount('')}>
                         MAX
                       </span>
                     </div>
-                    <div className="form-ele-desc">可用(Layer 2):18272.129492 USDT LP Token</div>
-                    <div className="form-ele-gain">获得:- -</div>
-                    <button className="btn-primary">解锁</button>
+                    <div className="form-ele-desc">{t('textAvailable')}(Layer 2):18272.129492 USDT LP Token</div>
+                    <div className="form-ele-gain">{t('poolGain')}:- -</div>
+                    <button className="btn-primary">{t('btnUnlock')}</button>
                   </div>
                   <div className="w180"></div>
                 </div>

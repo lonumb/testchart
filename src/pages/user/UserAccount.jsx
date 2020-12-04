@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Table from '../../components/table/OwnTable';
 import TableHead from '../../components/table/OwnTableHead';
 import TableBody from '../../components/table/OwnTableBody';
@@ -14,6 +15,7 @@ function createData(name, calories, fat, carbs, protein) {
 const rows = [createData('BTC', 882931.762814, '0.000000', '0.000000', '0.000000'), createData('USDT', 11.000128, '0.000000', '0.000000', '0.000000')];
 
 const UserAccount = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const withdrawVisible = useSelector((state) => state.common.withdrawVisible);
   const rechargeVisible = useSelector((state) => state.common.rechargeVisible);
@@ -21,7 +23,7 @@ const UserAccount = () => {
   return (
     <div className="user-account">
       <div className="account-total">
-        <div className="title">交易账户总价值</div>
+        <div className="title">{t('accountTitle')}</div>
         <div className="amount">
           <span>0.34468139</span> BTC ≈ $ 3975.54363818
         </div>
@@ -31,15 +33,15 @@ const UserAccount = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>币种</TableCell>
+              <TableCell>{t('textCurrency')}</TableCell>
               <TableCell>
-                <span className="tip-text">可用(Layer2)</span>
+                <span className="tip-text">{t('textAvailable')}(Layer2)</span>
               </TableCell>
-              <TableCell>冻结</TableCell>
+              <TableCell>{t('textFreeze')}</TableCell>
               <TableCell>
-                <span className="tip-text">可用(ETH Main)</span>
+                <span className="tip-text">{t('textAvailable')}(ETH Main)</span>
               </TableCell>
-              <TableCell>操作</TableCell>
+              <TableCell>{t('textOperation')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -53,10 +55,10 @@ const UserAccount = () => {
                 <TableCell>{row.carbs}</TableCell>
                 <TableCell>
                   <span className="table-link" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible, code: 'BTC' } })}>
-                    充值
+                    {t('textRecharge')}
                   </span>
                   <span className="table-link" onClick={() => dispatch({ type: Types.WITHDRAW_VISIBLE, payload: { visible: !withdrawVisible, code: 'BTC' } })}>
-                    提现
+                    {t('textWithdraw')}
                   </span>
                 </TableCell>
               </TableRow>
@@ -66,15 +68,15 @@ const UserAccount = () => {
       </div>
       <div className="gap-row"></div>
       <div className="table-wrap">
-        <div className="table-title">流动池账户</div>
+        <div className="table-title">{t('accountPool')}</div>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>币种</TableCell>
+              <TableCell>{t('textCurrency')}</TableCell>
               <TableCell>
-                <span className="tip-text">可用(Layer2)</span>
+                <span className="tip-text">{t('textAvailable')}(Layer2)</span>
               </TableCell>
-              <TableCell>操作</TableCell>
+              <TableCell>{t('textOperation')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -85,8 +87,8 @@ const UserAccount = () => {
                 </TableCell>
                 <TableCell>{row.calories}</TableCell>
                 <TableCell>
-                  <span className="table-link">质押</span>
-                  <span className="table-link">解锁</span>
+                  <span className="table-link">{t('btnPledge')}</span>
+                  <span className="table-link">{t('btnUnlock')}</span>
                 </TableCell>
               </TableRow>
             ))}

@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './pool.scss';
 
 const PoolComponent = () => {
+  const { t } = useTranslation();
   const poolRef = useRef();
   const [poolHeight, setPoolHeight] = useState(0);
 
@@ -13,7 +15,7 @@ const PoolComponent = () => {
 
   return (
     <div className="pool" ref={poolRef}>
-      <div className="title-box">流动池(ETH)</div>
+      <div className="title-box">{t('navPool')}(ETH)</div>
       <div className="rate-box">
         <div className="block-column block-red" style={{ height: `${poolHeight}px` }}>
           <div className="block" style={{ height: `${30}%` }}></div>
@@ -23,20 +25,20 @@ const PoolComponent = () => {
         </div>
         <div className="block-info">
           <div className="row">
-            <span className="label0">多头</span>
-            <span className="label1">流通:</span>
+            <span className="label0">{t('poolMany')}</span>
+            <span className="label1">{t('poolCirculate')}:</span>
             <span className="label2">1234414</span>
             <span className="label3">(30.22%)</span>
-            <span className="label1">头寸:</span>
+            <span className="label1">{t('poolPosition')}:</span>
             <span className="label2">1234414</span>
             <span className="label3">(30.22%)</span>
           </div>
           <div className="row">
-            <span className="label0">空头</span>
-            <span className="label1">流通:</span>
+            <span className="label0">{t('poolEmpty')}</span>
+            <span className="label1">{t('poolCirculate')}:</span>
             <span className="label2">1234414</span>
             <span className="label3">(30.22%)</span>
-            <span className="label1">头寸:</span>
+            <span className="label1">{t('poolPosition')}:</span>
             <span className="label2">1234414</span>
             <span className="label3">(30.22%)</span>
           </div>

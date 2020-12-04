@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import './chart.scss';
 
 const ChartComponent = () => {
+  const { t } = useTranslation();
+  
   const chartRef = useRef();
   useEffect(() => {
     /*eslint-disable new-cap,no-undef*/

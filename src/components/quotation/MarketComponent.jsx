@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import OwnTooltip from '../tooltip/OwnTooltip';
 import OwnPopover from '../popover/OwnPopover';
@@ -6,6 +7,7 @@ import { usePopupState, bindHover, bindPopover } from 'material-ui-popup-state/h
 import './market.scss';
 
 const MarketComponent = () => {
+  const { t } = useTranslation();
   const popupState = usePopupState({ variant: 'popover', popupId: 'coinPopover' });
 
   return (

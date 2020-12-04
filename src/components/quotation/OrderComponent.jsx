@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import DoubleArrowRoundedIcon from '@material-ui/icons/DoubleArrowRounded';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import OwnTooltip from '../tooltip/OwnTooltip';
@@ -23,6 +24,7 @@ const profitRateList = [25, 50, 75, 100, 150, 200];
 const stopRateList = [30, 40, 50, 60, 70, 80];
 
 const OrderComponent = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const rechargeVisible = useSelector((state) => state.common.recharge.visible);
   const orderRef = useRef();

@@ -1,8 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import OwnBase from './OwnBase';
 import './confirm.scss';
 
 const OwnConfirm = (props) => {
-  const { visible, title, cancelText = '取消', okText = '确认' } = props;
+  const { t } = useTranslation();
+
+  const { visible, title, cancelText = t('btnCancel'), okText = t('btnConfirm') } = props;
   return (
     <OwnBase onClose={props.onClose} visible={visible} title={title}>
       {props.children}

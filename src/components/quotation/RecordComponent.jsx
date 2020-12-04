@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Reply from '@material-ui/icons/Reply';
 import './record.scss';
 
 const RecordComponent = () => {
+  const { t } = useTranslation();
   const recordRef = useRef();
   const [recordList, setRecordList] = useState([]);
   const [listHeight, setListHeight] = useState(0);
@@ -21,10 +23,10 @@ const RecordComponent = () => {
     <div className="record" ref={recordRef}>
       <div className="title-box">最新成交</div>
       <div className="list-title">
-        <div className="column">时间</div>
-        <div className="column">类型</div>
-        <div className="column">价格(USDT)</div>
-        <div className="column">头寸 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div className="column">{t('textTime')}</div>
+        <div className="column">{t('textType')}</div>
+        <div className="column">{t('textPrice')}(USDT)</div>
+        <div className="column">{t('poolPosition')} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
       </div>
       <div className="list-wrap">
         <div className="list-view" style={{ height: `${listHeight}px` }}>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 // import Notifications from '@material-ui/icons/Notifications';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
@@ -24,6 +25,7 @@ import ConnectModal from '../wallet/Connect';
 import './header.scss';
 
 const HeaderComponent = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
   const withdrawVisible = useSelector((state) => state.common.withdraw.visible);
@@ -60,10 +62,10 @@ const HeaderComponent = () => {
       <img src="/imgs/logo.png" alt="" />
       <ul className="nav">
         <li className="item">
-          <NavLink to="/trade">交易</NavLink>
+          <NavLink to="/trade">{t('navTrade')}</NavLink>
         </li>
         <li className="item">
-          <NavLink to="/pool/info">流动池</NavLink>
+          <NavLink to="/pool/info">{t('navPool')}</NavLink>
         </li>
         <li className="item">
           <NavLink
@@ -72,15 +74,15 @@ const HeaderComponent = () => {
               return location.pathname ? location.pathname.indexOf('/user') !== -1 : false;
             }}
           >
-            账户
+            {t('navAccount')}
           </NavLink>
         </li>
         <li className="item">
-          <a href="">公示</a>
+          <a href="">{t('navPublic')}</a>
         </li>
         <li className="item">
           <a href="">
-            更多 <ExpandMoreRoundedIcon />
+            {t('navMore')} <ExpandMoreRoundedIcon />
           </a>
         </li>
       </ul>
@@ -137,33 +139,33 @@ const HeaderComponent = () => {
             <div className="wallet-popover">
               <div className="recharge-box line">
                 <button className="btn-primary" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible } })}>
-                  充值(Layer2)
+                  {t('textRecharge')}(Layer2)
                 </button>
                 <button className="btn-default" onClick={() => dispatch({ type: Types.WITHDRAW_VISIBLE, payload: { visible: !withdrawVisible } })}>
-                  提现
+                  {t('textWithdraw')}
                 </button>
               </div>
               <ul className="wallet-menu-list">
                 <li onClick={() => history.push('/user/rw-record')}>
                   <ListAltIcon />
-                  交易记录
+                  {t('menuTradeRecord')}
                 </li>
                 <li onClick={() => history.push('/user/center')}>
                   <AccountBalanceWalletIcon />
-                  钱包详情
+                  {t('menuWalletDetail')}
                 </li>
                 <li className="line" onClick={() => history.push('/user/setting')}>
                   <SettingsIcon />
-                  个人设置
+                  {t('menuPersonSetting')}
                 </li>
                 <li>
                   <FileCopyIcon />
-                  复制地址
+                  {t('copyAddress')}
                 </li>
                 <li>
                   <a href={`https://etherscan.io/address/${account}`} target="_blank" rel="noopener noreferrer">
                     <StorageIcon />
-                    在Etherscan中查看
+                    {t('menuAddressDetail')}
                   </a>
                 </li>
               </ul>
@@ -180,7 +182,7 @@ const HeaderComponent = () => {
                     } catch (error) {}
                   }}
                 >
-                  断开钱包
+                  {t('walletQuit')}
                 </button>
               </div>
             </div>
@@ -188,7 +190,7 @@ const HeaderComponent = () => {
         </React.Fragment>
       ) : (
         <button className="btn-primary" onClick={() => dispatch({ type: Types.WALLET_VISIBLE, payload: { visible: true } })}>
-          连接钱包
+          {t('walletConnect')}
         </button>
       )}
 

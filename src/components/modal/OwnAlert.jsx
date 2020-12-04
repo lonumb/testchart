@@ -1,7 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import OwnBase from './OwnBase';
 
 const OwnAlert = (props) => {
-  const { visible, title, okText = '我知道了' } = props;
+  const { t } = useTranslation();
+
+  const { visible, title, okText = t('btnKnow') } = props;
   return (
     <OwnBase onClose={props.onClose} visible={visible} title={title}>
       {props.children}

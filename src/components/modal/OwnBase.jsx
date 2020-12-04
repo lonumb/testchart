@@ -1,6 +1,7 @@
 import Dialog from '@material-ui/core/Dialog';
 import { withStyles } from '@material-ui/core/styles';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
+import { useTranslation } from 'react-i18next';
 import './base.scss';
 
 const OwnDialog = withStyles(() => ({
@@ -15,6 +16,8 @@ const OwnDialog = withStyles(() => ({
 }))(Dialog);
 
 const OwnBaseDialog = (props) => {
+  const { t } = useTranslation();
+
   const { visible, title } = props;
   return (
     <OwnDialog onClose={props.onClose} open={visible}>
