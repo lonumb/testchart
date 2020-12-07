@@ -6,7 +6,7 @@ export const langList = {
 };
 
 export const getLang = () => {
-  let lang = window.localStorage.getItem('LANGUAGE') || 'en-US';
+  let lang = window.localStorage.getItem('LANGUAGE') || 'zh-CN';
   return lang;
 };
 

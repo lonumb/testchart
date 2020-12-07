@@ -33,8 +33,10 @@
   "entrustTabClose": "已平仓",
   "textProductCode": "交易对",
   "entrustPrice": "建仓价",
-  "entrustCapitalRate": "资金费用",
-  "entrustPositionRate": "持仓费用",
+  "textCapital": "资金费用",
+  "textPosition": "持仓费用",
+  "entrustCalcClosePrice": "预估强平价",
+  "entrustCalcProfitStop": "未实现盈亏",
   "entrustSPPriceTip": "未设置",
   "entrustNextOrder": "再下一单",
   "entrustCancelAll": "全部撤销",
@@ -62,6 +64,7 @@
   "btnCancel": "取消",
   "btnConfirm": "确认",
   "btnRevoke": "撤销",
+  "btnKnow": "我知道了",
   "textCapitalRate": "资金费率",
   "textPositionRate": "持仓费率",
   "textHUpDown": "24H涨跌幅",
@@ -114,6 +117,7 @@
   "textStatus": "状态",
   "textClosePrice": "平仓价",
   "textToken": "代币",
+  "textLoading": "加载中...",
   "menuAccount": "总览",
   "menuRecord": "历史记录",
   "menuSetting": "设置",
@@ -123,5 +127,6 @@
   "menuWalletDetail": "钱包详情",
   "copyAddress": "复制地址",
   "accountTitle": "交易账户总价值",
-  "accountPool": "流动池账户"
+  "accountPool": "流动池账户",
+  "modalPSTitle": "修改止盈止损"
 }

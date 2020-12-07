@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Table from '../../components/table/OwnTable';
 import TableHead from '../../components/table/OwnTableHead';
@@ -8,6 +8,12 @@ import TableCell from '../../components/table/OwnTableCell';
 import { useSelector, useDispatch } from 'react-redux';
 import * as Types from '../../store/types';
 import './userAccount.scss';
+
+import { useWeb3React } from '@web3-react/core';
+import TeemoContract from '../../common/contract/TeemoContract';
+import UsdtContract from '../../common/contract/UsdtContract';
+import QuoteContract from '../../common/contract/QuoteContract';
+import PoolContract from '../../common/contract/PoolContract';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -19,6 +25,24 @@ const UserAccount = () => {
   const dispatch = useDispatch();
   const withdrawVisible = useSelector((state) => state.common.withdrawVisible);
   const rechargeVisible = useSelector((state) => state.common.rechargeVisible);
+
+  const { library } = useWeb3React();
+
+  useEffect(() => {
+    let teemoContract = new TeemoContract(library);
+    let usdtContract = new UsdtContract(library);
+    let quoteContract = new QuoteContract(library);
+    let poolContract = new PoolContract(library);
+    let test = async () => {
+      console.log(await teemoContract.getSymbol());
+      console.log(await usdtContract.getSymbol());
+      console.log('teemo:', await teemoContract.getContract());
+      console.log('usdt:', await usdtContract.getContract());
+      console.log('quote:', await quoteContract.getContract());
+      console.log('pool:', await poolContract.getContract());
+    };
+    test();
+  }, [library]);
 
   return (
     <div className="user-account">

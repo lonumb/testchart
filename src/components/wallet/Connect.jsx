@@ -10,8 +10,7 @@ import './connect.scss';
 
 const WalletConnectModal = () => {
   const dispatch = useDispatch();
-  const context = useWeb3React();
-  const { library, connector, activate } = context;
+  const { library, connector, activate } = useWeb3React();
   const [activatingConnector, setActivatingConnector] = useState();
   const { visible } = useSelector((state) => state.common.wallet);
   const [mm, setMm] = useState(false);

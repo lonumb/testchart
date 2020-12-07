@@ -1,8 +1,8 @@
 import Web3 from 'web3';
 import QuoteFactory from './QuoteFactory.json';
-const ADDRESS = process.env.REACT_APP_ADDRESS_POOL;
+const ADDRESS = process.env.REACT_APP_ADDRESS_QUOTE;
 
-class PoolContract {
+class QuoteContract {
   constructor(library) {
     this._web3 = library && library.provider ? new Web3(library.provider) : null;
   }
@@ -19,4 +19,4 @@ class PoolContract {
   }
 }
 
-export default PoolContract;
+export default QuoteContract;
