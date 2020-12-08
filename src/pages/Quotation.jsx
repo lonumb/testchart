@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import './quotation.scss';
 
 import MarketComponent from '../components/quotation/MarketComponent';
@@ -8,7 +9,16 @@ import RecordComponent from '../components/quotation/RecordComponent';
 import OrderComponent from '../components/quotation/OrderComponent';
 import EntrustComponent from '../components/quotation/EntrustComponent';
 
+import { actionProductList } from '../store/actions/TradeAction';
+
 function Quotation() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // 查询币种列表
+    actionProductList()(dispatch);
+  }, []);
+
   return (
     <div className="quotation-page">
       <MarketComponent></MarketComponent>

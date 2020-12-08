@@ -1,26 +1,33 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
+import { usePopupState, bindHover, bindPopover, bindToggle } from 'material-ui-popup-state/hooks';
+import { useSelector, useDispatch } from 'react-redux';
+import { actionProductInfo } from '../../store/actions/TradeAction';
 import OwnTooltip from '../tooltip/OwnTooltip';
 import OwnPopover from '../popover/OwnPopover';
-import { usePopupState, bindHover, bindPopover } from 'material-ui-popup-state/hooks';
 import './market.scss';
 
 const MarketComponent = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const popupState = usePopupState({ variant: 'popover', popupId: 'coinPopover' });
+  const { productList, productInfo } = useSelector((state) => state.trade); // 币种列表
 
   return (
     <div className="market">
-      <div className="current-coin" {...bindHover(popupState)}>
-        BTCUSDT
+      <div className="current-coin" {...bindHover(popupState)} {...bindToggle(popupState)}>
+        {productInfo.symbol}/{productInfo.legalSymbol}
         <ArrowDropDownRoundedIcon style={{ fontSize: 32, margin: '-3px 0 0 -5px' }} />
         <OwnPopover {...bindPopover(popupState)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
           <ul className="coin-list">
-            <li className="active">ETHUSDT</li>
-            <li>BTCUSDT</li>
-            <li>EOSUSDT</li>
-            <li>QTUMUSDT</li>
+            {productList.map((item) => {
+              return (
+                <li className={item.symbol === productInfo.symbol && 'active'} onClick={() => actionProductInfo(item)(dispatch)}>
+                  {item.symbol}/{item.legalSymbol}
+                </li>
+              );
+            })}
           </ul>
         </OwnPopover>
       </div>
@@ -32,16 +39,17 @@ const MarketComponent = () => {
         <OwnTooltip
           title={
             <React.Fragment>
-              <span className="colorDefault fz14">每10分钟收取1次</span> <br />
-              <span className="colorDefault fz14">当前费率:0.006%</span> <br />
-              * 正数代表多方给予空方 <br />* 负数代表空方给予多方
+              <span className="colorDefault fz14">{t('textCapitalRateDesc1', { p: '10' })}</span> <br />
+              <span className="colorDefault fz14">{t('textCapitalRateDesc2', { p: `0.006%` })}</span> <br />
+              {t('textCapitalRateDesc3')} <br />
+              {t('textCapitalRateDesc4')}
             </React.Fragment>
           }
           arrow
           placement="bottom"
         >
           <label htmlFor="" className="tip-text">
-            资金费率
+            {t('textCapitalRate')}
           </label>
         </OwnTooltip>
         <span>0.006%</span>
@@ -50,29 +58,29 @@ const MarketComponent = () => {
         <OwnTooltip
           title={
             <React.Fragment>
-              <span className="colorDefault fz14">每8小时收取1次</span> <br />
-              <span className="colorDefault fz14">当前费率:0.006%</span>
+              <span className="colorDefault fz14">{t('textPositionRateDesc1', { p: '10' })}</span> <br />
+              <span className="colorDefault fz14">{t('textPositionRateDesc2', { p: `0.006%` })}</span>
             </React.Fragment>
           }
           arrow
           placement="bottom"
         >
           <label htmlFor="" className="tip-text">
-            持仓费率
+            {t('textPositionRate')}
           </label>
         </OwnTooltip>
         <span>0.006%</span>
       </div>
       <div className="market-item">
-        <label htmlFor="">24H涨跌幅</label>
+        <label htmlFor="">{t('textHUpDown')}</label>
         <span className="green">+2.36%</span>
       </div>
       <div className="market-item">
-        <label htmlFor="">24H High</label>
+        <label htmlFor="">{t('textHHigh')}</label>
         <span>10109.02</span>
       </div>
       <div className="market-item">
-        <label htmlFor="">24H Low</label>
+        <label htmlFor="">{t('textHLow')}</label>
         <span>10109.02</span>
       </div>
     </div>

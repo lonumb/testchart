@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-// import Notifications from '@material-ui/icons/Notifications';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -10,15 +9,15 @@ import StorageIcon from '@material-ui/icons/Storage';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline';
-import OwnPopover from '../popover/OwnPopover';
-import { usePopupState, bindToggle, bindPopover } from 'material-ui-popup-state/hooks';
+import { useWeb3React } from '@web3-react/core';
+import { usePopupState, bindToggle, bindPopover, bindHover } from 'material-ui-popup-state/hooks';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import * as Types from '../../store/types';
-import { useWeb3React } from '@web3-react/core';
+import { actionRechargeModal, actionWithdrawModal, actionWalletModal } from '../../store/actions/CommonAction';
 import { walletconnect } from '../wallet/Connectors';
 import { NETWORK_LIST, NETWORK_TYPE } from '../../utils/Constants';
 
+import OwnPopover from '../popover/OwnPopover';
 import WithdrawModal from '../account/Withdraw';
 import RechargeModal from '../account/Recharge';
 import ConnectModal from '../wallet/Connect';
@@ -39,6 +38,17 @@ const HeaderComponent = () => {
   const popupStateOrder = usePopupState({ variant: 'popover', popupId: 'orderPopover' });
 
   const [network, setNetwork] = useState(false);
+
+  // 复制地址
+  function copyAddrFunc() {
+    window.navigator.clipboard.writeText(account).then(
+      () => {
+        console.log('success');
+      },
+      (err) => console.log('fail')
+    );
+  }
+
   useEffect(() => {
     if (NETWORK_TYPE === 'prod') {
       if (!chainId || chainId === 1) {
@@ -90,7 +100,7 @@ const HeaderComponent = () => {
         <Notifications />
       </div> */}
       {active && (
-        <div className="order-status" {...bindToggle(popupStateOrder)}>
+        <div className="order-status" {...bindToggle(popupStateOrder)} {...bindHover(popupStateOrder)}>
           1 Pending...
           <OwnPopover {...bindPopover(popupStateOrder)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
             <ul className="order-status-list">
@@ -116,7 +126,7 @@ const HeaderComponent = () => {
         </div>
       )}
 
-      <div className="language" {...bindToggle(popupStateLang)}>
+      <div className="language" {...bindToggle(popupStateLang)} {...bindHover(popupStateLang)}>
         English <ExpandMoreRoundedIcon />
         <OwnPopover {...bindPopover(popupStateLang)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
           <ul className="lang-list">
@@ -128,7 +138,7 @@ const HeaderComponent = () => {
 
       {active ? (
         <React.Fragment>
-          <div className="wallet" {...bindToggle(popupStateWallet)}>
+          <div className="wallet" {...bindToggle(popupStateWallet)} {...bindHover(popupStateWallet)}>
             <img src={`/imgs/wallet/${library.connection.url}.png`} width="20" alt="" />
             <span className="addr">{`${account.substring(0, 6)}…${account.substring(account.length, account.length - 4)}`}</span>
             {!network ? <span className="network">{NETWORK_LIST[chainId]}</span> : <span className="network error">Wrong Network</span>}
@@ -138,10 +148,10 @@ const HeaderComponent = () => {
           <OwnPopover {...bindPopover(popupStateWallet)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
             <div className="wallet-popover">
               <div className="recharge-box line">
-                <button className="btn-primary" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible } })}>
+                <button className="btn-primary" onClick={() => actionRechargeModal(!rechargeVisible)(dispatch)}>
                   {t('textRecharge')}(Layer2)
                 </button>
-                <button className="btn-default" onClick={() => dispatch({ type: Types.WITHDRAW_VISIBLE, payload: { visible: !withdrawVisible } })}>
+                <button className="btn-default" onClick={() => actionWithdrawModal(!withdrawVisible)(dispatch)}>
                   {t('textWithdraw')}
                 </button>
               </div>
@@ -158,7 +168,7 @@ const HeaderComponent = () => {
                   <SettingsIcon />
                   {t('menuPersonSetting')}
                 </li>
-                <li>
+                <li onClick={() => copyAddrFunc()}>
                   <FileCopyIcon />
                   {t('copyAddress')}
                 </li>
@@ -189,7 +199,7 @@ const HeaderComponent = () => {
           </OwnPopover>
         </React.Fragment>
       ) : (
-        <button className="btn-primary" onClick={() => dispatch({ type: Types.WALLET_VISIBLE, payload: { visible: true } })}>
+        <button className="btn-primary" onClick={() => actionWalletModal(true)(dispatch)}>
           {t('walletConnect')}
         </button>
       )}

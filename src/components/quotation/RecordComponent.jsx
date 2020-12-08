@@ -21,7 +21,7 @@ const RecordComponent = () => {
 
   return (
     <div className="record" ref={recordRef}>
-      <div className="title-box">最新成交</div>
+      <div className="title-box">{t('tradeDealTitle')}</div>
       <div className="list-title">
         <div className="column">{t('textTime')}</div>
         <div className="column">{t('textType')}</div>
@@ -34,7 +34,7 @@ const RecordComponent = () => {
             return (
               <div className="list-item" key={index}>
                 <div className="column">18:57:20</div>
-                <div className="column">建仓</div>
+                <div className="column">{t('textClose')}</div>
                 <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>17545.42</div>
                 <div className="column">
                   0.242114 {index % 7 === 0 ? 'Sushi' : 'BTC'} <Reply />

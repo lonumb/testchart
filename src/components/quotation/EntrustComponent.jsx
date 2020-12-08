@@ -53,7 +53,7 @@ const EntrustComponent = () => {
           <div className="table-column">{t('textDir')}</div>
 
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>建仓时的行情报价</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('entrustPriceDesc')}</React.Fragment>} arrow placement="bottom">
               <span>{t('entrustPrice')}</span>
             </OwnTooltip>
           </div>
@@ -61,32 +61,32 @@ const EntrustComponent = () => {
           <div className="table-column">{t('textBond')}</div>
           <div className="table-column">{t('textLever')}</div>
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>当前已收取/奖励的资金费用</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('textCapitalDesc')}</React.Fragment>} arrow placement="bottom">
               <span>{t('textCapital')}</span>
             </OwnTooltip>
           </div>
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>平仓时需支付的持仓费用</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('textPositionDesc')}</React.Fragment>} arrow placement="bottom">
               <span>{t('textPosition')}</span>
             </OwnTooltip>
           </div>
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>预计在该点位对这笔订单执行清算</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('entrustCalcClosePriceDesc')}</React.Fragment>} arrow placement="bottom">
               <span>{t('entrustCalcClosePrice')}</span>
             </OwnTooltip>
           </div>
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>平仓时可获得的盈亏</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('entrustCalcProfitStopDesc')}</React.Fragment>} arrow placement="bottom">
               <span>{t('entrustCalcProfitStop')}</span>
             </OwnTooltip>
           </div>
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>预计在这个报价自动止盈平仓</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('textProfitPriceDesc')}</React.Fragment>} arrow placement="bottom">
               <span>{t('textProfitPrice')}</span>
             </OwnTooltip>
           </div>
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>预计在这个报价自动止损平仓</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('textStopPriceDesc')}</React.Fragment>} arrow placement="bottom">
               <span>{t('textStopPrice')}</span>
             </OwnTooltip>
           </div>
@@ -110,7 +110,7 @@ const EntrustComponent = () => {
                   18101.22 <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  未设置 <Edit style={{ fontSize: '14px' }} />
+                  {t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column">
                   <span className="link">{t('textClose')}</span>

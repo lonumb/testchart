@@ -80,7 +80,7 @@ export function URLENCODED_GET(url, params) {
   //   let token = window.localStorage.getItem('token') || '';
   //   if (token) params['token'] = token; // 获取
   //   params['language'] = getBackLang();
-  let paramsTemp = {};
+  let paramsTemp = { token: '' };
   for (const key in params) {
     if (params.hasOwnProperty(key)) {
       const element = params[key];
