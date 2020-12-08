@@ -31,7 +31,7 @@ export const actionProductList = () => {
  * 获取产品信息action
  */
 const getProductInfoFunc = (params) => {
-  const { product = [], loading } = params;
+  const { product = {}, loading } = params;
   return createAction(Types.PRODUCT_INFO)({ product, loading });
 };
 
@@ -88,4 +88,14 @@ export const apiKData = (params) => {
       return func(res);
     });
   }
+};
+
+/**
+ * ticker行情更新
+ * @param {*} data
+ */
+export const actionTickerUpdate = (data) => {
+  return (dispatch) => {
+    dispatch(createAction(Types.TICKER_UPDATE)(data));
+  };
 };

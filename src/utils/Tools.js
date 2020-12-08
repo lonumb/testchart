@@ -71,6 +71,10 @@ export function toNumber(val) {
   return Decimal(val).toNumber();
 }
 
+export function abs(v) {
+  return Decimal.abs(v).valueOf();
+}
+
 /**
  * 减法运算
  * @param {*} v1
@@ -170,3 +174,13 @@ export function fmtShowTime(diffSeconds) {
     return `${fmtZero(H)}H ${fmtZero(m)}M`;
   }
 }
+
+/**
+ * 随机字符串
+ * @param {*} len
+ */
+export const generateRandomAlphaNum = (len) => {
+  var rdmString = '';
+  for (; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
+  return rdmString.substr(0, len);
+};

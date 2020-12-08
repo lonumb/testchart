@@ -8,7 +8,6 @@ const PoolComponent = () => {
   const [poolHeight, setPoolHeight] = useState(0);
 
   useEffect(() => {
-    console.log(poolRef.current.clientHeight);
     // 设置列表高度
     setPoolHeight(poolRef.current.clientHeight - 65);
   }, []);

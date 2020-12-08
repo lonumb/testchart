@@ -26,7 +26,7 @@ let chartOption = {
   theme: 'Dark',
   custom_css_url: '/tv/theme/dark.css', // 自定义样式覆盖
   overrides: {
-    volumePaneSize: 'large', // 成交量高度 (large, medium, small, tiny)
+    // volumePaneSize: 'large', // 成交量高度 (large, medium, small, tiny)
     'paneProperties.background': '#141826', // 图表背景
     'paneProperties.vertGridProperties.color': '#141826', // 图表网格颜色 252b44
     'paneProperties.horzGridProperties.color': '#141826', // 图表网格颜色
@@ -56,8 +56,8 @@ let chartOption = {
     'border_around_the_chart', // 移除边距
     'header_widget', // 头部工具栏
     'legend_context_menu', // 商品名称点击显示功能菜单
-    // 'create_volume_indicator_by_default', // 量和k线图上下分开,防止他们重叠
-    'volume_force_overlay', // 成交量
+    'create_volume_indicator_by_default', // 量和k线图上下分开,防止他们重叠
+    // 'volume_force_overlay', // 成交量
     'timeframes_toolbar', // 底部工具栏
     'pane_context_menu', // 右键菜单
     'legend_context_menu', // 商品名称点击显示功能菜单
@@ -88,23 +88,7 @@ const ChartComponent = () => {
   const dispatch = useDispatch();
   const popupStateMin = usePopupState({ variant: 'popover', popupId: 'minPopover' });
   const popupStateHour = usePopupState({ variant: 'popover', popupId: 'hourPopover' });
-  const { period, productInfo } = useSelector((state) => state.trade); // 当前周期
-
-  useEffect(() => {
-    // 初始化chart
-    /*eslint-disable new-cap,no-undef*/
-    widget = new TradingView.widget({
-      ...chartOption,
-      symbol: 'AAPL',
-      interval: 'D',
-      locale: 'zh',
-    });
-
-    // widget.onChartReady(function () {
-    // 创建按钮
-    // widget.createButton().attr('title', 'Save chart').on('click', function (e) {widget.save(function (data) {alert('Saved');});}).append('<span>save</span>');
-    // });
-  }, []);
+  const { period, productInfo, ticker } = useSelector((state) => state.trade); // 当前周期
 
   // 指标列表
   function indicatorFunc() {
@@ -113,6 +97,7 @@ const ChartComponent = () => {
 
   // 切换产品和周期
   function switchSymbol(symbol, period) {
+    if (!widget) return;
     widget.setSymbol(symbol, period, function () {}); // 切换商品和周期
   }
 
@@ -129,7 +114,7 @@ const ChartComponent = () => {
     if (!ChartUtil.onDataCallback) {
       setTimeout(() => {
         try {
-          this.updateChartData(historyData);
+          updateChartData(historyData);
         } catch (error) {
           console.error('tradingview error', error);
         }
@@ -151,13 +136,32 @@ const ChartComponent = () => {
   // 查询历史数据
   useEffect(() => {
     if (!productInfo.symbol) return;
+    ChartUtil.reset(); // 产品切换后重置
+    // 初始化chart
+    /*eslint-disable new-cap,no-undef*/
+    widget = new TradingView.widget({
+      ...chartOption,
+      symbol: `${productInfo.symbol}/USDT`,
+      interval: period === 'line' ? '1' : period,
+      locale: 'zh',
+    });
+    widget.onChartReady(function () {
+      widget.chart().setChartType(period === 'line' ? 2 : 1); // k线类型
+      // 创建按钮
+      // widget.createButton().attr('title', 'Save chart').on('click', function (e) {widget.save(function (data) {alert('Saved');});}).append('<span>save</span>');
+    });
     apiKData({ symbol: productInfo.symbol, type: periodMap[period].api, period: periodMap[period].value, count: '1000', fromtime: '0' }).then((res) => {
-      // this.setState({ kData: res }, () => {
       updateChartData(res);
-      // if (res.length) this.setState({ lastTicker: res[res.length - 1] });
-      // });
     });
   }, [productInfo, period]);
+
+  // ticker更新
+  useEffect(() => {
+    if (!ChartUtil.onRealTimeCallback) {
+      return;
+    }
+    ChartUtil.onRealTimeCallback(ticker);
+  }, [ticker]);
 
   return (
     <div className="chart">

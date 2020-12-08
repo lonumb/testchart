@@ -8,3 +8,4 @@ export const PRODUCT_INFO = 'PRODUCT_INFO';
 export const POOL_LIST = 'POOL_LIST';
 
 export const CURRENT_PERIOD = 'CURRENT_PERIOD';
+export const TICKER_UPDATE = 'TICKER_UPDATE';

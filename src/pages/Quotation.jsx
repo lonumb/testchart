@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import './quotation.scss';
 
 import MarketComponent from '../components/quotation/MarketComponent';
@@ -10,14 +10,34 @@ import OrderComponent from '../components/quotation/OrderComponent';
 import EntrustComponent from '../components/quotation/EntrustComponent';
 
 import { actionProductList } from '../store/actions/TradeAction';
+import WsUtil from '../utils/WsUtil';
 
-function Quotation() {
+const periodMap = { line: '1mink', 1: '1mink', 5: '5mink', 15: '15mink', 30: '30mink', 60: '60mink', 240: '240mink', '1D': 'dayk', '1W': 'weekk', '1M': 'monthk' };
+
+const Quotation = (props) => {
   const dispatch = useDispatch();
+  const { productInfo, period } = useSelector((state) => state.trade);
 
   useEffect(() => {
-    // 查询币种列表
+    // 查询币种列表(产品)
     actionProductList()(dispatch);
   }, []);
+
+  console.log('productInfo', productInfo);
+
+  // websocket订阅
+  useEffect(() => {
+    console.log('props:', props);
+    if (!productInfo.symbol) return;
+    WsUtil.init(dispatch, () => {
+      WsUtil.sendMsg('13007', {
+        sub: [{ symbol: productInfo.symbol.toLowerCase(), datatype: [periodMap[period], periodMap['1D']] }],
+      });
+    });
+    return () => {
+      WsUtil.close();
+    };
+  }, [productInfo, period]);
 
   return (
     <div className="quotation-page">
@@ -29,6 +49,6 @@ function Quotation() {
       <EntrustComponent></EntrustComponent>
     </div>
   );
-}
+};
 
 export default Quotation;

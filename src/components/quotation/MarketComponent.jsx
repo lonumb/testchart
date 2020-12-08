@@ -12,7 +12,7 @@ const MarketComponent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const popupState = usePopupState({ variant: 'popover', popupId: 'coinPopover' });
-  const { productList, productInfo } = useSelector((state) => state.trade); // 币种列表
+  const { productList, productInfo, tickerAll } = useSelector((state) => state.trade); // 币种列表
 
   return (
     <div className="market">
@@ -32,7 +32,7 @@ const MarketComponent = () => {
         </OwnPopover>
       </div>
       <div className="market-item">
-        <span className="fz16 red">10109.02</span>
+        <span className={`fz16 ${tickerAll['1D'].CC}`}>{tickerAll['1D'].close || 0}</span>
         <label htmlFor="">≈10109.02 CNY</label>
       </div>
       <div className="market-item">
@@ -73,15 +73,15 @@ const MarketComponent = () => {
       </div>
       <div className="market-item">
         <label htmlFor="">{t('textHUpDown')}</label>
-        <span className="green">+2.36%</span>
+        <span className={tickerAll['1D'].UDC}>{tickerAll['1D'].UDR || 0}%</span>
       </div>
       <div className="market-item">
         <label htmlFor="">{t('textHHigh')}</label>
-        <span>10109.02</span>
+        <span>{tickerAll['1D'].high || 0}</span>
       </div>
       <div className="market-item">
         <label htmlFor="">{t('textHLow')}</label>
-        <span>10109.02</span>
+        <span>{tickerAll['1D'].low || 0}</span>
       </div>
     </div>
   );
