@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Edit from '@material-ui/icons/Edit';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
@@ -15,8 +15,7 @@ const stopRateList = [30, 40, 50, 60, 70, 80];
 
 const EntrustComponent = () => {
   const { t } = useTranslation();
-  const context = useWeb3React();
-  const { active } = context;
+  const { active, library, account } = useWeb3React();
 
   const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
   const [type, setType] = useState(1);
@@ -28,6 +27,7 @@ const EntrustComponent = () => {
   const [stopType, setStopType] = useState(1); // 止损类型
   const [stop, setStop] = useState(''); // 止损
   const [stopRate, setStopRate] = useState(''); // 止损比例
+
 
   return (
     <div className="entrust">

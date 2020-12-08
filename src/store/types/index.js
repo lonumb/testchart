@@ -6,6 +6,7 @@ export const PRODUCT_LIST = 'PRODUCT_LIST';
 export const PRODUCT_INFO = 'PRODUCT_INFO';
 
 export const POOL_LIST = 'POOL_LIST';
+export const POOL_INFO = 'POOL_INFO';
 
 export const CURRENT_PERIOD = 'CURRENT_PERIOD';
 export const TICKER_UPDATE = 'TICKER_UPDATE';

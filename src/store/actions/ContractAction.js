@@ -2,7 +2,7 @@ import { createAction } from 'redux-actions';
 import * as Types from '../types';
 
 /**
- * 充值modal控制
+ * 池子列表
  * @param {*} params
  */
 export const actionPoolList = (params) => {
@@ -16,5 +16,13 @@ export const actionPoolList = (params) => {
       });
     }
     dispatch(createAction(Types.POOL_LIST)(temp));
+    dispatch(createAction(Types.POOL_INFO)(temp[0]));
+  };
+};
+
+// 更新当前池子信息
+export const actionPoolInfo = (data) => {
+  return (dispatch) => {
+    dispatch(createAction(Types.POOL_INFO)(data));
   };
 };

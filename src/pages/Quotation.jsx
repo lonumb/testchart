@@ -23,11 +23,8 @@ const Quotation = (props) => {
     actionProductList()(dispatch);
   }, []);
 
-  console.log('productInfo', productInfo);
-
   // websocket订阅
   useEffect(() => {
-    console.log('props:', props);
     if (!productInfo.symbol) return;
     WsUtil.init(dispatch, () => {
       WsUtil.sendMsg('13007', {
@@ -35,6 +32,7 @@ const Quotation = (props) => {
       });
     });
     return () => {
+      // 关闭
       WsUtil.close();
     };
   }, [productInfo, period]);

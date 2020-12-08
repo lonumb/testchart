@@ -6,8 +6,11 @@ import OwnTooltip from '../tooltip/OwnTooltip';
 import OwnSlider from '../slider/OwnSlider';
 import Checkbox from '../checkbox/CheckBox';
 import { useSelector, useDispatch } from 'react-redux';
+import { useWeb3React } from '@web3-react/core';
 import * as Types from '../../store/types';
+import { actionPoolInfo } from '../../store/actions/ContractAction';
 import './order.scss';
+import TeemoContract from '../../common/contract/TeemoContract';
 
 const marks = [
   { value: 0, label: '1x' },
@@ -27,13 +30,14 @@ const OrderComponent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const rechargeVisible = useSelector((state) => state.common.recharge.visible);
+  const { poolList, poolInfo } = useSelector((state) => state.contract);
+  const { active, library, account } = useWeb3React();
   const orderRef = useRef();
   const [orderHeight, setOrderHeight] = useState(0);
   const [moreFlag, setMoreFlag] = useState(false);
 
   const [type, setType] = useState(1); // 类型 1:现价 2:市价
   const [dir, setDir] = useState(1); // 方向 1:涨 2:跌
-  const [moneyCode, setMoneyCode] = useState(''); // 支付币种
   const [price, setPrice] = useState(''); // 价格
   const [bond, setBond] = useState(''); // b保证金
   const [bondRate, setBondRate] = useState(''); // 保证金比例
@@ -50,9 +54,25 @@ const OrderComponent = () => {
   const [levelRate, setLevelRate] = useState(1); // 杠杆比例
 
   useEffect(() => {
+    if (!account || !poolInfo.tokenAddr) return;
+    let teemoPoolContract = new TeemoContract(library, poolInfo.tokenAddr);
+    const test = async () => {
+      let res = await teemoPoolContract.queryAllOrderList(account);
+      console.log('-===============', res);
+    };
+    test();
+  }, [library, account, poolInfo]);
+
+  useEffect(() => {
     // 设置列表高度
     setOrderHeight(() => orderRef.current.clientHeight);
   }, []);
+
+  // 池子切换
+  function switchPoolInfo(symbol) {
+    let obj = poolList.find((item) => item.symbol === symbol);
+    actionPoolInfo(obj)(dispatch);
+  }
 
   return (
     <div className="order" ref={orderRef}>
@@ -79,9 +99,10 @@ const OrderComponent = () => {
         <div className="form-ele-sl">
           <label htmlFor="">支付Token</label>
           <span></span>
-          <select value={moneyCode} onChange={(e) => setMoneyCode(e.target.value)}>
-            <option value="ETH">ETH</option>
-            <option value="USDT">USDT</option>
+          <select value={poolInfo.symbol} onChange={(e) => switchPoolInfo(e.target.value)}>
+            {poolList.map((item) => {
+              return <option value={item.symbol}>{item.symbol}</option>;
+            })}
           </select>
         </div>
 
