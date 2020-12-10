@@ -8,15 +8,8 @@ import * as Types from '../types';
 export const actionPoolList = (params) => {
   const { data } = params;
   return (dispatch) => {
-    let temp = [];
-    if (data.allSymbol && data.allSymbol.length) {
-      data.allSymbol.forEach((element, index) => {
-        console.log(element);
-        temp.push({ symbol: data.allSymbol[index], tokenAddr: data.allTokenAddr[index], poolAddr: data.allTeemoPoolAddr[index] });
-      });
-    }
-    dispatch(createAction(Types.POOL_LIST)(temp));
-    dispatch(createAction(Types.POOL_INFO)(temp[0]));
+    dispatch(createAction(Types.POOL_LIST)(data));
+    dispatch(createAction(Types.POOL_INFO)(data[0]));
   };
 };
 

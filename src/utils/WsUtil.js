@@ -43,7 +43,9 @@ export default {
           cmd,
           data: { info },
         } = result;
-        this.fmtResult(cmd, info, dispatch);
+        if (info) {
+          this.fmtResult(cmd, info, dispatch);
+        }
       };
       reader.readAsText(data);
     };
@@ -127,14 +129,16 @@ export default {
         break;
 
       case 13007: // 订阅的所有数据, 提取处理函数
-        let { datas } = msg;
-        let temp = datas[0];
-        for (const key in temp) {
-          if (temp.hasOwnProperty(key)) {
-            const ele = temp[key];
-            let cmd = this.fmtMap[key];
-            if (cmd) {
-              // this.fmtResult(cmd, ele, that);
+        let { code, datas } = msg;
+        if (code === '0') {
+          let temp = datas[0];
+          for (const key in temp) {
+            if (temp.hasOwnProperty(key)) {
+              const ele = temp[key];
+              let cmd = this.fmtMap[key];
+              if (cmd) {
+                // this.fmtResult(cmd, ele, that);
+              }
             }
           }
         }

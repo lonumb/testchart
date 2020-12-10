@@ -1,5 +1,6 @@
 import ERD20 from './ERC20.json';
 import Web3 from 'web3';
+const TEEMO_ADDRESS = process.env.REACT_APP_ADDRESS_TEEMO;
 
 class CommonContract {
   constructor(library) {
@@ -25,24 +26,27 @@ class CommonContract {
     return contract.methods.balanceOf(userAddress).call();
   }
 
-  // // 获取授权额度 ----- 待定
-  // async getAllowance(web3, erc20ContractAddress, userAddress, senderContractAddress = config.tenet_contract_address) {
-  //   var contract = new web3.eth.Contract(config.erc20_abi, erc20ContractAddress);
-  //   var allowanceAmount = await contract.methods.allowance(userAddress, senderContractAddress).call();
+  // 获取授权额度
+  getAllowance(userAddress, contractAddress) {
+    let contract = this.getContract(contractAddress);
+    if (!contract) return;
+    return contract.methods.allowance(userAddress, TEEMO_ADDRESS).call();
+  }
 
-  //   return allowanceAmount;
-  // }
-
-  // // 授权扣款 ----- 待定
-  // approve(web3, erc20ContractAddress, userAddress, amount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff') {
-  //   var contract = new web3.eth.Contract(config.erc20_abi, erc20ContractAddress);
-  //   return contract.methods
-  //     .approve(config.tenet_contract_address, amount)
-  //     .send({ from: userAddress })
-  //     .on('error', function (error) {})
-  //     .on('transactionHash', function (transactionHash) {})
-  //     .on('receipt', (receipt) => {});
-  // }
+  // 授权扣款
+  approve(userAddress, contractAddress) {
+    let contract = this.getContract(contractAddress);
+    if (!contract) return;
+    let amount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+    return contract.methods
+      .approve(TEEMO_ADDRESS, amount)
+      .send({ from: userAddress })
+      .on('error', function (error) {})
+      .on('transactionHash', function (hash) {
+        console.log(hash);
+      })
+      .on('receipt', (receipt) => {});
+  }
 }
 
 export default CommonContract;

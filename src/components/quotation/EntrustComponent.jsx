@@ -4,9 +4,11 @@ import Edit from '@material-ui/icons/Edit';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import OwnTooltip from '../tooltip/OwnTooltip';
 import OwnDialogModal from '../modal/OwnDialog';
+import { useSelector } from 'react-redux';
 import './entrust.scss';
 
 import { useWeb3React } from '@web3-react/core';
+import TeemoContract from '../../common/contract/TeemoContract';
 
 // 止盈比例列表
 const profitRateList = [25, 50, 75, 100, 150, 200];
@@ -16,6 +18,7 @@ const stopRateList = [30, 40, 50, 60, 70, 80];
 const EntrustComponent = () => {
   const { t } = useTranslation();
   const { active, library, account } = useWeb3React();
+  const { poolInfo } = useSelector((state) => state.contract);
 
   const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
   const [type, setType] = useState(1);
@@ -28,6 +31,14 @@ const EntrustComponent = () => {
   const [stop, setStop] = useState(''); // 止损
   const [stopRate, setStopRate] = useState(''); // 止损比例
 
+  useEffect(() => {
+    if (!account || !poolInfo.tokenAddr) return;
+    let teemoContract = new TeemoContract(library, poolInfo.tokenAddr);
+    // 持仓列表
+    teemoContract.queryAllOrderList(account).then((res) => {
+      console.log('持仓列表:', res);
+    });
+  }, [library, account]);
 
   return (
     <div className="entrust">

@@ -24,10 +24,20 @@ class TeemoContract {
     return await this.getContract().methods.symbol().call();
   }
 
-  // 订单列表
-  async queryAllOrderList(address) {
+  // 持仓订单列表信息
+  queryAllOrderList(address) {
     if (!this.getContract()) return;
-    return await this.getContract().methods.getAllOrderInfo(address).call();
+    return this.getContract()
+      .methods.getAllOrderInfo(address)
+      .call()
+      .then((res) => {
+        let temp = [];
+        // 
+        res.allOrderID.forEach((element, index) => {
+          temp.push({ id: element, symbol: res.allSymbol[index], amount: res.allTokenAmount[index], lever: res.allLever[index], dir: res.allBsFlag[index], price: res.allOpenPrice[index] });
+        });
+        return temp;
+      });
   }
 }
 

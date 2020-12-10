@@ -17,11 +17,9 @@ function App() {
   useEffect(() => {
     if (!library || !account) return;
     let poolContract = new PoolContract(library, account);
-    let getData = async () => {
-      let poolListInfo = await poolContract.getAllPoolInfo();
-      actionPoolList({ data: poolListInfo })(dispatch);
-    };
-    getData();
+    poolContract.getAllPoolInfo().then((res) => {
+      actionPoolList({ data: res })(dispatch);
+    });
   }, [library, account]);
 
   return <AppRouter />;

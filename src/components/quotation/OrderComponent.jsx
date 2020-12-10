@@ -11,6 +11,9 @@ import * as Types from '../../store/types';
 import { actionPoolInfo } from '../../store/actions/ContractAction';
 import './order.scss';
 import TeemoContract from '../../common/contract/TeemoContract';
+import CommonContract from '../../common/contract/CommonContract';
+import QuoteContract from '../../common/contract/QuoteContract';
+import * as Tools from '../../utils/Tools';
 
 const marks = [
   { value: 0, label: '1x' },
@@ -25,6 +28,7 @@ const marks = [
 const profitRateList = [25, 50, 75, 100, 150, 200];
 // 止损比例列表
 const stopRateList = [30, 40, 50, 60, 70, 80];
+let commonContract = null;
 
 const OrderComponent = () => {
   const { t } = useTranslation();
@@ -34,10 +38,12 @@ const OrderComponent = () => {
   const { active, library, account } = useWeb3React();
   const orderRef = useRef();
   const [orderHeight, setOrderHeight] = useState(0);
+  const [balance, setBalance] = useState(0); // 余额
   const [moreFlag, setMoreFlag] = useState(false);
+  const [allowance, setAllowance] = useState(0);
 
-  const [type, setType] = useState(1); // 类型 1:现价 2:市价
-  const [dir, setDir] = useState(1); // 方向 1:涨 2:跌
+  const [type, setType] = useState(2); // 类型 1:现价 2:市价
+  const [dir, setDir] = useState(1); // 方向 2:涨 1:跌
   const [price, setPrice] = useState(''); // 价格
   const [bond, setBond] = useState(''); // b保证金
   const [bondRate, setBondRate] = useState(''); // 保证金比例
@@ -54,13 +60,22 @@ const OrderComponent = () => {
   const [levelRate, setLevelRate] = useState(1); // 杠杆比例
 
   useEffect(() => {
-    if (!account || !poolInfo.tokenAddr) return;
-    let teemoPoolContract = new TeemoContract(library, poolInfo.tokenAddr);
-    const test = async () => {
-      let res = await teemoPoolContract.queryAllOrderList(account);
-      console.log('-===============', res);
-    };
-    test();
+    if (account && poolInfo.symbol) {
+      let teemoPoolContract = new TeemoContract(library, poolInfo.tokenAddr);
+      commonContract = new CommonContract(library);
+      let quoteContract = new QuoteContract(library);
+      quoteContract.queryNewPrice(poolInfo.symbol).then((res) => {
+        console.log('queryNewPrice', res);
+      });
+      // 查询余额
+      commonContract.getBalanceOf(account, poolInfo.tokenAddr).then((res) => {
+        setBalance(res || 0);
+      });
+      // 是否授权
+      commonContract.getAllowance(account, poolInfo.tokenAddr).then((res) => {
+        setAllowance(res || 0);
+      });
+    }
   }, [library, account, poolInfo]);
 
   useEffect(() => {
@@ -72,6 +87,11 @@ const OrderComponent = () => {
   function switchPoolInfo(symbol) {
     let obj = poolList.find((item) => item.symbol === symbol);
     actionPoolInfo(obj)(dispatch);
+  }
+
+  // 授权
+  function gainAllowance() {
+    commonContract.approve(account, poolInfo.tokenAddr);
   }
 
   return (
@@ -89,7 +109,7 @@ const OrderComponent = () => {
         <div className="form-ele-desc">
           <label htmlFor="">钱包</label>
           <span className="sd">
-            0x57eD…8902
+            {account ? `${account.substring(0, 6)}…${account.substring(account.length, account.length - 4)}` : ''}
             <OwnTooltip title={<React.Fragment>需充进Layer2中才可进行交易Layer2上交易更快,gas更低</React.Fragment>} arrow placement="bottom">
               <font className="tip-text">(Layer2)</font>
             </OwnTooltip>
@@ -113,7 +133,7 @@ const OrderComponent = () => {
               <font className="tip-text">(Layer2)</font>
             </OwnTooltip>
           </label>
-          <span className="sd">55372901.627182</span>
+          <span className="sd">{balance}</span>
           <font className="recharge-btn" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible } })}>
             充值
           </font>
@@ -285,10 +305,15 @@ const OrderComponent = () => {
             Fast
           </li>
         </ul>
-
-        <button className={`btn-default ${type === 1 ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }}>
-          授权USDT
-        </button>
+        {Tools.GT(allowance, 0) ? (
+          <button className={`btn-default ${type === 2 ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }}>
+            {type === 2 ? '买涨' : '买跌'}
+          </button>
+        ) : (
+          <button className={`btn-default ${type === 2 ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => gainAllowance()}>
+            授权USDT
+          </button>
+        )}
       </div>
     </div>
   );

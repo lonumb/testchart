@@ -19,16 +19,27 @@ class PoolContract {
     }
   }
   // 池子列表基本信息
-  async getAllPoolInfo() {
+  getAllPoolInfo() {
     let contract = this.getContract();
     if (!contract) return;
-    return await contract.methods.getAllPoolInfo().call();
+    return contract.methods
+      .getAllPoolInfo()
+      .call()
+      .then((data) => {
+        let temp = [];
+        if (data.allSymbol && data.allSymbol.length) {
+          data.allSymbol.forEach((element, index) => {
+            temp.push({ symbol: data.allSymbol[index], tokenAddr: data.allTokenAddr[index], poolAddr: data.allTeemoPoolAddr[index] });
+          });
+        }
+        return temp;
+      });
   }
   // 查询余额
-  async getBalanceOf() {
+  getBalanceOf() {
     let contract = this.getContract();
     if (!contract) return;
-    return await contract.methods.balanceOf(this._address).call();
+    return contract.methods.balanceOf(this._address).call();
   }
 }
 
