@@ -14,6 +14,7 @@ import TeemoContract from '../../common/contract/TeemoContract';
 import CommonContract from '../../common/contract/CommonContract';
 import QuoteContract from '../../common/contract/QuoteContract';
 import * as Tools from '../../utils/Tools';
+import chainConfig from '../../components/wallet/Config'
 
 const marks = [
   { value: 0, label: '1x' },
@@ -35,7 +36,7 @@ const OrderComponent = () => {
   const dispatch = useDispatch();
   const rechargeVisible = useSelector((state) => state.common.recharge.visible);
   const { poolList, poolInfo } = useSelector((state) => state.contract);
-  const { active, library, account } = useWeb3React();
+  const { active, library, account, chainId } = useWeb3React();
   const orderRef = useRef();
   const [orderHeight, setOrderHeight] = useState(0);
   const [balance, setBalance] = useState(0); // 余额
@@ -63,7 +64,7 @@ const OrderComponent = () => {
     if (account && poolInfo.symbol) {
       let teemoPoolContract = new TeemoContract(library, poolInfo.tokenAddr);
       commonContract = new CommonContract(library);
-      let quoteContract = new QuoteContract(library);
+      let quoteContract = new QuoteContract(library, chainId || chainConfig.defaultChainId);
       quoteContract.queryNewPrice(poolInfo.symbol).then((res) => {
         console.log('queryNewPrice', res);
       });

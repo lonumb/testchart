@@ -1,29 +1,51 @@
-import { InjectedConnector } from '@web3-react/injected-connector';
-import { NetworkConnector } from '@web3-react/network-connector';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import { InjectedConnector } from '@web3-react/injected-connector'
+import { NetworkConnector } from '@web3-react/network-connector'
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { WalletLinkConnector } from '@web3-react/walletlink-connector'
+import { BscConnector } from '@binance-chain/bsc-connector'
 
-const POLLING_INTERVAL = 12000;
-const RPC_URLS = {
-  1: process.env.REACT_APP_RPC_URL_1,
-  3: process.env.REACT_APP_RPC_URL_3,
-  4: process.env.REACT_APP_RPC_URL_4,
-  5: process.env.REACT_APP_RPC_URL_5,
-  42: process.env.REACT_APP_RPC_URL_42,
-};
+import chainConfig from './Config'
 
-// https://infura.io/dashboard/ethereum/e9acee51d9044305865a135e4bbdcb3d/settings
-// 1: Mainnet 3:Ropsten 4:Rinkeby 5:goerli 42:testnet Kovan
-export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] });
+
+export const isInjectedSupported = () => {
+  return chainConfig.supportedChainIds.length > 0;
+}
+
+export const isNetworkConnectorSupported = () => {
+  return true;
+}
+
+export const isWalletconnectSupported = () => {
+  return true;
+}
+
+export const isWalletlinkSupported = () => {
+  return true;
+}
+
+export const isBscSupported = () => {
+  return chainConfig.supportedChainIds.filter((item) => item == 56 || item == 97).length > 0;
+}
+
+export const injected = new InjectedConnector({ supportedChainIds: chainConfig.supportedChainIds });
 
 export const network = new NetworkConnector({
-  urls: { 1: RPC_URLS[1], 3: RPC_URLS[3], 4: RPC_URLS[4], 5: RPC_URLS[5], 42: RPC_URLS[42] },
-  defaultChainId: 1,
-});
+  urls: chainConfig.rpcUrls,
+  defaultChainId: chainConfig.defaultChainId,
+})
 
 export const walletconnect = new WalletConnectConnector({
-  // rpc: { 1: RPC_URLS[1] },
-  rpc: { [process.env.REACT_APP_RPC_URL_KEY]: RPC_URLS[process.env.REACT_APP_RPC_URL_KEY] },
+  rpc: { [chainConfig.defaultChainId]: [chainConfig.getChainConfig(chainConfig.defaultChainId).rpcUrl] },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
-  pollingInterval: POLLING_INTERVAL,
+  pollingInterval: 15000,
 });
+
+export const walletlinkconnect = new WalletLinkConnector({
+  appName: window.location.protocol + "//" + window.location.host + (window.location.port.length > 0 ? `:${window.location.port}` : ''),
+  url: chainConfig.getChainConfig(chainConfig.defaultChainId).rpcUrl,
+})
+
+export const bsc = new BscConnector({
+  supportedChainIds: chainConfig.supportedChainIds.filter((item) => item == 56 || item == 97)
+})

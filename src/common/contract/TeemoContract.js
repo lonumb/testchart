@@ -1,11 +1,10 @@
 import Web3 from 'web3';
 import TeemoConfig from './TeemoPool.json';
-const ADDRESS = process.env.REACT_APP_ADDRESS_TEEMO;
 
 class TeemoContract {
   constructor(library, address) {
     this._web3 = library && library.provider ? new Web3(library.provider) : null;
-    this._address = address || ADDRESS;
+    this._address = address;
   }
   // 获取合约对象
   getContract() {

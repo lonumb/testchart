@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import Web3 from 'web3';
 import { useSelector, useDispatch } from 'react-redux';
-import { injected, walletconnect } from './Connectors';
+import { injected, walletconnect, walletlinkconnect, bsc, isBscSupported } from './Connectors';
 import { useEagerConnect, useInactiveListener } from '../../hooks/Wallet';
 import Modal from '../modal/OwnDialog';
 import * as Types from '../../store/types';
@@ -55,6 +55,24 @@ const WalletConnectModal = () => {
               <span>WalletConnet</span>
               <img src="/imgs/wallet/walletconnet.png" alt="" srcset="" />
             </li>
+            <li className={!!(connector === walletlinkconnect) ? 'active' : ''} onClick={() => changeWallet(walletlinkconnect)}>
+              <span>Coinbase Wallet</span>
+              <img src="/imgs/wallet/coinbaseWalletIcon.svg" alt="" />
+            </li>
+            { isBscSupported() && <li
+              className={!!(connector === bsc) ? 'active' : ''}
+              onClick={async () => {
+                if (window.BinanceChain) {
+                  changeWallet(bsc);
+                } else {
+                  setMm(true);
+                }
+              }}
+            >
+              {mm ? <a href="https://www.binance.org/">Install Binance Chain Wallet</a> : <span>Binance Chain Wallet</span>}
+
+              <img src="/images/wallet/binance.png" alt="" />
+            </li> }
           </ul>
         </div>
       </Modal>

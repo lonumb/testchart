@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as Types from '../../store/types';
 import { actionRechargeModal, actionWithdrawModal } from '../../store/actions/CommonAction';
 import './userAccount.scss';
+import chainConfig from '../../components/wallet/Config'
 
 import { useWeb3React } from '@web3-react/core';
 import TeemoContract from '../../common/contract/TeemoContract';
@@ -42,7 +43,7 @@ const getBalanceUnlock = (address, tokenAddr) => {
 const UserAccount = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { library, account } = useWeb3React();
+  const { library, account, chainId } = useWeb3React();
   const withdrawVisible = useSelector((state) => state.common.withdrawVisible); // 充值弹窗
   const rechargeVisible = useSelector((state) => state.common.rechargeVisible); // 提现弹窗
   const { poolList = [] } = useSelector((state) => state.contract); // 流动池账户列表
@@ -53,7 +54,7 @@ const UserAccount = () => {
     let teemoContract = new TeemoContract(library);
     let usdtContract = new UsdtContract(library);
     let quoteContract = new QuoteContract(library);
-    let poolContract = new PoolContract(library, account);
+    let poolContract = new PoolContract(library, account, chainId || chainConfig.defaultChainId);
     let test = async () => {
       console.log(await teemoContract.getSymbol());
       console.log(await usdtContract.getSymbol());
