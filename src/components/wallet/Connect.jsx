@@ -71,7 +71,7 @@ const WalletConnectModal = () => {
             >
               {mm ? <a href="https://www.binance.org/">Install Binance Chain Wallet</a> : <span>Binance Chain Wallet</span>}
 
-              <img src="/images/wallet/binance.png" alt="" />
+              <img src="/imgs/wallet/binance.png" alt="" />
             </li> }
           </ul>
         </div>

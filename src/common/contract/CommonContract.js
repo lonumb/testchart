@@ -1,10 +1,11 @@
 import ERD20 from './ERC20.json';
 import Web3 from 'web3';
-const TEEMO_ADDRESS = process.env.REACT_APP_ADDRESS_TEEMO;
+import config from './Config'
 
 class CommonContract {
-  constructor(library) {
+  constructor(library, chainId) {
     this._web3 = library && library.provider ? new Web3(library.provider) : null;
+    this._chainId = chainId;
   }
 
   // 获取合约对象
@@ -30,7 +31,7 @@ class CommonContract {
   getAllowance(userAddress, contractAddress) {
     let contract = this.getContract(contractAddress);
     if (!contract) return;
-    return contract.methods.allowance(userAddress, TEEMO_ADDRESS).call();
+    return contract.methods.allowance(userAddress, config.teemoContractAddress).call();
   }
 
   // 授权扣款
@@ -39,7 +40,7 @@ class CommonContract {
     if (!contract) return;
     let amount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
     return contract.methods
-      .approve(TEEMO_ADDRESS, amount)
+      .approve(config.teemoContractAddress, amount)
       .send({ from: userAddress })
       .on('error', function (error) {})
       .on('transactionHash', function (hash) {

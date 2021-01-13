@@ -16,6 +16,8 @@ import QuoteContract from '../../common/contract/QuoteContract';
 import * as Tools from '../../utils/Tools';
 import chainConfig from '../../components/wallet/Config'
 
+import { getConfigByChainID } from '../../utils/Config'
+
 const marks = [
   { value: 0, label: '1x' },
   { value: 20, label: '20x' },
@@ -63,19 +65,20 @@ const OrderComponent = () => {
   useEffect(() => {
     if (account && poolInfo.symbol) {
       let teemoPoolContract = new TeemoContract(library, poolInfo.tokenAddr);
-      commonContract = new CommonContract(library);
+      commonContract = new CommonContract(library, chainId || chainConfig.defaultChainId);
       let quoteContract = new QuoteContract(library, chainId || chainConfig.defaultChainId);
       quoteContract.queryNewPrice(poolInfo.symbol).then((res) => {
         console.log('queryNewPrice', res);
       });
       // 查询余额
-      commonContract.getBalanceOf(account, poolInfo.tokenAddr).then((res) => {
-        setBalance(res || 0);
-      });
+      // commonContract.getBalanceOf(account, poolInfo.tokenAddr).then((res) => {
+      //   setBalance(res || 0);
+      // });
+
       // 是否授权
-      commonContract.getAllowance(account, poolInfo.tokenAddr).then((res) => {
-        setAllowance(res || 0);
-      });
+      // commonContract.getAllowance(account, poolInfo.tokenAddr).then((res) => {
+      //   setAllowance(res || 0);
+      // });
     }
   }, [library, account, poolInfo]);
 
