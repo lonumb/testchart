@@ -15,7 +15,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionRechargeModal, actionWithdrawModal, actionWalletModal } from '../../store/actions/CommonAction';
 import { walletconnect } from '../wallet/Connectors';
-import { NETWORK_LIST, NETWORK_TYPE } from '../../utils/Constants';
+import config, { chainConfig } from '../../components/wallet/Config'
 
 import OwnPopover from '../popover/OwnPopover';
 import WithdrawModal from '../account/Withdraw';
@@ -50,20 +50,11 @@ const HeaderComponent = () => {
   }
 
   useEffect(() => {
-    if (NETWORK_TYPE === 'prod') {
-      if (!chainId || chainId === 1) {
-        setNetwork(false);
-      } else {
-        // 显示网络错误
-        setNetwork(true);
-      }
-    } else if (NETWORK_TYPE === 'dev') {
-      if (!chainId || chainId === 3) {
-        setNetwork(false);
-      } else {
-        // 显示网络错误
-        setNetwork(true);
-      }
+    if (config.supportedChainIds.indexOf(chainId) != -1) {
+      setNetwork(false);
+    } else {
+      // 显示网络错误
+      setNetwork(true);
     }
   }, [active, chainId]);
 
@@ -141,7 +132,7 @@ const HeaderComponent = () => {
           <div className="wallet" {...bindToggle(popupStateWallet)} {...bindHover(popupStateWallet)}>
             <img src={`/imgs/wallet/${library.connection.url}.png`} width="20" alt="" />
             <span className="addr">{`${account.substring(0, 6)}…${account.substring(account.length, account.length - 4)}`}</span>
-            {!network ? <span className="network">{NETWORK_LIST[chainId]}</span> : <span className="network error">Wrong Network</span>}
+            {!network ? <span className="network">{chainConfig[chainId].networkName}</span> : <span className="network error">Wrong Network</span>}
 
             <ArrowDropDownRoundedIcon style={{ fontSize: 32, margin: '0 -6px 0 -5px' }} />
           </div>

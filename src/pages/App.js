@@ -7,7 +7,7 @@ import AppRouter from '../routers';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
-import PoolContract from '../common/contract/PoolContract';
+import PoolProxyContract from '../common/contract/PoolProxyContract';
 import { actionPoolList } from '../store/actions/ContractAction';
 import chainConfig from '../components/wallet/Config'
 
@@ -15,12 +15,14 @@ function App() {
   const { library, account, chainId } = useWeb3React();
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!library || !account) return;
-    let poolContract = new PoolContract(library, account, chainId || chainConfig.defaultChainId);
-    poolContract.getAllPoolInfo().then((res) => {
+    let poolProxyContract = new PoolProxyContract(library, account, chainId || chainConfig.defaultChainId);
+    // var res = await poolProxyContract.getAllPoolInfo();
+    // console.log(`getAllPoolInfo: `, res);
+    poolProxyContract.getAllPoolInfo().then((res) => {
       actionPoolList({ data: res })(dispatch);
-    });
+    }).catch((e) => console.log);
   }, [library, account]);
 
   return <AppRouter />;

@@ -1,7 +1,7 @@
-const chainConfig = {
+export const chainConfig = {
     1 : {
         mainSymbol: "ETH",
-        networkName: "Mainnet",
+        networkName: "Main ETH",
         rpcUrl: 'https://mainnet.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
         explorerUrl: 'https://etherscan.io/'
@@ -48,9 +48,16 @@ const chainConfig = {
         blockTime: 3000,
         explorerUrl: 'https://testnet.bscscan.com/'
     },
+    1337 : {
+        mainSymbol: "ETH",
+        networkName: "Private Chain",
+        rpcUrl: 'https://ropsten.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
+        blockTime: 15000,
+        explorerUrl: 'https://ropsten.etherscan.io/'
+    },
 };
 
-let defaultChainId = process.env.REACT_APP_DEFAULT_CHAIN_ID || '1'
+let defaultChainId = process.env.REACT_APP_DEFAULT_CHAIN_ID
 let supportedChainIds = (process.env.REACT_APP_SUPPORT_CHAIN_IDS || '').split(',').filter((item) => parseInt(item) != NaN && chainConfig[item] != undefined).map((item) => parseInt(item));
 
 if (chainConfig[defaultChainId] == undefined) {

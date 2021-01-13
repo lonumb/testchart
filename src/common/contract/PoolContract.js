@@ -8,11 +8,15 @@ class PoolContract {
     this._userAddress = userAddress;
     this._chainId = chainId;
   }
+  
   // 获取合约对象
   getContract() {
     if (!this._web3) return;
     if (!this._contract) {
+      console.log(`this._chainId: ${this._chainId}`);
+      console.log(`this._chainId: ${this._chainId}, `, getConfigByChainID(this._chainId));
       var contractAddress = getConfigByChainID(this._chainId).poolContractAddress;
+      console.log(`contractAddress: ${contractAddress}`);
       let contract = new this._web3.eth.Contract(PoolFactory.abi, contractAddress, { from: this._userAddress });
       this._contract = contract;
       return contract;
@@ -20,23 +24,7 @@ class PoolContract {
       return this._contract;
     }
   }
-  // 池子列表基本信息
-  getAllPoolInfo() {
-    let contract = this.getContract();
-    if (!contract) return;
-    return contract.methods
-      .getAllPoolInfo()
-      .call()
-      .then((data) => {
-        let temp = [];
-        if (data.allSymbol && data.allSymbol.length) {
-          data.allSymbol.forEach((element, index) => {
-            temp.push({ symbol: data.allSymbol[index], tokenAddr: data.allTokenAddr[index], poolAddr: data.allTeemoPoolAddr[index] });
-          });
-        }
-        return temp;
-      });
-  }
+
   // 查询余额
   getBalanceOf() {
     let contract = this.getContract();

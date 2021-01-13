@@ -23,7 +23,7 @@ const MarketComponent = () => {
           <ul className="coin-list">
             {productList.map((item) => {
               return (
-                <li className={item.symbol === productInfo.symbol && 'active'} onClick={() => actionProductInfo(item)(dispatch)}>
+                <li key={item.symbol} className={item.symbol === productInfo.symbol && 'active'} onClick={() => actionProductInfo(item)(dispatch)}>
                   {item.symbol}/{item.legalSymbol}
                 </li>
               );

@@ -1,6 +1,7 @@
 import ERD20 from './ERC20.json';
 import Web3 from 'web3';
-import config from './Config'
+
+import { getConfigByChainID } from '../../utils/Config'
 
 class CommonContract {
   constructor(library, chainId) {
@@ -31,7 +32,7 @@ class CommonContract {
   getAllowance(userAddress, contractAddress) {
     let contract = this.getContract(contractAddress);
     if (!contract) return;
-    return contract.methods.allowance(userAddress, config.teemoContractAddress).call();
+    return contract.methods.allowance(userAddress, getConfigByChainID(this._chainId).teemoContractAddress).call();
   }
 
   // 授权扣款
@@ -40,7 +41,7 @@ class CommonContract {
     if (!contract) return;
     let amount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
     return contract.methods
-      .approve(config.teemoContractAddress, amount)
+      .approve(getConfigByChainID(this._chainId).teemoContractAddress, amount)
       .send({ from: userAddress })
       .on('error', function (error) {})
       .on('transactionHash', function (hash) {

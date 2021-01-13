@@ -6,7 +6,6 @@ import { BscConnector } from '@binance-chain/bsc-connector'
 
 import chainConfig from './Config'
 
-
 export const isInjectedSupported = () => {
   return chainConfig.supportedChainIds.length > 0;
 }

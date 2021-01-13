@@ -99,7 +99,7 @@ export default {
   },
 
   fmtResult: function (cmd, msg, dispatch) {
-    console.log(cmd, JSON.stringify(msg));
+    //console.log(cmd, JSON.stringify(msg));
     switch (cmd) {
       case 8888: // 登录成功, 方可发送订阅消息, 逻辑太神奇.....(需要登录的带着token不可?)
         // that.props.updateWsState(); // 更新ws连接表识
