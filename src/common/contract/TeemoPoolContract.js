@@ -29,6 +29,23 @@ class TeemoPoolContract extends BaseContract {
         console.log('openMarketSwap receipt: ', receipt);
       });
   }
+
+  // 限价建仓
+  openLimitSwap(poolAddr, symbol, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice) {
+    console.log('openLimitSwap: ', poolAddr, symbol, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice);
+    let contract = this.getContract(poolAddr);
+    if (!contract) return;
+    return contract.methods
+      .openLimitSwap(symbol, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice)
+      .send({ from: this._userAddress })
+      .on('error', function (error) {})
+      .on('transactionHash', function (hash) {
+        console.log('openLimitSwap transactionHash: ', hash);
+      })
+      .on('receipt', (receipt) => {
+        console.log('openLimitSwap receipt: ', receipt);
+      });
+  }
 }
 
 export default TeemoPoolContract;
