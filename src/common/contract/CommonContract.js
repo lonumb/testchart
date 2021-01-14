@@ -1,4 +1,4 @@
-import ERD20 from './ERC20.json';
+import ERD20 from './abi/ERC20.json';
 import Web3 from 'web3';
 
 import { getConfigByChainID } from '../../utils/Config'

@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import TeemoConfig from './TeemoPool.json';
+import TeemoPool from './abi/TeemoPool.json';
 
 class TeemoContract {
   constructor(library, address) {
@@ -10,7 +10,7 @@ class TeemoContract {
   getContract() {
     if (!this._web3) return;
     if (!this._contract) {
-      let contract = new this._web3.eth.Contract(TeemoConfig.abi, this._address);
+      let contract = new this._web3.eth.Contract(TeemoPool.abi, this._address);
       this._contract = contract;
       return contract;
     } else {

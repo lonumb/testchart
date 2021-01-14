@@ -15,7 +15,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionRechargeModal, actionWithdrawModal, actionWalletModal } from '../../store/actions/CommonAction';
 import { walletconnect } from '../wallet/Connectors';
-import config, { chainConfig } from '../../components/wallet/Config'
+import { supportedChainIds, chainConfig } from '../../components/wallet/Config'
 
 import OwnPopover from '../popover/OwnPopover';
 import WithdrawModal from '../account/Withdraw';
@@ -50,7 +50,7 @@ const HeaderComponent = () => {
   }
 
   useEffect(() => {
-    if (config.supportedChainIds.indexOf(chainId) != -1) {
+    if (supportedChainIds.indexOf(chainId) != -1) {
       setNetwork(false);
     } else {
       // 显示网络错误
@@ -138,14 +138,14 @@ const HeaderComponent = () => {
           </div>
           <OwnPopover {...bindPopover(popupStateWallet)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
             <div className="wallet-popover">
-              <div className="recharge-box line">
+              {/* <div className="recharge-box line">
                 <button className="btn-primary" onClick={() => actionRechargeModal(!rechargeVisible)(dispatch)}>
                   {t('textRecharge')}(Layer2)
                 </button>
                 <button className="btn-default" onClick={() => actionWithdrawModal(!withdrawVisible)(dispatch)}>
                   {t('textWithdraw')}
                 </button>
-              </div>
+              </div> */}
               <ul className="wallet-menu-list">
                 <li onClick={() => history.push('/user/rw-record')}>
                   <ListAltIcon />

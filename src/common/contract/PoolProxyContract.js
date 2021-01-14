@@ -1,5 +1,4 @@
-import Web3 from 'web3';
-import PoolProxy from './PoolProxy.json';
+import PoolProxy from './abi/PoolProxy.json';
 import { getConfigByChainID } from '../../utils/Config'
 import BaseContract from './BaseContract'
 import ERC20Contract from './ERC20Contract'

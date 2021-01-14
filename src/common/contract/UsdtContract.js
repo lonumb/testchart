@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import TeemoConfig from './TeemoPool.json';
+import TeemoConfig from './abi/TeemoPool.json';
 const ADDRESS = process.env.REACT_APP_ADDRESS_USDT;
 
 class UsdtContract {

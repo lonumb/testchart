@@ -10,9 +10,9 @@ const config = {
         baseUrl: '',
     },
     1337 : {
-        quoteContractAddress: '0xEFC40424Fc2f01d0259243A5053F7963c48F454F',
-        poolContractAddress: '0xf1774896801BB8AAD1db7DC32E48d9F8c174b509',
-        poolProxyContractAddress: '0xC0fE3C2FC9f082F9A838ee1dA5c18f2Dab867120',
+        quoteContractAddress: '0x73cca0d48bA5F090d479f4Ce3432e634bf085018',
+        poolContractAddress: '0x36902B726e7983A7642A716ECC9cD09E9c9a608A',
+        poolProxyContractAddress: '0x741cC4eC8f8A1Be3FcC9c4031C73aa045a6C8a05',
 
         teemoContractAddress: '0x29D8D3ED32cB18e236F563cf806B8d5cE597b685',
         usdtContractAddress: '0x424A9EA15180bc5d746Eb4b81d3Cf9D7A1A0586E',

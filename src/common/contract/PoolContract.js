@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import PoolFactory from './PoolFactory.json';
+import PoolFactory from './abi/PoolFactory.json';
 import { getConfigByChainID } from '../../utils/Config'
 
 class PoolContract {

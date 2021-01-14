@@ -6,7 +6,7 @@ import { BscConnector } from '@binance-chain/bsc-connector'
 
 import { chainConfig, defaultChainId, supportedChainIds, rpcUrls } from './Config'
 
-console.log(chainConfig, defaultChainId, supportedChainIds, rpcUrls);
+//console.log(chainConfig, defaultChainId, supportedChainIds, rpcUrls);
 
 export const isInjectedSupported = () => {
   return chainConfig.supportedChainIds.length > 0;

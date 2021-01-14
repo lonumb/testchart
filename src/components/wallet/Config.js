@@ -4,6 +4,7 @@ export const chainConfig = {
         networkName: "Main ETH",
         rpcUrl: 'https://mainnet.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
+        explorerName: 'Etherscan',
         explorerUrl: 'https://etherscan.io/'
     },
     3 : {
@@ -11,6 +12,7 @@ export const chainConfig = {
         networkName: "Ropsten",
         rpcUrl: 'https://ropsten.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
+        explorerName: 'Etherscan',
         explorerUrl: 'https://ropsten.etherscan.io/'
     },
     4 : {
@@ -18,6 +20,7 @@ export const chainConfig = {
         networkName: "Rinkeby",
         rpcUrl: 'https://rinkeby.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
+        explorerName: 'Etherscan',
         explorerUrl: 'https://rinkeby.etherscan.io/'
     },
     5 : {
@@ -25,6 +28,7 @@ export const chainConfig = {
         networkName: "Goerli",
         rpcUrl: 'https://goerli.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
+        explorerName: 'Etherscan',
         explorerUrl: 'https://goerli.etherscan.io/'
     },
     42 : {
@@ -32,6 +36,7 @@ export const chainConfig = {
         networkName: "Kovan",
         rpcUrl: 'https://kovan.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
+        explorerName: 'Etherscan',
         explorerUrl: 'https://kovan.etherscan.io/'
     },
     56 : {
@@ -39,6 +44,7 @@ export const chainConfig = {
         networkName: "BSC",
         rpcUrl: 'https://bsc-dataseed1.binance.org/', 
         blockTime: 3000,
+        explorerName: 'Bscscan',
         explorerUrl: 'https://bscscan.com/'
     },
     97 : {
@@ -46,6 +52,7 @@ export const chainConfig = {
         networkName: "BSC Test",
         rpcUrl: 'https://testnet.bscscan.com/', 
         blockTime: 3000,
+        explorerName: 'Bscscan',
         explorerUrl: 'https://testnet.bscscan.com/'
     },
     1337 : {
@@ -53,6 +60,7 @@ export const chainConfig = {
         networkName: "Private Chain",
         rpcUrl: 'https://ropsten.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
+        explorerName: 'Etherscan',
         explorerUrl: 'https://ropsten.etherscan.io/'
     },
 };
