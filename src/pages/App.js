@@ -17,9 +17,7 @@ function App() {
 
   useEffect(async () => {
     if (!library || !account) return;
-    let poolProxyContract = new PoolProxyContract(library, account, chainId || chainConfig.defaultChainId);
-    // var res = await poolProxyContract.getAllPoolInfo();
-    // console.log(`getAllPoolInfo: `, res);
+    let poolProxyContract = new PoolProxyContract(library, chainId, account);
     poolProxyContract.getAllPoolInfo().then((res) => {
       actionPoolList({ data: res })(dispatch);
     }).catch((e) => console.log);

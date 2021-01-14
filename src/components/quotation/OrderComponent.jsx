@@ -12,11 +12,12 @@ import { actionPoolInfo } from '../../store/actions/ContractAction';
 import './order.scss';
 import TeemoContract from '../../common/contract/TeemoContract';
 import CommonContract from '../../common/contract/CommonContract';
+import PoolProxyContract from '../../common/contract/PoolProxyContract';
 import QuoteContract from '../../common/contract/QuoteContract';
 import * as Tools from '../../utils/Tools';
 import chainConfig from '../../components/wallet/Config'
-
 import { getConfigByChainID } from '../../utils/Config'
+import { fromWei } from 'web3-utils';
 
 const marks = [
   { value: 0, label: '1x' },
@@ -31,6 +32,8 @@ const marks = [
 const profitRateList = [25, 50, 75, 100, 150, 200];
 // 止损比例列表
 const stopRateList = [30, 40, 50, 60, 70, 80];
+
+let poolProxyContract = null;
 let commonContract = null;
 
 const OrderComponent = () => {
@@ -61,15 +64,22 @@ const OrderComponent = () => {
   const [level, setLevel] = useState(1); // 杠杆
   const [levelMax, setLevelMax] = useState(false); // 杠杆最大
   const [levelRate, setLevelRate] = useState(1); // 杠杆比例
+  const [basicAssetBalance, setBasicAssetBalance] = useState(null); // 本位资产余额
 
+  //console.log(`active: ${active}`);
   useEffect(() => {
-    if (account && poolInfo.symbol) {
-      let teemoPoolContract = new TeemoContract(library, poolInfo.tokenAddr);
-      commonContract = new CommonContract(library, chainId || chainConfig.defaultChainId);
-      let quoteContract = new QuoteContract(library, chainId || chainConfig.defaultChainId);
-      quoteContract.queryNewPrice(poolInfo.symbol).then((res) => {
-        console.log('queryNewPrice', res);
+    if (active && account && poolInfo) {
+      poolProxyContract = new PoolProxyContract(library, poolInfo.tokenAddr, account);
+      poolProxyContract.getBalanceByPoolInfo(poolInfo, account).then((res) => {
+
       });
+
+      //let teemoPoolContract = new TeemoContract(library, poolInfo.tokenAddr);
+      //commonContract = new CommonContract(library, chainId || chainConfig.defaultChainId);
+      // let quoteContract = new QuoteContract(library, chainId || chainConfig.defaultChainId);
+      // quoteContract.queryNewPrice(poolInfo.symbol).then((res) => {
+      //   console.log('queryNewPrice', res);
+      // });
       // 查询余额
       // commonContract.getBalanceOf(account, poolInfo.tokenAddr).then((res) => {
       //   setBalance(res || 0);
@@ -79,8 +89,11 @@ const OrderComponent = () => {
       // commonContract.getAllowance(account, poolInfo.tokenAddr).then((res) => {
       //   setAllowance(res || 0);
       // });
+    } else {
+      poolProxyContract = null;
+      setBasicAssetBalance(null)
     }
-  }, [library, account, poolInfo]);
+  }, [active, library, account, poolInfo]);
 
   useEffect(() => {
     // 设置列表高度
@@ -125,12 +138,12 @@ const OrderComponent = () => {
           <span></span>
           <select value={poolInfo.symbol} onChange={(e) => switchPoolInfo(e.target.value)}>
             {poolList.map((item) => {
-              return <option value={item.symbol}>{item.symbol}</option>;
+              return <option key={item.symbol} value={item.symbol}>{item.symbol}</option>;
             })}
           </select>
         </div>
 
-        <div className="form-ele-desc">
+        {/* <div className="form-ele-desc">
           <label htmlFor="">
             可用
             <OwnTooltip title={<React.Fragment>需充进Layer2中才可进行交易Layer2上交易更快,gas更低</React.Fragment>} arrow placement="bottom">
@@ -141,11 +154,11 @@ const OrderComponent = () => {
           <font className="recharge-btn" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible } })}>
             充值
           </font>
-        </div>
+        </div> */}
 
         <div className="form-ele-desc">
-          <label htmlFor="">可用(ETH Main)</label>
-          <span className="sd">55372901.627182</span>
+          <label htmlFor="">可用</label>
+          <span className="sd">{basicAssetBalance ? fromWei(basicAssetBalance) : '--'}</span>
         </div>
 
         <div className="form-ele-select">

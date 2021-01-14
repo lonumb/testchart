@@ -1,12 +1,12 @@
 import Web3 from 'web3';
 import PoolProxy from './PoolProxy.json';
 import { getConfigByChainID } from '../../utils/Config'
+import BaseContract from './BaseContract'
+import ERC20Contract from './ERC20Contract'
 
-class PoolProxyContract {
-  constructor(library, userAddress, chainId) {
-    this._web3 = library && library.provider ? new Web3(library.provider) : null;
-    this._userAddress = userAddress;
-    this._chainId = chainId;
+class PoolProxyContract extends BaseContract {
+  constructor(...args) {
+    super(...args);
   }
 
   // 获取合约对象
@@ -46,6 +46,16 @@ class PoolProxyContract {
         }
         return temp;
       });
+  }
+
+  getBalanceByPoolInfo(poolInfo, address = this._userAddress) {
+    if (!this._web3 && !poolInfo) return Promise.error('web3 == null || poolInfo == null');
+    if (poolInfo.erc20Pool) {
+      var contract = new ERC20Contract(...this.getArgs());
+      return contract.getBalanceOf(address, poolInfo.tokenAddr);
+    } else {
+      return this._web3.eth.getBalance(address);
+    }
   }
 }
 

@@ -21,6 +21,10 @@ class CommonContract {
     }
   }
 
+  getERC20Contract(contractAddress) {
+    return getContract(contractAddress);
+  }
+
   // 查询余额
   getBalanceOf(userAddress, contractAddress) {
     let contract = this.getContract(contractAddress);

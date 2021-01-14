@@ -57,24 +57,26 @@ export const chainConfig = {
     },
 };
 
-let defaultChainId = process.env.REACT_APP_DEFAULT_CHAIN_ID
-let supportedChainIds = (process.env.REACT_APP_SUPPORT_CHAIN_IDS || '').split(',').filter((item) => parseInt(item) != NaN && chainConfig[item] != undefined).map((item) => parseInt(item));
+export const defaultChainId = process.env.REACT_APP_DEFAULT_CHAIN_ID
+export const supportedChainIds = (process.env.REACT_APP_SUPPORT_CHAIN_IDS || '').split(',').filter((item) => parseInt(item) != NaN && chainConfig[item] != undefined).map((item) => parseInt(item));
 
 if (chainConfig[defaultChainId] == undefined) {
     throw new Error(`Not support chainId: ${defaultChainId}`)
 }
 
-let rpcUrls = {};
+var url = {};
 
 for (let i = 0;i < supportedChainIds.length; i++) {
-    rpcUrls[supportedChainIds[i]] = chainConfig[supportedChainIds[i]].rpcUrl;
+    url[supportedChainIds[i]] = chainConfig[supportedChainIds[i]].rpcUrl;
 }
+
+export const rpcUrls = url;
 
 export default {
     defaultChainId,
     defaultChainConfig: chainConfig[defaultChainId],
     supportedChainIds,
-    rpcUrls,
+    rpcUrls: url,
     getChainConfig : (chainId) => {
         return Object.assign({}, chainConfig[chainId])
     }

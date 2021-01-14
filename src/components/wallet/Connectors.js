@@ -4,7 +4,9 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { BscConnector } from '@binance-chain/bsc-connector'
 
-import chainConfig from './Config'
+import { chainConfig, defaultChainId, supportedChainIds, rpcUrls } from './Config'
+
+console.log(chainConfig, defaultChainId, supportedChainIds, rpcUrls);
 
 export const isInjectedSupported = () => {
   return chainConfig.supportedChainIds.length > 0;
@@ -23,18 +25,18 @@ export const isWalletlinkSupported = () => {
 }
 
 export const isBscSupported = () => {
-  return chainConfig.supportedChainIds.filter((item) => item == 56 || item == 97).length > 0;
+  return supportedChainIds.filter((item) => item == 56 || item == 97).length > 0;
 }
 
-export const injected = new InjectedConnector({ supportedChainIds: chainConfig.supportedChainIds });
+export const injected = new InjectedConnector({ supportedChainIds });
 
 export const network = new NetworkConnector({
-  urls: chainConfig.rpcUrls,
-  defaultChainId: chainConfig.defaultChainId,
+  urls: rpcUrls,
+  defaultChainId,
 })
 
 export const walletconnect = new WalletConnectConnector({
-  rpc: { [chainConfig.defaultChainId]: [chainConfig.getChainConfig(chainConfig.defaultChainId).rpcUrl] },
+  rpc: { [defaultChainId]: [chainConfig[defaultChainId].rpcUrl] },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: 15000,
@@ -42,9 +44,9 @@ export const walletconnect = new WalletConnectConnector({
 
 export const walletlinkconnect = new WalletLinkConnector({
   appName: window.location.protocol + "//" + window.location.host + (window.location.port.length > 0 ? `:${window.location.port}` : ''),
-  url: chainConfig.getChainConfig(chainConfig.defaultChainId).rpcUrl,
+  url: chainConfig[defaultChainId].rpcUrl,
 })
 
 export const bsc = new BscConnector({
-  supportedChainIds: chainConfig.supportedChainIds.filter((item) => item == 56 || item == 97)
+  supportedChainIds: supportedChainIds.filter((item) => item == 56 || item == 97)
 })

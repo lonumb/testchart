@@ -3,7 +3,7 @@ import PoolFactory from './PoolFactory.json';
 import { getConfigByChainID } from '../../utils/Config'
 
 class PoolContract {
-  constructor(library, userAddress, chainId) {
+  constructor(library, chainId, userAddress) {
     this._web3 = library && library.provider ? new Web3(library.provider) : null;
     this._userAddress = userAddress;
     this._chainId = chainId;

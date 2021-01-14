@@ -49,15 +49,15 @@ const WalletConnectModal = () => {
               }}
             >
               {mm ? <a href="https://metamask.io/">Install MetaMask</a> : <span>MetaMask</span>}
-              <img src="/imgs/wallet/metamask.png" alt="" srcset="" />
+              <img src="/imgs/wallet/metamask.png" />
             </li>
             <li className={!!(connector === walletconnect) ? 'active' : ''} onClick={() => changeWallet(walletconnect)}>
               <span>WalletConnet</span>
-              <img src="/imgs/wallet/walletconnet.png" alt="" srcset="" />
+              <img src="/imgs/wallet/walletconnet.png" />
             </li>
             <li className={!!(connector === walletlinkconnect) ? 'active' : ''} onClick={() => changeWallet(walletlinkconnect)}>
               <span>Coinbase Wallet</span>
-              <img src="/imgs/wallet/coinbaseWalletIcon.svg" alt="" />
+              <img src="/imgs/wallet/coinbaseWalletIcon.svg"/>
             </li>
             { isBscSupported() && <li
               className={!!(connector === bsc) ? 'active' : ''}
@@ -71,7 +71,7 @@ const WalletConnectModal = () => {
             >
               {mm ? <a href="https://www.binance.org/">Install Binance Chain Wallet</a> : <span>Binance Chain Wallet</span>}
 
-              <img src="/imgs/wallet/binance.png" alt="" />
+              <img src="/imgs/wallet/binance.png" />
             </li> }
           </ul>
         </div>

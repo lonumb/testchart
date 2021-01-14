@@ -54,7 +54,7 @@ const UserAccount = () => {
     let teemoContract = new TeemoContract(library);
     let usdtContract = new UsdtContract(library);
     let quoteContract = new QuoteContract(library);
-    let poolContract = new PoolContract(library, account, chainId || chainConfig.defaultChainId);
+    let poolContract = new PoolContract(library, chainId || chainConfig.defaultChainId, account);
     let test = async () => {
       console.log(await teemoContract.getSymbol());
       console.log(await usdtContract.getSymbol());
