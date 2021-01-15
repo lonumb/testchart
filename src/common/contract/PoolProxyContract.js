@@ -36,11 +36,12 @@ class PoolProxyContract extends BaseContract {
             var symbol = data.allSymbol[index];
             var tokenAddr = data.allTokenAddr[index];
             var poolAddr = data.allTeemoPoolAddr[index];
+            var decimals = data.allDecimals[index];
             var erc20Pool = tokenAddr !== '0x0000000000000000000000000000000000000000'
             if (!erc20Pool) {
               symbol = getConfigByChainID(this._chainId).mainSymbol;
             }
-            temp.push({ symbol, tokenAddr, poolAddr, erc20Pool });
+            temp.push({ symbol, tokenAddr, poolAddr, decimals, erc20Pool });
           });
         }
         return temp;

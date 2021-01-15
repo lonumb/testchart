@@ -35,14 +35,34 @@ export function numFmt(val, dn = 2) {
   return isNaN(obj) ? 0 : obj;
 }
 
-// 格式化 固定小数位-截取
+// // 格式化 固定小数位-截取
+// export function fmtDec(num, dec = 8) {
+//   const temp = parseFloat(num);
+//   const m = temp.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
+//   const decTemp = dec || Math.max(0, (m[1] || '').length - m[2]);
+//   // return temp.toFixed(decTemp);
+//   return numToStr(div(Math.floor(mul(temp, Math.pow(10, decTemp))), Math.pow(10, decTemp)));
+// }
+
 export function fmtDec(num, dec = 8) {
-  const temp = parseFloat(num);
-  const m = temp.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
-  const decTemp = dec || Math.max(0, (m[1] || '').length - m[2]);
-  // return temp.toFixed(decTemp);
-  return numToStr(div(Math.floor(mul(temp, Math.pow(10, decTemp))), Math.pow(10, decTemp)));
+  var arr = (num || '').toString().split('.');
+  var result = num;
+  if (arr.length === 2 && arr[1].length > dec) {
+      arr[1] = arr[1].substring(0, dec);
+      while (arr[1].length > 0 && arr[1].endsWith("0")) {
+          arr[1] = arr[1].substring(0, arr[1].length - 1)
+      }
+      result = arr.join('.');
+
+      if (result.length > 0 && result.endsWith(".")) {
+          result = result.substring(0, result.length - 1)
+      }
+  }
+  //console.log(num, dec, result);
+  return result
 }
+
+
 // 格式化 固定小数位-进位
 export function fmtDecCeil(num, dec = 8) {
   const temp = parseFloat(num);

@@ -101,11 +101,6 @@ const OrderComponent = () => {
     ]);
   }
 
-  // useEffect(() => {
-  //   console.log(bondRate);
-  // }, [bondRate]);
-
-  //console.log(`active: ${active}`);
   useEffect(async () => {
     if (active && account && poolInfo.symbol) {
       console.log('poolInfo: ', poolInfo);
@@ -125,33 +120,6 @@ const OrderComponent = () => {
       };
 
       getDataFunc();
-
-      // // 是否授权
-      // tokenContract.getAllowance(account, poolInfo.tokenAddr).then((res) => {
-      //   console.log('setAllowance: ', res);
-      //   setAllowance(res || 0);
-      // });
-      // // 查询余额
-      // poolProxyContract.getBalanceByPoolInfo(poolInfo, account).then((res) => {
-      //   console.log('setBasicAssetBalance: ', res);
-      //   setBasicAssetBalance(res);
-      // });
-
-      //let teemoPoolContract = new TeemoContract(library, poolInfo.tokenAddr);
-      //commonContract = new CommonContract(library, chainId || chainConfig.defaultChainId);
-      // let quoteContract = new QuoteContract(library, chainId || chainConfig.defaultChainId);
-      // quoteContract.queryNewPrice(poolInfo.symbol).then((res) => {
-      //   console.log('queryNewPrice', res);
-      // });
-      // 查询余额
-      // commonContract.getBalanceOf(account, poolInfo.tokenAddr).then((res) => {
-      //   setBalance(res || 0);
-      // });
-
-      // 是否授权
-      // commonContract.getAllowance(account, poolInfo.tokenAddr).then((res) => {
-      //   setAllowance(res || 0);
-      // });
     } else {
       poolProxyContract = null;
       tokenContract = null;
@@ -171,6 +139,10 @@ const OrderComponent = () => {
     actionPoolInfo(obj)(dispatch);
   }
 
+  const onBondClick = (value) => {
+    setBond(Tools.numFmt(value, poolInfo.decimals));
+  }
+
   const onBondRateClick = (rate) => {
     //rate / 100.0
     setBondRate(rate);
@@ -180,21 +152,15 @@ const OrderComponent = () => {
   }
 
   const onLeverClick = (lever) => {
-    let targetLever = parseInt(lever);
-    if (isNaN(targetLever)) {
-      targetLever = 0;
+    let fixedLever = Tools.numFmt(lever, 0);
+    if (fixedLever > maxLever) {
+      fixedLever = maxLever;            
     }
-    if (targetLever < 0) {
-      targetLever = 1;      
+    setLever(fixedLever);
+    if (fixedLever < maxLever) {
+      setLevelMax(fixedLever == maxLever);
     }
-    if (targetLever > maxLever) {
-      targetLever = maxLever;            
-    }
-    setLever(targetLever);
-    if (targetLever < maxLever) {
-      setLevelMax(targetLever == maxLever);
-    }
-    setLevelRate((targetLever * 1.0 / maxLever) * 100);
+    setLevelRate((fixedLever * 1.0 / maxLever) * 100);
   }
 
   const onLeverRateClick = (rate) => {
@@ -271,6 +237,7 @@ const OrderComponent = () => {
     var amount = parseFloat(bond);
     var tokenAmount = toWei(amount.toString());
 
+    //TODO 校验余额
     if (openType == OPEN_TYPE_MARKET) {
       let maxPrice;
       try {
@@ -375,7 +342,7 @@ const OrderComponent = () => {
 
         <div className="form-ele-input">
           <label htmlFor="">保证金</label>
-          <input type="text" value={bond} onChange={(e) => setBond(e.target.value)} placeholder="最小为2USDT" />
+          <input type="text" value={bond} onChange={(e) => onBondClick(e.target.value)} placeholder="最小为2USDT" />
         </div>
 
         <ul className="form-list-c4">
