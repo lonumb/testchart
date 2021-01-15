@@ -147,7 +147,7 @@ const OrderComponent = () => {
     //rate / 100.0
     setBondRate(rate);
     if (basicAssetBalance) {
-      setBond(fromWei(Tools.mul(basicAssetBalance, rate / 100.0)));
+      setBond(Tools.fromWei(Tools.mul(basicAssetBalance, rate / 100.0), poolInfo.decimals));
     }
   }
 
@@ -220,22 +220,22 @@ const OrderComponent = () => {
     let fixedStopLoss = 0;
     //开启高级设置 moreFlag
     if (moreFlag) {
-      if (!takeProfit && isNaN(parseInt(takeProfit))) {
+      if (takeProfit && isNaN(parseInt(takeProfit))) {
         alert('请输入正确的止盈价');
         return;
       }
-      if (!stopLoss && isNaN(parseInt(stopLoss))) {
+      if (stopLoss && isNaN(parseInt(stopLoss))) {
         alert('请输入正确的止盈价');
         return;
       }
-      fixedTakeProfit = parseInt(takeProfit);
-      fixedStopLoss = parseInt(stopLoss);
+      fixedTakeProfit = Tools.toWei(parseInt(takeProfit || 0).toString(), poolInfo.decimals);
+      fixedStopLoss = Tools.toWei(parseInt(stopLoss || 0).toString(), poolInfo.decimals);
     }
     let symbol = 'btc/usdt';
     let fixedLever = parseInt(lever);
     
     var amount = parseFloat(bond);
-    var tokenAmount = toWei(amount.toString());
+    var tokenAmount = Tools.toWei(amount.toString(), poolInfo.decimals);
 
     //TODO 校验余额
     if (openType == OPEN_TYPE_MARKET) {
@@ -250,8 +250,24 @@ const OrderComponent = () => {
         return;
       }
       if (bsflag == BSFLAG_LONG) {
+        //校验止盈价
+        if (fixedTakeProfit && Tools.GE(maxPrice, fixedTakeProfit)) {
+          return alert('止盈价不能小于当前价');
+        }
+        //校验止损价
+        if (fixedStopLoss && Tools.LE(maxPrice, fixedStopLoss)) {
+          return alert('止损价不能大于当前价');
+        }
         maxPrice = Tools.mul(maxPrice, 1 + slippage);
       } else {
+        //校验止盈价
+        if (fixedTakeProfit && Tools.GE(fixedTakeProfit, maxPrice)) {
+          return alert('止盈价不能大于当前价');
+        }
+        //校验止损价
+        if (fixedStopLoss && Tools.LE(fixedStopLoss, maxPrice)) {
+          return alert('止损价不能小于当前价');
+        }
         maxPrice = Tools.mul(maxPrice, 1 - slippage);
       }
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
@@ -266,6 +282,25 @@ const OrderComponent = () => {
     } else {
       var price = parseFloat(limitPrice);
       var openPrice = toWei(price.toString());
+      if (bsflag == BSFLAG_LONG) {
+        //校验止盈价
+        if (fixedTakeProfit && Tools.GE(openPrice, fixedTakeProfit)) {
+          return alert('止盈价不能小于' + takeProfit);
+        }
+        //校验止损价
+        if (fixedStopLoss && Tools.LE(openPrice, fixedStopLoss)) {
+          return alert('止损价不能大于' + stopLoss);
+        }
+      } else {
+        //校验止盈价
+        if (fixedTakeProfit && Tools.GE(fixedTakeProfit, openPrice)) {
+          return alert('止盈价不能大于' + takeProfit);
+        }
+        //校验止损价
+        if (fixedStopLoss && Tools.LE(fixedStopLoss, openPrice)) {
+          return alert('止损价不能小于' + stopLoss);
+        }
+      }
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openLimitSwap(poolInfo, symbol, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
       .on('transactionHash', function (hash) {
@@ -325,7 +360,7 @@ const OrderComponent = () => {
 
         <div className="form-ele-desc">
           <label htmlFor="">可用</label>
-          <span className="sd">{basicAssetBalance ? fromWei(basicAssetBalance) : '--'}</span>
+          <span className="sd">{basicAssetBalance ? Tools.fromWei(basicAssetBalance, poolInfo.decimals) : '--'}</span>
         </div>
 
         <div className="form-ele-select">

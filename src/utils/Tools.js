@@ -35,15 +35,7 @@ export function numFmt(val, dn = 2) {
   return isNaN(obj) ? 0 : obj;
 }
 
-// // 格式化 固定小数位-截取
-// export function fmtDec(num, dec = 8) {
-//   const temp = parseFloat(num);
-//   const m = temp.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
-//   const decTemp = dec || Math.max(0, (m[1] || '').length - m[2]);
-//   // return temp.toFixed(decTemp);
-//   return numToStr(div(Math.floor(mul(temp, Math.pow(10, decTemp))), Math.pow(10, decTemp)));
-// }
-
+// 格式化 固定小数位-截取
 export function fmtDec(num, dec = 8) {
   var arr = (num || '').toString().split('.');
   var result = num;
@@ -58,29 +50,15 @@ export function fmtDec(num, dec = 8) {
           result = result.substring(0, result.length - 1)
       }
   }
-  //console.log(num, dec, result);
   return result
 }
 
-
-// 格式化 固定小数位-进位
-export function fmtDecCeil(num, dec = 8) {
-  const temp = parseFloat(num);
-  const m = temp.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
-  const decTemp = dec || Math.max(0, (m[1] || '').length - m[2]);
-  return numToStr(div(Math.ceil(mul(temp, Math.pow(10, decTemp))), Math.pow(10, decTemp)));
+export function fromWei(num, decimal = 18) {
+  return div(num, Math.pow(10, decimal)).valueOf();
 }
 
-// 格式化 固定小数位-截取
-export function fmtDecFixed(num, dec = 2) {
-  const temp = parseFloat(num);
-  if (dec === 0) {
-    return temp.toFixed(0);
-  }
-  const m = temp.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
-  const decTemp = dec || Math.max(0, (m[1] || '').length - m[2]);
-  // return temp.toFixed(decTemp);
-  return div(Math.floor(mul(temp, Math.pow(10, decTemp))), Math.pow(10, decTemp));
+export function toWei(num, decimal = 18) {
+  return mul(num, Math.pow(10, decimal)).valueOf();
 }
 
 export function fmtToFixed(num, dec = 2) {
