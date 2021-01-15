@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import './entrust.scss';
 
 import { useWeb3React } from '@web3-react/core';
+import TeemoPoolContract from '../../../common/contract/TeemoPoolContract';
 import SwapTradeContract from '../../../common/contract/SwapTradeContract';
 //import HoldPositionComponent from './subModule/HoldPositionComponent'
 import { BSFLAG_LONG, BSFLAG_SHORT } from '../../../utils/Constants'
@@ -20,6 +21,7 @@ const profitRateList = [25, 50, 75, 100, 150, 200];
 // 止损比例列表
 const stopRateList = [30, 40, 50, 60, 70, 80];
 
+let teemoPoolContract;
 let swapTradeContract;
 
 const EntrustComponent = () => {
@@ -65,6 +67,7 @@ const EntrustComponent = () => {
 
   useEffect(() => {
     if (active && account && poolInfo.poolAddr) {
+      teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       swapTradeContract = new SwapTradeContract(library, chainId, account);
 
       const getDataFunc = async () => {
@@ -91,7 +94,32 @@ const EntrustComponent = () => {
     // });
   }, [active, library, account, poolInfo]);
 
-  //console.log('orderList: ', orderList)
+  //平仓
+  const onCloseOrderClick = (order) => {
+    if (window.confirm("确定平仓?")) {
+      teemoPoolContract
+      .closeMarketSwap(poolInfo, order)
+      .on('receipt', async (receipt) => {
+        alert('平仓成功');
+        setOrderList(orderList.filter((item) => item.orderId != order.orderId));
+        //await getData();
+      });
+    }
+  }
+
+  //限价单撤销
+  const onRevokeLimitOrderClick = (limitOrder) => {
+    if (window.confirm("确定撤销?")) {
+      teemoPoolContract
+      .cancelLimitSwap(poolInfo, limitOrder)
+      .on('receipt', async (receipt) => {
+        alert('撤销成功');
+        setLimitOrderList(limitOrderList.filter((item) => item.orderId != limitOrder.orderId));
+        //await getData();
+      });
+    }
+  }
+
   return (
     <div className="entrust">
       <div className="tab-box">
@@ -166,7 +194,7 @@ const EntrustComponent = () => {
         )}
         {/* 持仓 body */}
         {active && type === 1 && (
-          orderList.map((item, index) => {
+          orderList.filter((item) => item.closePrice == 0).map((item, index) => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
@@ -179,13 +207,13 @@ const EntrustComponent = () => {
                 <div className="table-column">171292.11</div>
                 <div className="table-column">+9128.23 USDT</div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  18101.22 <Edit style={{ fontSize: '14px' }} />
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  {t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column">
-                  <span className="link">{t('textClose')}</span>
+                  <span className="link" onClick={(e)=> onCloseOrderClick(item)}>{t('textClose')}</span>
                 </div>
               </div>
             );
@@ -222,7 +250,7 @@ const EntrustComponent = () => {
         )}
         {/* 当前委托 body */}
         {active && type === 2 && (
-          limitOrderList.map((item, index) => {
+          limitOrderList.filter((item) => item.status == 2).map((item, index) => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
@@ -231,13 +259,13 @@ const EntrustComponent = () => {
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  18101.22 <Edit style={{ fontSize: '14px' }} />
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  {t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column">
-                  <span className="link">撤销</span>
+                  <span className="link" onClick={(e)=> onRevokeLimitOrderClick(item)}>撤销</span>
                 </div>
               </div>
             );
@@ -275,7 +303,7 @@ const EntrustComponent = () => {
         )}
         {/* 历史委托 body */}
         {active && type === 3 && (
-          orderList.map((item, index) => {
+          limitOrderList.filter((item) => item.status == 1 || item.status == 3).map((item, index) => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
@@ -284,10 +312,10 @@ const EntrustComponent = () => {
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  18101.22 <Edit style={{ fontSize: '14px' }} />
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  {t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column">状态</div>
                 <div className="table-column">时间</div>
@@ -333,7 +361,7 @@ const EntrustComponent = () => {
         )}
         {/* 已平仓 body */}
         {active && type === 4 && (
-          orderList.map((item, index) => {
+          orderList.filter((item) => item.closePrice != 0).map((item, index) => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
@@ -343,10 +371,10 @@ const EntrustComponent = () => {
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  18101.22 <Edit style={{ fontSize: '14px' }} />
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  {t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column">状态</div>
                 <div className="table-column">时间</div>

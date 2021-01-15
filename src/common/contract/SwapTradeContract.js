@@ -17,15 +17,51 @@ class SwapTradeContract extends BaseContract {
   getAllOrder(poolInfo, status = 0) {
     let contract = this.getContract(poolInfo);
     if (!contract) return;
-    return contract.methods.getAllOrder(this._userAddress, status).call();
+    return contract.methods.getAllOrder(this._userAddress, status).call().then((data) => {
+      let temp = [];
+      let orderIds = data.orderIds || [];
+      let orders = data.orders || [];
+      orders.forEach((element, index) => {
+        temp.push({...element, orderId: orderIds[index]});
+      });
+      return temp;
+    });
   }
 
   //0所有 1:已撤单 2未成交 3已成交 4已撤单-已成交
   getAllLimitOrder(poolInfo, status = 0) {
     let contract = this.getContract(poolInfo);
     if (!contract) return;
-    return contract.methods.getAllLimitOrder(this._userAddress, status).call();
+
+    //return contract.methods.getAllLimitOrder(this._userAddress, status).call();
+    return contract.methods.getAllLimitOrder(this._userAddress, status).call().then((data) => {
+      let temp = [];
+      let orderIds = data.orderIds || [];
+      let orders = data.orders || [];
+      orders.forEach((element, index) => {
+        temp.push({...element, orderId: orderIds[index]});
+      });
+      return temp;
+    });
   }
+
+  // async getAllOrder(poolInfo) {
+  //   let contract = this.getContract(poolInfo);
+  //   if (!contract) return;
+  //   var orderIds = contract.methods.allOrderUser(this._userAddress, 0).call();
+  //   var promises = [];
+  //   for (let i = 0;i < orderIds.length; i++) {
+  //     promises[i] = contract.methods.allOrderHash(orderIds[i]).call().map((item) => {
+  //       item.orderId = orderIds[i];
+  //       return item;
+  //     });
+  //   }
+  //   return Promise.all(promises).then((res) => {
+  //     //排序
+  //     console.log('order item: ', res);
+  //     return res;
+  //   });
+  // }
 }
 
 export default SwapTradeContract;

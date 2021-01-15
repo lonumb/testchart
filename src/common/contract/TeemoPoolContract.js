@@ -71,6 +71,78 @@ class TeemoPoolContract extends BaseContract {
       console.log('openLimitSwap receipt: ', receipt);
     });
   }
+
+  //永续合约市价平仓
+  closeMarketSwap(poolInfo, order) {
+    console.log('closeMarketSwap: ', order);
+    let contract = this.getContract(poolInfo);
+    if (!contract) return;
+   
+    return contract.methods
+    .closeMarketSwap(order.orderId)
+    .send({ from: this._userAddress })
+    .on('error', function (error) {})
+    .on('transactionHash', function (hash) {
+      console.log('closeMarketSwap transactionHash: ', hash);
+    })
+    .on('receipt', (receipt) => {
+      console.log('closeMarketSwap receipt: ', receipt);
+    });
+  }
+
+  // 永续合约取消限价单
+  cancelLimitSwap(poolInfo, order) {
+    console.log('cancelLimitSwap: ', order);
+    let contract = this.getContract(poolInfo);
+    if (!contract) return;
+   
+    return contract.methods
+    .cancelLimitSwap(order.orderId)
+    .send({ from: this._userAddress })
+    .on('error', function (error) {})
+    .on('transactionHash', function (hash) {
+      console.log('cancelLimitSwap transactionHash: ', hash);
+    })
+    .on('receipt', (receipt) => {
+      console.log('cancelLimitSwap receipt: ', receipt);
+    });
+  }
+
+  // 永续合约订单更新止盈止损根据价格
+  updateSwapByPrice(poolInfo, order, pLimitPrice, lLimitPrice) {
+    console.log('cancelLimitSwap: ', order);
+    let contract = this.getContract(poolInfo);
+    if (!contract) return;
+
+    return contract.methods
+    .updateSwapByPrice(order.orderId, pLimitPrice, lLimitPrice)
+    .send({ from: this._userAddress })
+    .on('error', function (error) {})
+    .on('transactionHash', function (hash) {
+      console.log('updateSwapByPrice transactionHash: ', hash);
+    })
+    .on('receipt', (receipt) => {
+      console.log('updateSwapByPrice receipt: ', receipt);
+    });
+  }
+
+  // 永续合约订单更新止盈止损根据比例
+  updateSwapByRate(poolInfo, order, pLimitRate, lLimitRate) {
+    console.log('updateSwapByRate: ', order);
+    let contract = this.getContract(poolInfo);
+    if (!contract) return;
+
+    return contract.methods
+    .updateSwapByPrice(order.orderId, pLimitRate, lLimitRate)
+    .send({ from: this._userAddress })
+    .on('error', function (error) {})
+    .on('transactionHash', function (hash) {
+      console.log('updateSwapByRate transactionHash: ', hash);
+    })
+    .on('receipt', (receipt) => {
+      console.log('updateSwapByRate receipt: ', receipt);
+    });
+  }
 }
 
 export default TeemoPoolContract;
