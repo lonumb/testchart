@@ -20,7 +20,7 @@ import * as Tools from '../../utils/Tools';
 import chainConfig from '../../components/wallet/Config'
 import { getConfigByChainID } from '../../utils/Config'
 import { fromWei, toBN, toWei } from 'web3-utils';
-import { BUY_DIR_LONG, BUY_DIR_SHORT, MAX_UINT256_VALUE } from '../../utils/Constants'
+import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Constants'
 
 // 建仓类型: 市价
 const OPEN_TYPE_MARKET = 2
@@ -55,7 +55,7 @@ const OrderComponent = () => {
   const [moreFlag, setMoreFlag] = useState(false);
   const [allowance, setAllowance] = useState(null);
   const [openType, setOpenType] = useState(OPEN_TYPE_MARKET); // 类型 1:限价 2:市价
-  const [dir, setDir] = useState(BUY_DIR_LONG); // 方向 2:涨 1:跌
+  const [bsflag, setBsflag] = useState(BSFLAG_LONG); // 方向 2:涨 1:跌
   const [limitPrice, setLimitPrice] = useState(''); // 价格
   const [bond, setBond] = useState(''); // b保证金
   const [bondRate, setBondRate] = useState(''); // 保证金比例
@@ -182,9 +182,9 @@ const OrderComponent = () => {
   const onLeverClick = (lever) => {
     let targetLever = parseInt(lever);
     if (isNaN(targetLever)) {
-      targetLever = 1;
+      targetLever = 0;
     }
-    if (targetLever < 1) {
+    if (targetLever < 0) {
       targetLever = 1;      
     }
     if (targetLever > maxLever) {
@@ -250,27 +250,27 @@ const OrderComponent = () => {
       alert('请输入正确的杠杆');
       return;
     }
+    let fixedTakeProfit = 0;
+    let fixedStopLoss = 0;
     //开启高级设置 moreFlag
     if (moreFlag) {
-      if (!takeProfit || takeProfit === '') {
-        alert('请输入止盈价');
-        return;
-      }
-      if (isNaN(parseInt(takeProfit))) {
+      if (!takeProfit && isNaN(parseInt(takeProfit))) {
         alert('请输入正确的止盈价');
         return;
       }
-      if (!stopLoss || stopLoss === '') {
-        alert('请输入止盈价');
-        return;
-      }
-      if (isNaN(parseInt(stopLoss))) {
+      if (!stopLoss && isNaN(parseInt(stopLoss))) {
         alert('请输入正确的止盈价');
         return;
       }
+      fixedTakeProfit = parseInt(takeProfit);
+      fixedStopLoss = parseInt(stopLoss);
     }
     let symbol = 'btc/usdt';
+    let fixedLever = parseInt(lever);
     
+    var amount = parseFloat(bond);
+    var tokenAmount = toWei(amount.toString());
+
     if (openType == OPEN_TYPE_MARKET) {
       let maxPrice;
       try {
@@ -282,15 +282,13 @@ const OrderComponent = () => {
         console.log(e);
         return;
       }
-      if (dir == BUY_DIR_LONG) {
+      if (bsflag == BSFLAG_LONG) {
         maxPrice = Tools.mul(maxPrice, 1 + slippage);
       } else {
         maxPrice = Tools.mul(maxPrice, 1 - slippage);
       }
-      var amount = parseFloat(bond);
-      var tokenAmount = toWei(amount.toString());
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-      teemoPoolContract.openMarketSwap(poolInfo, symbol, tokenAmount, parseInt(lever), dir, 0, 0, maxPrice)
+      teemoPoolContract.openMarketSwap(poolInfo, symbol, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss, maxPrice)
       .on('transactionHash', function (hash) {
         console.log('openMarketSwap transactionHash: ', hash);
       })
@@ -299,13 +297,10 @@ const OrderComponent = () => {
         await getData();
       });
     } else {
-      var amount = parseFloat(bond);
-      var tokenAmount = toWei(amount.toString());
-
       var price = parseFloat(limitPrice);
       var openPrice = toWei(price.toString());
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-      teemoPoolContract.openLimitSwap(poolInfo, symbol, openPrice, tokenAmount, parseInt(lever), dir, 0, 0)
+      teemoPoolContract.openLimitSwap(poolInfo, symbol, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
       .on('transactionHash', function (hash) {
         console.log('openMarketSwap transactionHash: ', hash);
       })
@@ -320,10 +315,10 @@ const OrderComponent = () => {
     <div className="order" ref={orderRef}>
       <div className="order-box" style={{ height: `${orderHeight}px` }}>
         <div className="btn-box">
-          <button className={`btn-default ${dir === BUY_DIR_LONG ? 'bg-green' : ''}`} onClick={() => setDir(BUY_DIR_LONG)}>
+          <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : ''}`} onClick={() => setBsflag(BSFLAG_LONG)}>
             买涨
           </button>
-          <button className={`btn-default ${dir === BUY_DIR_SHORT ? 'bg-red' : ''}`} onClick={() => setDir(BUY_DIR_SHORT)}>
+          <button className={`btn-default ${bsflag === BSFLAG_SHORT ? 'bg-red' : ''}`} onClick={() => setBsflag(BSFLAG_SHORT)}>
             买跌
           </button>
         </div>
@@ -437,10 +432,10 @@ const OrderComponent = () => {
             <Fragment>
               <div className="form-ele-desc">
                 <label htmlFor="">止盈</label>
-                <span className="sd">
+                {/* <span className="sd">
                   <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setTakeProfitType(profitType === 1 ? 2 : 1)} />
                   {profitType === 1 ? '价格' : '比例'}
-                </span>
+                </span> */}
               </div>
               <div className="form-ele-input">
                 <label htmlFor="">止盈价</label>
@@ -460,10 +455,10 @@ const OrderComponent = () => {
               )}
               <div className="form-ele-desc">
                 <label htmlFor="">止损</label>
-                <span className="sd">
+                {/* <span className="sd">
                   <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setStopType(stopType === 1 ? 2 : 1)} />
                   {profitType === 1 ? '价格' : '比例'}
-                </span>
+                </span> */}
               </div>
               <div className="form-ele-input">
                 <label htmlFor="">止损价</label>
@@ -492,7 +487,7 @@ const OrderComponent = () => {
               <ul className="form-list-c3">
                 <li className={slippage == 0.05 ? "active" : ''} onClick={() => setSlippage(0.05)}>0.5%</li>
                 <li className={slippage == 0.1 ? "active" : ''} onClick={() => setSlippage(0.1)}>1%</li>
-                <li className={slippage == 0.15 ? "active" : ''} onClick={() => setSlippage(0.15)}>1.5%</li>
+                <li className={slippage == 0.3 ? "active" : ''} onClick={() => setSlippage(0.3)}>3%</li>
                 {/* <li>定制</li> */}
               </ul>
             </Fragment>
@@ -530,11 +525,11 @@ const OrderComponent = () => {
         </ul> */}
         {
           isTradeAvailable() ? (Tools.GT(allowance || 0, 0) ? (
-            <button className={`btn-default ${dir === BUY_DIR_LONG ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => createOrder()}>
-              {dir === 2 ? '买涨' : '买跌'}
+            <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => createOrder()}>
+              {bsflag === 2 ? '买涨' : '买跌'}
             </button>
           ) : (
-            <button className={`btn-default ${dir === BUY_DIR_LONG ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => approveToPool()}>
+            <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => approveToPool()}>
               授权USDT
             </button>
           )) : (<span></span>)
