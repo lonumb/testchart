@@ -10,12 +10,10 @@ import { useWeb3React } from '@web3-react/core';
 import * as Types from '../../store/types';
 import { actionPoolInfo } from '../../store/actions/ContractAction';
 import './order.scss';
-import TeemoContract from '../../common/contract/TeemoContract';
 import PoolProxyContract from '../../common/contract/PoolProxyContract';
 import ERC20Contract from '../../common/contract/ERC20Contract';
 import TeemoPoolContract from '../../common/contract/TeemoPoolContract';
 import QuoteFactoryContract from '../../common/contract/QuoteFactoryContract';
-import QuoteContract from '../../common/contract/QuoteContract';
 import * as Tools from '../../utils/Tools';
 import chainConfig from '../../components/wallet/Config'
 import { getConfigByChainID } from '../../utils/Config'

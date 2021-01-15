@@ -12,9 +12,6 @@ import './userAccount.scss';
 import chainConfig from '../../components/wallet/Config'
 
 import { useWeb3React } from '@web3-react/core';
-import TeemoContract from '../../common/contract/TeemoContract';
-import UsdtContract from '../../common/contract/UsdtContract';
-import QuoteContract from '../../common/contract/QuoteContract';
 import PoolContract from '../../common/contract/PoolContract';
 // import CommonContract from '../../common/contract/CommonContract';
 
@@ -51,16 +48,8 @@ const UserAccount = () => {
 
   // 测试
   useEffect(() => {
-    let teemoContract = new TeemoContract(library);
-    let usdtContract = new UsdtContract(library);
-    let quoteContract = new QuoteContract(library);
     let poolContract = new PoolContract(library, chainId || chainConfig.defaultChainId, account);
     let test = async () => {
-      console.log(await teemoContract.getSymbol());
-      console.log(await usdtContract.getSymbol());
-      console.log('teemo:', await teemoContract.getContract());
-      console.log('usdt:', await usdtContract.getContract());
-      console.log('quote:', await quoteContract.getContract());
       console.log('pool:', await poolContract.getContract());
       console.log('pool:', await poolContract.getAllPoolInfo());
     };

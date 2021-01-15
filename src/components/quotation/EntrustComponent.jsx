@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import './entrust.scss';
 
 import { useWeb3React } from '@web3-react/core';
-import TeemoContract from '../../common/contract/TeemoContract';
+//import TeemoContract from '../../common/contract/TeemoContract';
 
 // 止盈比例列表
 const profitRateList = [25, 50, 75, 100, 150, 200];
@@ -21,6 +21,8 @@ const EntrustComponent = () => {
   const { poolInfo } = useSelector((state) => state.contract);
 
   const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
+  const [orderList] = useState([]);
+  const [limitOrderList] = useState([]);
   const [type, setType] = useState(1);
 
   const [visible, setVisible] = useState(false);
@@ -33,11 +35,11 @@ const EntrustComponent = () => {
 
   useEffect(() => {
     if (!account || !poolInfo.tokenAddr) return;
-    let teemoContract = new TeemoContract(library, poolInfo.tokenAddr);
-    // 持仓列表
-    teemoContract.queryAllOrderList(account).then((res) => {
-      console.log('持仓列表:', res);
-    });
+    // let teemoContract = new TeemoContract(library, poolInfo.tokenAddr);
+    // // 持仓列表
+    // teemoContract.queryAllOrderList(account).then((res) => {
+    //   console.log('持仓列表:', res);
+    // });
   }, [library, account]);
 
   return (
