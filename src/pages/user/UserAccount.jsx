@@ -16,29 +16,29 @@ import TeemoContract from '../../common/contract/TeemoContract';
 import UsdtContract from '../../common/contract/UsdtContract';
 import QuoteContract from '../../common/contract/QuoteContract';
 import PoolContract from '../../common/contract/PoolContract';
-import CommonContract from '../../common/contract/CommonContract';
+// import CommonContract from '../../common/contract/CommonContract';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
 const rows = [createData('BTC', 882931.762814, '0.000000', '0.000000', '0.000000'), createData('USDT', 11.000128, '0.000000', '0.000000', '0.000000')];
 
-let commonContract = null;
-// 查询余额方法
-const getBalance = (address, tokenAddr) => {
-  if (!commonContract || !address || !tokenAddr) return;
-  return commonContract.getBalanceOf(address, tokenAddr);
-};
-// 查询可质押余额
-const getBalancePledge = (address, tokenAddr) => {
-  if (!commonContract || !address || !tokenAddr) return;
-  return commonContract.getBalanceOf(address, tokenAddr);
-};
-// 查询可解锁余额
-const getBalanceUnlock = (address, tokenAddr) => {
-  if (!commonContract || !address || !tokenAddr) return;
-  return commonContract.getBalanceOf(address, tokenAddr);
-};
+// let commonContract = null;
+// // 查询余额方法
+// const getBalance = (address, tokenAddr) => {
+//   if (!commonContract || !address || !tokenAddr) return;
+//   return commonContract.getBalanceOf(address, tokenAddr);
+// };
+// // 查询可质押余额
+// const getBalancePledge = (address, tokenAddr) => {
+//   if (!commonContract || !address || !tokenAddr) return;
+//   return commonContract.getBalanceOf(address, tokenAddr);
+// };
+// // 查询可解锁余额
+// const getBalanceUnlock = (address, tokenAddr) => {
+//   if (!commonContract || !address || !tokenAddr) return;
+//   return commonContract.getBalanceOf(address, tokenAddr);
+// };
 
 const UserAccount = () => {
   const { t } = useTranslation();
@@ -70,12 +70,12 @@ const UserAccount = () => {
   // 查询余额
   useEffect(() => {
     if (!library || !account) return;
-    commonContract = new CommonContract(library);
-    let temp = {};
-    poolList.forEach(async (element) => {
-      temp[element.symbol] = await getBalance(account, element.tokenAddr);
-    });
-    setPoolBalance(temp);
+    // commonContract = new CommonContract(library);
+    // let temp = {};
+    // poolList.forEach(async (element) => {
+    //   temp[element.symbol] = await getBalance(account, element.tokenAddr);
+    // });
+    // setPoolBalance(temp);
   }, [library, account, poolList]);
 
   function pledgeFunc() {}

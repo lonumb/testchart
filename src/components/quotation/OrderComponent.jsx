@@ -75,11 +75,11 @@ const OrderComponent = () => {
   const [basicAssetBalance, setBasicAssetBalance] = useState(null); // 本位资产余额
 
   function isAvailable() {
-    return active && account && poolInfo && poolInfo.symbol;
+    return active && account && poolInfo && poolInfo.poolAddr;
   }
 
   function isTradeAvailable() {
-    return isAvailable() && allowance;
+    return isAvailable() && ((poolInfo.erc20Pool && allowance) || !poolInfo.erc20Pool);
   }
 
   async function getData() {
@@ -89,7 +89,7 @@ const OrderComponent = () => {
     }
     return Promise.all([
       // 是否授权
-      tokenContract.getAllowance(account, poolInfo.tokenAddr).then((res) => {
+      (poolInfo.erc20Pool ? tokenContract.getAllowance(account, poolInfo.tokenAddr) : Promise.resolve(MAX_UINT256_VALUE)).then((res) => {
         console.log('setAllowance: ', res);
         setAllowance(res || 0);
       }),
@@ -287,36 +287,32 @@ const OrderComponent = () => {
       } else {
         maxPrice = Tools.mul(maxPrice, 1 - slippage);
       }
-      if (poolInfo.erc20Pool) {
-        var amount = parseFloat(bond);
-        var tokenAmount = toWei(amount.toString());
-        var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-        teemoPoolContract.openMarketSwap(poolInfo.poolAddr, symbol, tokenAmount, parseInt(lever), dir, 0, 0, maxPrice)
-        .on('transactionHash', function (hash) {
-          console.log('openMarketSwap transactionHash: ', hash);
-        })
-        .on('receipt', async (receipt) => {
-          alert('市价建仓成功');
-          await getData();
-        });
-      }
+      var amount = parseFloat(bond);
+      var tokenAmount = toWei(amount.toString());
+      var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
+      teemoPoolContract.openMarketSwap(poolInfo, symbol, tokenAmount, parseInt(lever), dir, 0, 0, maxPrice)
+      .on('transactionHash', function (hash) {
+        console.log('openMarketSwap transactionHash: ', hash);
+      })
+      .on('receipt', async (receipt) => {
+        alert('市价建仓成功');
+        await getData();
+      });
     } else {
-      if (poolInfo.erc20Pool) {
-          var amount = parseFloat(bond);
-          var tokenAmount = toWei(amount.toString());
+      var amount = parseFloat(bond);
+      var tokenAmount = toWei(amount.toString());
 
-          var price = parseFloat(limitPrice);
-          var openPrice = toWei(price.toString());
-          var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-          teemoPoolContract.openLimitSwap(poolInfo.poolAddr, symbol, openPrice, tokenAmount, parseInt(lever), dir, 0, 0)
-          .on('transactionHash', function (hash) {
-            console.log('openMarketSwap transactionHash: ', hash);
-          })
-          .on('receipt', async (receipt) => {
-            alert('限价建仓成功');
-            await getData();
-          });
-      }
+      var price = parseFloat(limitPrice);
+      var openPrice = toWei(price.toString());
+      var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
+      teemoPoolContract.openLimitSwap(poolInfo, symbol, openPrice, tokenAmount, parseInt(lever), dir, 0, 0)
+      .on('transactionHash', function (hash) {
+        console.log('openMarketSwap transactionHash: ', hash);
+      })
+      .on('receipt', async (receipt) => {
+        alert('限价建仓成功');
+        await getData();
+      });
     }
   }
 
