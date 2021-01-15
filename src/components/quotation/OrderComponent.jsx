@@ -40,7 +40,7 @@ const stopRateList = [30, 40, 50, 60, 70, 80];
 let tokenContract = null;
 let poolProxyContract = null;
 
-const OrderComponent = () => {
+const OrderComponent = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const rechargeVisible = useSelector((state) => state.common.recharge.visible);
@@ -224,8 +224,8 @@ const OrderComponent = () => {
         alert('请输入正确的止盈价');
         return;
       }
-      fixedTakeProfit = Tools.toWei(parseInt(takeProfit || 0).toString(), poolInfo.decimals);
-      fixedStopLoss = Tools.toWei(parseInt(stopLoss || 0).toString(), poolInfo.decimals);
+      fixedTakeProfit = toWei(parseInt(takeProfit || 0).toString());
+      fixedStopLoss = toWei(parseInt(stopLoss || 0).toString());
     }
     let symbol = 'btc/usdt';
     let fixedLever = parseInt(lever);

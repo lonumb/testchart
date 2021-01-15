@@ -7,7 +7,7 @@ import ChartComponent from '../components/quotation/ChartComponent';
 import PoolComponent from '../components/quotation/PoolComponent';
 import RecordComponent from '../components/quotation/RecordComponent';
 import OrderComponent from '../components/quotation/OrderComponent';
-import EntrustComponent from '../components/quotation/EntrustComponent';
+import EntrustComponent from '../components/quotation/entrust/EntrustComponent';
 
 import { actionProductList } from '../store/actions/TradeAction';
 import WsUtil from '../utils/WsUtil';
