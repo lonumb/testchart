@@ -8,21 +8,23 @@ import { useSelector } from 'react-redux';
 import './entrust.scss';
 
 import { useWeb3React } from '@web3-react/core';
-//import TeemoContract from '../../common/contract/TeemoContract';
+import SwapTradeContract from '../../common/contract/SwapTradeContract';
 
 // 止盈比例列表
 const profitRateList = [25, 50, 75, 100, 150, 200];
 // 止损比例列表
 const stopRateList = [30, 40, 50, 60, 70, 80];
 
+let swapTradeContract;
+
 const EntrustComponent = () => {
   const { t } = useTranslation();
-  const { active, library, account } = useWeb3React();
+  const { active, library, account, chainId } = useWeb3React();
   const { poolInfo } = useSelector((state) => state.contract);
 
   const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
-  const [orderList] = useState([]);
-  const [limitOrderList] = useState([]);
+  const [orderList, setOrderList] = useState([]);
+  const [limitOrderList, setLimitOrderList] = useState([]);
   const [type, setType] = useState(1);
 
   const [visible, setVisible] = useState(false);
@@ -33,14 +35,54 @@ const EntrustComponent = () => {
   const [stop, setStop] = useState(''); // 止损
   const [stopRate, setStopRate] = useState(''); // 止损比例
 
+  function isAvailable() {
+    return active && account && poolInfo && poolInfo.poolAddr;
+  }
+
+  async function getData() {
+    console.log('EntrustComponent getData available: ', isAvailable());
+    if (!isAvailable()) {
+      return Promise.error('not available');
+    }
+    return Promise.all([
+      swapTradeContract.getAllOrder(poolInfo).then((res) => {
+        console.log('getAllOrder: ', res);
+        setOrderList(res || []);
+      }),
+      swapTradeContract.getAllLimitOrder(poolInfo).then((res) => {
+        console.log('getAllLimitOrder: ', res);
+        setOrderList(res || []);
+      }),
+    ]);
+  }
+
   useEffect(() => {
-    if (!account || !poolInfo.tokenAddr) return;
+    if (active && account && poolInfo.poolAddr) {
+      swapTradeContract = new SwapTradeContract(library, chainId, account);
+
+      const getDataFunc = async () => {
+        var retryCount = 0;
+        while (retryCount < 5) {
+          try {
+            await getData();
+            return
+          } catch (e) {
+            retryCount++;
+          }
+        }
+      };
+
+      getDataFunc();
+    } else {
+      setOrderList([]);
+      setLimitOrderList([]);
+    }
     // let teemoContract = new TeemoContract(library, poolInfo.tokenAddr);
     // // 持仓列表
     // teemoContract.queryAllOrderList(account).then((res) => {
     //   console.log('持仓列表:', res);
     // });
-  }, [library, account]);
+  }, [active, library, account, poolInfo]);
 
   return (
     <div className="entrust">

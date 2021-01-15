@@ -15,8 +15,6 @@ import ERC20Contract from '../../common/contract/ERC20Contract';
 import TeemoPoolContract from '../../common/contract/TeemoPoolContract';
 import QuoteFactoryContract from '../../common/contract/QuoteFactoryContract';
 import * as Tools from '../../utils/Tools';
-import chainConfig from '../../components/wallet/Config'
-import { getConfigByChainID } from '../../utils/Config'
 import { fromWei, toBN, toWei } from 'web3-utils';
 import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Constants'
 
@@ -100,7 +98,7 @@ const OrderComponent = () => {
   }
 
   useEffect(async () => {
-    if (active && account && poolInfo.symbol) {
+    if (active && account && poolInfo.poolAddr) {
       console.log('poolInfo: ', poolInfo);
       tokenContract = new ERC20Contract(library, chainId, account);
       poolProxyContract = new PoolProxyContract(library, chainId, account);

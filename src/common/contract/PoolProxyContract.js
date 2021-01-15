@@ -22,10 +22,9 @@ class PoolProxyContract extends BaseContract {
   }
 
   // 池子列表基本信息
-  getAllPoolInfo() {
+  async getAllPoolInfo() {
     let contract = this.getContract();
     if (!contract) return;
-
     return contract.methods
       .getAllPoolInfo()
       .call()
@@ -33,15 +32,19 @@ class PoolProxyContract extends BaseContract {
         let temp = [];
         if (data.allSymbol && data.allSymbol.length) {
           data.allSymbol.forEach((element, index) => {
-            var symbol = data.allSymbol[index];
-            var tokenAddr = data.allTokenAddr[index];
             var poolAddr = data.allTeemoPoolAddr[index];
+            var tokenAddr = data.allTokenAddr[index];
+            var fundAddr = data.allFundAddr[index];
+            var riskAddr = data.allRiskAddr[index];
+            var swapTradeAddr = data.allSwapTradeAddr[index];
+            var mineAddr = data.allMineAddr[index];
+            var symbol = data.allSymbol[index];
             var decimals = data.allDecimals[index];
             var erc20Pool = tokenAddr !== '0x0000000000000000000000000000000000000000'
             if (!erc20Pool) {
               symbol = getConfigByChainID(this._chainId).mainSymbol;
             }
-            temp.push({ symbol, tokenAddr, poolAddr, decimals, erc20Pool });
+            temp.push({ poolAddr, tokenAddr, fundAddr, riskAddr, swapTradeAddr, mineAddr, symbol, decimals, erc20Pool });
           });
         }
         return temp;
