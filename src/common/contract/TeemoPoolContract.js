@@ -110,7 +110,7 @@ class TeemoPoolContract extends BaseContract {
 
   // 永续合约订单更新止盈止损根据价格
   updateSwapByPrice(poolInfo, order, pLimitPrice, lLimitPrice) {
-    console.log('cancelLimitSwap: ', order);
+    console.log('updateSwapByPrice: ', poolInfo, order, pLimitPrice, lLimitPrice);
     let contract = this.getContract(poolInfo);
     if (!contract) return;
 
@@ -128,7 +128,7 @@ class TeemoPoolContract extends BaseContract {
 
   // 永续合约订单更新止盈止损根据比例
   updateSwapByRate(poolInfo, order, pLimitRate, lLimitRate) {
-    console.log('updateSwapByRate: ', order);
+    console.log('updateSwapByRate: ', poolInfo, order, pLimitRate, lLimitRate);
     let contract = this.getContract(poolInfo);
     if (!contract) return;
 

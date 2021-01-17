@@ -29,18 +29,19 @@ const EntrustComponent = () => {
   const { active, library, account, chainId } = useWeb3React();
   const { poolInfo } = useSelector((state) => state.contract);
 
-  const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
+  //const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
   const [orderList, setOrderList] = useState([]);
   const [limitOrderList, setLimitOrderList] = useState([]);
   const [type, setType] = useState(1);
 
-  const [visible, setVisible] = useState(false);
+  //const [visible, setVisible] = useState(false);
+  const [setTakeProfitStopLossOrder, setSetTakeProfitStopLossOrder] = useState(null);
   const [profitType, setProfitType] = useState(1); // 止盈类型
-  const [profit, setProfit] = useState(''); // 止盈
+  const [takeProfit, setTakeProfit] = useState(''); // 止盈
   const [profitRate, setProfitRate] = useState(''); // 止盈比例
-  const [stopType, setStopType] = useState(1); // 止损类型
-  const [stop, setStop] = useState(''); // 止损
-  const [stopRate, setStopRate] = useState(''); // 止损比例
+  const [stopLossType, setStopLossType] = useState(1); // 止损类型
+  const [stopLoss, setStopLoss] = useState(''); // 止损
+  const [stopLossRate, setStopLossRate] = useState(''); // 止损比例
 
   function isAvailable() {
     return active && account && poolInfo && poolInfo.poolAddr;
@@ -96,28 +97,55 @@ const EntrustComponent = () => {
 
   //平仓
   const onCloseOrderClick = (order) => {
-    if (window.confirm("确定平仓?")) {
-      teemoPoolContract
-      .closeMarketSwap(poolInfo, order)
-      .on('receipt', async (receipt) => {
-        alert('平仓成功');
-        setOrderList(orderList.filter((item) => item.orderId != order.orderId));
-        //await getData();
-      });
-    }
+    teemoPoolContract
+    .closeMarketSwap(poolInfo, order)
+    .on('receipt', async (receipt) => {
+      alert('平仓成功');
+      setOrderList(orderList.filter((item) => item.orderId != order.orderId));
+      //await getData();
+    });
   }
 
   //限价单撤销
   const onRevokeLimitOrderClick = (limitOrder) => {
-    if (window.confirm("确定撤销?")) {
-      teemoPoolContract
-      .cancelLimitSwap(poolInfo, limitOrder)
-      .on('receipt', async (receipt) => {
-        alert('撤销成功');
-        setLimitOrderList(limitOrderList.filter((item) => item.orderId != limitOrder.orderId));
-        //await getData();
-      });
+    teemoPoolContract
+    .cancelLimitSwap(poolInfo, limitOrder)
+    .on('receipt', async (receipt) => {
+      alert('撤销成功');
+      setLimitOrderList(limitOrderList.filter((item) => item.orderId != limitOrder.orderId));
+      //await getData();
+    });
+  }
+
+  //点击设置止盈止损按钮
+  const onSetTakeProfitAndStopLossClick = (order) => {
+    setSetTakeProfitStopLossOrder(order)
+    setTakeProfit(order.pLimitPrice && order.pLimitPrice != '0' ? fromWei(order.pLimitPrice) : '');
+    setStopLoss(order.lLimitPrice && order.lLimitPrice != '0' ? fromWei(order.lLimitPrice) : '');
+  }
+
+  // 修改止盈止损
+  const onModifyTakeProfitAndStopLossClick = () => {
+    if (!setTakeProfitStopLossOrder) return;
+    let fixedTakeProfit = toWei((takeProfit || 0).toString());
+    let fixedStopLoss = toWei((stopLoss || 0).toString());
+
+    if (fixedTakeProfit == setTakeProfitStopLossOrder.pLimitPrice && fixedStopLoss == setTakeProfitStopLossOrder.lLimitPrice) {
+      setSetTakeProfitStopLossOrder(null);
+      return;
     }
+    teemoPoolContract
+    .updateSwapByPrice(poolInfo, setTakeProfitStopLossOrder, fixedTakeProfit, fixedStopLoss)
+    .on('receipt', async (receipt) => {
+      alert('修改成功');
+      var targetOrder = orderList.filter((item) => item.orderId != setTakeProfitStopLossOrder.orderId);
+      if (targetOrder) {
+        targetOrder.pLimitPrice = fixedTakeProfit;
+        targetOrder.lLimitPrice = fixedStopLoss;
+      }
+      setSetTakeProfitStopLossOrder(null);
+      await getData();
+    });
   }
 
   return (
@@ -206,10 +234,10 @@ const EntrustComponent = () => {
                 <div className="table-column">88.88 USDT</div> */}
                 <div className="table-column">171292.11</div>
                 <div className="table-column">+9128.23 USDT</div>
-                <div className="table-column" onClick={() => setVisible(true)}>
+                <div className="table-column" onClick={() => onSetTakeProfitAndStopLossClick(item)}>
                   {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
-                <div className="table-column" onClick={() => setVisible(true)}>
+                <div className="table-column" onClick={() => onSetTakeProfitAndStopLossClick(item)}>
                   {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column">
@@ -258,11 +286,17 @@ const EntrustComponent = () => {
                 <div className="table-column">{fromWei(item.openPrice)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
                 <div className="table-column">{item.lever} X</div>
-                <div className="table-column" onClick={() => setVisible(true)}>
+                {/* <div className="table-column" onClick={() => setVisible(true)}>
                   {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
                   {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
+                </div> */}
+                <div className="table-column">
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'}
+                </div>
+                <div className="table-column">
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}
                 </div>
                 <div className="table-column">
                   <span className="link" onClick={(e)=> onRevokeLimitOrderClick(item)}>撤销</span>
@@ -311,11 +345,17 @@ const EntrustComponent = () => {
                 <div className="table-column">{fromWei(item.openPrice)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
                 <div className="table-column">{item.lever} X</div>
-                <div className="table-column" onClick={() => setVisible(true)}>
+                {/* <div className="table-column" onClick={() => setVisible(true)}>
                   {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
                   {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
+                </div> */}
+                <div className="table-column">
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'}
+                </div>
+                <div className="table-column">
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}
                 </div>
                 <div className="table-column">状态</div>
                 <div className="table-column">时间</div>
@@ -370,11 +410,17 @@ const EntrustComponent = () => {
                 <div className="table-column">{fromWei(item.openPrice)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
                 <div className="table-column">{item.lever} X</div>
-                <div className="table-column" onClick={() => setVisible(true)}>
+                {/* <div className="table-column" onClick={() => setVisible(true)}>
                   {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
                   {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
+                </div> */}
+                <div className="table-column">
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'}
+                </div>
+                <div className="table-column">
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}
                 </div>
                 <div className="table-column">状态</div>
                 <div className="table-column">时间</div>
@@ -383,21 +429,21 @@ const EntrustComponent = () => {
           })
         )}
       </div>
-      <OwnDialogModal onClose={() => setVisible(false)} visible={visible} title={t('modalPSTitle')}>
+      <OwnDialogModal onClose={() => setSetTakeProfitStopLossOrder(null)} visible={setTakeProfitStopLossOrder} title={t('modalPSTitle')}>
         <div className="stop-update-form">
           <div className="form-ele-desc">
             <label htmlFor="">{t('textProfit')}</label>
-            <span className="sd">
+            {/* <span className="sd">
               <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setProfitType(profitType === 1 ? 2 : 1)} />
               {profitType === 1 ? t('textPrice') : t('textRate')}
-            </span>
+            </span> */}
           </div>
           <div className="form-ele-input">
             <label htmlFor="">{t('textProfitPrice')}</label>
-            <input type="text" placeholder="输入止盈价" value={profit} onChange={(e) => setProfit(e.target.value)} />
+            <input type="text" placeholder="输入止盈价" value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, 18))} />
             {profitType === 2 && <span className="unit">%</span>}
           </div>
-          <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div>
+          {/* <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div> */}
           {profitType === 2 && (
             <ul className="form-list-c6">
               {profitRateList.map((item) => {
@@ -411,22 +457,22 @@ const EntrustComponent = () => {
           )}
           <div className="form-ele-desc">
             <label htmlFor="">{t('textStop')}</label>
-            <span className="sd">
+            {/* <span className="sd">
               <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setStopType(stopType === 1 ? 2 : 1)} />
               {profitType === 1 ? t('textPrice') : t('textRate')}
-            </span>
+            </span> */}
           </div>
           <div className="form-ele-input">
             <label htmlFor="">{t('textStopPrice')}</label>
-            <input type="text" placeholder="输入止损价" value={stop} onChange={(e) => setStop(e.target.value)} />
-            {stopType === 2 && <span className="unit">%</span>}
+            <input type="text" placeholder="输入止损价" value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, 18))} />
+            {stopLossType === 2 && <span className="unit">%</span>}
           </div>
-          <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div>
-          {stopType === 2 && (
+          {/* <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div> */}
+          {stopLossType === 2 && (
             <ul className="form-list-c6">
               {stopRateList.map((item) => {
                 return (
-                  <li className={stopRate === item ? 'active' : ''} onClick={() => setStopRate(item)} key={item}>
+                  <li className={stopLossRate === item ? 'active' : ''} onClick={() => setStopLossRate(item)} key={item}>
                     {item}%
                   </li>
                 );
@@ -434,7 +480,7 @@ const EntrustComponent = () => {
             </ul>
           )}
           <div className="form-error"></div>
-          <button className="btn-primary">确认修改</button>
+          <button className="btn-primary" onClick={e=> onModifyTakeProfitAndStopLossClick()}>确认修改</button>
         </div>
       </OwnDialogModal>
     </div>

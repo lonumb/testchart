@@ -135,10 +135,6 @@ const OrderComponent = (props) => {
     actionPoolInfo(obj)(dispatch);
   }
 
-  const onBondClick = (value) => {
-    setBond(Tools.numFmt(value, poolInfo.decimals));
-  }
-
   const onBondRateClick = (rate) => {
     //rate / 100.0
     setBondRate(rate);
@@ -203,7 +199,7 @@ const OrderComponent = (props) => {
         alert('请输入价格');
         return;
       }
-      if (isNaN(parseInt(limitPrice))) {
+      if (isNaN(parseFloat(limitPrice))) {
         alert('请输入正确的价格');
         return;
       }
@@ -216,22 +212,21 @@ const OrderComponent = (props) => {
     let fixedStopLoss = 0;
     //开启高级设置 moreFlag
     if (moreFlag) {
-      if (takeProfit && isNaN(parseInt(takeProfit))) {
+      if (takeProfit && isNaN(parseFloat(takeProfit))) {
         alert('请输入正确的止盈价');
         return;
       }
-      if (stopLoss && isNaN(parseInt(stopLoss))) {
+      if (stopLoss && isNaN(parseFloat(stopLoss))) {
         alert('请输入正确的止盈价');
         return;
       }
-      fixedTakeProfit = toWei(parseInt(takeProfit || 0).toString());
-      fixedStopLoss = toWei(parseInt(stopLoss || 0).toString());
+      fixedTakeProfit = toWei((takeProfit || 0).toString());
+      fixedStopLoss = toWei((stopLoss || 0).toString());
     }
     let symbol = 'btc/usdt';
     let fixedLever = parseInt(lever);
     
-    var amount = parseFloat(bond);
-    var tokenAmount = Tools.toWei(amount.toString(), poolInfo.decimals);
+    var tokenAmount = Tools.toWei(bond.toString(), poolInfo.decimals);
 
     //TODO 校验余额
     if (openType == OPEN_TYPE_MARKET) {
@@ -276,8 +271,7 @@ const OrderComponent = (props) => {
         await getData();
       });
     } else {
-      var price = parseFloat(limitPrice);
-      var openPrice = toWei(price.toString());
+      var openPrice = toWei(limitPrice.toString());
       if (bsflag == BSFLAG_LONG) {
         //校验止盈价
         if (fixedTakeProfit && Tools.GE(openPrice, fixedTakeProfit)) {
@@ -368,12 +362,12 @@ const OrderComponent = (props) => {
 
         <div className={openType === OPEN_TYPE_MARKET ? 'form-ele-disable' : 'form-ele-input'}>
           <label htmlFor="">价格</label>
-          <input type="text" value={limitPrice} onChange={(e) => setLimitPrice(e.target.value)} placeholder={openType === OPEN_TYPE_MARKET ? '最优市场价' : '请输入价格'} disabled={openType === OPEN_TYPE_MARKET} />
+          <input type="text" value={limitPrice} onChange={(e) => setLimitPrice(Tools.numFmt(e.target.value, 18))} placeholder={openType === OPEN_TYPE_MARKET ? '最优市场价' : '请输入价格'} disabled={openType === OPEN_TYPE_MARKET} />
         </div>
 
         <div className="form-ele-input">
           <label htmlFor="">保证金</label>
-          <input type="text" value={bond} onChange={(e) => onBondClick(e.target.value)} placeholder="最小为2USDT" />
+          <input type="text" value={bond} onChange={(e) => setBond(Tools.numFmt(e.target.value, poolInfo.decimals))} placeholder="最小为2USDT" />
         </div>
 
         <ul className="form-list-c4">
@@ -437,7 +431,7 @@ const OrderComponent = (props) => {
               </div>
               <div className="form-ele-input">
                 <label htmlFor="">止盈价</label>
-                <input type="text" placeholder="输入止盈价" value={takeProfit} onChange={(e) => setTakeProfit(e.target.value)} />
+                <input type="text" placeholder="输入止盈价" value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, 18))} />
                 {profitType === 2 && <span className="unit">%</span>}
               </div>
               {profitType === 2 && (
@@ -460,7 +454,7 @@ const OrderComponent = (props) => {
               </div>
               <div className="form-ele-input">
                 <label htmlFor="">止损价</label>
-                <input type="text" placeholder="输入止损价" value={stopLoss} onChange={(e) => setStopLoss(e.target.value)} />
+                <input type="text" placeholder="输入止损价" value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, 18))} />
                 {stopType === 2 && <span className="unit">%</span>}
               </div>
               {stopType === 2 && (
