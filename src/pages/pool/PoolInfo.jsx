@@ -67,6 +67,7 @@ const PoolInfo = () => {
   const [ tokenBalanceList, setTokenBalanceList ] = useState([]);
   const [ lptokenBalanceList, setLptokenBalanceList ] = useState([]);
   const [ tokenAllowanceList, setTokenAllowanceList ] = useState([]);
+  const [ lptokenAllowanceList, setLptokenAllowanceList ] = useState([]);
   const [ refreshObj, setRefreshObj ] = useState({});
   
   function isAvailable() {
@@ -82,13 +83,15 @@ const PoolInfo = () => {
     var userFundPromises = [];
     var tokenBalancePromises = [];
     var lptokenBalancePromises = [];   
-    var tokenBalanceAllowancePromises = []; 
+    var tokenAllowancePromises = []; 
+    var lptokenAllowancePromises = []; 
     for (let poolInfo of poolList) {
       totalAmountPromises.push(fundContract.getPoolTotalAmount(poolInfo));
       userFundPromises.push(fundContract.getUserFundInfo(poolInfo));
       tokenBalancePromises.push(poolProxyContract.getBalanceByPoolInfo(poolInfo));
       lptokenBalancePromises.push(erc20Contract.getBalanceOf(account, poolInfo.lptokenAddr));
-      tokenBalanceAllowancePromises.push(poolInfo.erc20Pool ? erc20Contract.getAllowance(account, poolInfo.tokenAddr, poolInfo.poolAddr) : Promise.resolve(MAX_UINT256_VALUE));
+      tokenAllowancePromises.push(poolInfo.erc20Pool ? erc20Contract.getAllowance(account, poolInfo.tokenAddr, poolInfo.poolAddr) : Promise.resolve(MAX_UINT256_VALUE));
+      lptokenAllowancePromises.push(erc20Contract.getAllowance(account, poolInfo.lptokenAddr, poolInfo.poolAddr));
     }
     return Promise.all([
       Promise.all(totalAmountPromises).then((res) => {
@@ -104,12 +107,16 @@ const PoolInfo = () => {
         setTokenBalanceList(res || []);
       }),
       Promise.all(lptokenBalancePromises).then((res) => {
-        console.log('lpTokenBalanceList: ', res);
+        console.log('lptokenBalanceList: ', res);
         setLptokenBalanceList(res || []);
       }),
-      Promise.all(tokenBalanceAllowancePromises).then((res) => {
-        console.log('tokenBalanceAllowanceList: ', res);
+      Promise.all(tokenAllowancePromises).then((res) => {
+        console.log('tokenAllowanceList: ', res);
         setTokenAllowanceList(res || []);
+      }),
+      Promise.all(lptokenAllowancePromises).then((res) => {
+        console.log('lptokenAllowanceList: ', res);
+        setLptokenAllowanceList(res || []);
       }),
     ]);
   }
@@ -169,25 +176,48 @@ const PoolInfo = () => {
     setRefreshObj({});
   };
 
-  const isApproved = (poolInfo, index) => {
+  const isTokenApproved = (poolInfo, index) => {
     if (tokenAllowanceList.length > index) {
-      return tokenAllowanceList[index];
+      return (tokenAllowanceList[index] || 0) > 0;
     }
     return false;
   };
 
-  const approve = (poolInfo, index) => {
+  const isLptokenApproved = (poolInfo, index) => {
+    if (lptokenAllowanceList.length > index) {
+      return (lptokenAllowanceList[index] || 0) > 0;
+    }
+    return false;
+  };
+
+  const tokenApprove = (poolInfo, index) => {
     if (!erc20Contract) return;
     erc20Contract
     .approve(account, poolInfo.tokenAddr, poolInfo.poolAddr)      
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {
-      console.log('approve transactionHash: ', hash);
     })
-    .on('receipt', (receipt) => {
+    .on('receipt', async (receipt) => {
       console.log('approve receipt: ', receipt);
       tokenAllowanceList[index] = MAX_UINT256_VALUE;
       setTokenAllowanceList(tokenAllowanceList);
+
+      await getData();
+    });
+  };
+
+  const lptokenApprove = (poolInfo, index) => {
+    if (!erc20Contract) return;
+    erc20Contract
+    .approve(account, poolInfo.lptokenAddr, poolInfo.poolAddr)      
+    .on('error', function (error) {})
+    .on('transactionHash', function (hash) {
+    })
+    .on('receipt', async (receipt) => {
+      console.log('approve receipt: ', receipt);
+      lptokenAllowanceList[index] = MAX_UINT256_VALUE;
+      setLptokenAllowanceList(lptokenAllowanceList);
+      await getData();
     });
   };
 
@@ -316,8 +346,8 @@ const PoolInfo = () => {
 
                     {
                       tokenAllowanceList.length < index ? (<div></div>) 
-                      : isApproved(item, index) ? (<button className="btn-default" onClick={e=> deposit(item, index)}>{t('btnPledge')}</button>) 
-                      : (<button className="btn-default" onClick={e=> approve(item, index)}>授权</button>)
+                      : isTokenApproved(item, index) ? (<button className="btn-default" onClick={e=> deposit(item, index)}>{t('btnPledge')}</button>) 
+                      : (<button className="btn-default" onClick={e=> tokenApprove(item, index)}>授权</button>)
                     }
 
                     {/* {tokenBalanceAllowanceList.length > index ? 
@@ -340,7 +370,11 @@ const PoolInfo = () => {
                       {/* {t('poolGain')}:- - */}
                     </div>
 
-                    <button className="btn-primary" onClick={e=> withdraw(item, index)}>{t('btnUnlock')}</button>
+                    {
+                      tokenAllowanceList.length < index ? (<div></div>) 
+                      : isLptokenApproved(item, index) ? (<button className="btn-primary" onClick={e=> withdraw(item, index)}>{t('btnUnlock')}</button>) 
+                      : (<button className="btn-default" onClick={e=> lptokenApprove(item, index)}>授权</button>)
+                    }
                     
                   </div>
                   <div className="w180"></div>
