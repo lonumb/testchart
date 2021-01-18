@@ -23,11 +23,11 @@ const User = (props) => {
               <ListAltIcon /> {t('menuRecord')}
             </NavLink>
           </li>
-          <li className="menu-item">
+          {/* <li className="menu-item">
             <NavLink to="/user/setting">
               <SettingsIcon /> {t('menuSetting')}
             </NavLink>
-          </li>
+          </li> */}
         </ul>
       </div>
       <div className="content">{props.children}</div>

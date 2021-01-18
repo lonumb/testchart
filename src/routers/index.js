@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import AsyncImportComponent from '../components/asyncRouter/AsyncImportComponent';
 
 import HeaderComponent from '../components/head/HeaderComponent';
@@ -19,7 +19,9 @@ const AppRouter = () => {
     <Router>
       <HeaderComponent></HeaderComponent>
       <Switch>
-        <Route path="/" exact component={Quotation} />
+        <Route path="/" exact>
+          <Redirect to="/trade" />
+        </Route>
         <Route path="/trade" exact component={Quotation} />
         <Route path="/pool/info" exact component={PoolInfo} />
         <User>

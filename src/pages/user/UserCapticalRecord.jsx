@@ -18,7 +18,7 @@ const rows = [createData('BTC', 882931.762814, '0.000000', '0.000000', '0.000000
 
 const UserAccount = () => {
   const { t } = useTranslation();
-  const [type, setType] = useState(1); // 类型
+  const [type, setType] = useState(3); // 类型
   const [currency, setCurrency] = useState(''); // 币种
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
 
@@ -38,12 +38,12 @@ const UserAccount = () => {
       <div className="head-box">
         <div className="title">{t('menuRecord')}</div>
         <ul className="tab-box">
-          <li className={`item ${type === 1 ? 'active' : ''}`} onClick={() => setType(1)}>
+          {/* <li className={`item ${type === 1 ? 'active' : ''}`} onClick={() => setType(1)}>
             {t('textRecharge')}
           </li>
           <li className={`item ${type === 2 ? 'active' : ''}`} onClick={() => setType(2)}>
             {t('textWithdraw')}
-          </li>
+          </li> */}
           <li className={`item ${type === 3 ? 'active' : ''}`} onClick={() => setType(3)}>
             {t('textEntrust')}
           </li>
@@ -56,12 +56,12 @@ const UserAccount = () => {
         </ul>
       </div>
       <div className="search-box">
-        <div className="form-ele-box">
+        {/* <div className="form-ele-box">
           <label htmlFor="">{t('textTime')}(UTC+8)</label>
           <div className="from-ele">
             <OwnDateRange onChange={setDateRange} value={dateRange} clearIcon={null} format="y-MM-dd" />
           </div>
-        </div>
+        </div> */}
         <div className="form-ele-box">
           <label htmlFor="">{t('textCurrency')}</label>
           <div className="from-ele">
@@ -73,7 +73,7 @@ const UserAccount = () => {
           </div>
         </div>
 
-        <div className="form-ele-box">
+        {/* <div className="form-ele-box">
           <label htmlFor=""></label>
           <div className="from-ele">
             <button className="btn-default" onClick={() => handleReset()}>
@@ -83,7 +83,7 @@ const UserAccount = () => {
               {t('btnSearch')}
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="table-wrap">
         {(type === 1 || type === 2) && (

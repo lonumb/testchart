@@ -38,7 +38,7 @@ const WalletConnectModal = () => {
       <Modal visible={visible} onClose={() => dispatch({ type: Types.WALLET_VISIBLE, payload: { visible: !visible } })} title="选择钱包供应商" maxWidth="md">
         <div className="wallet-connect">
           <ul>
-            <li
+          <li
               className={!!(connector === injected) ? 'active' : ''}
               onClick={() => {
                 if (!window.ethereum) {
@@ -50,6 +50,19 @@ const WalletConnectModal = () => {
             >
               {mm ? <a href="https://metamask.io/">Install MetaMask</a> : <span>MetaMask</span>}
               <img src="/imgs/wallet/metamask.png" />
+            </li>
+            <li
+              className={!!(connector === injected) ? 'active' : ''}
+              onClick={() => {
+                if (!window.ethereum) {
+                  setMm(true);
+                } else {
+                  changeWallet(injected);
+                }
+              }}
+            >
+              {mm ? <a href="https://mathwallet.org/">Install MathWallet</a> : <span>MathWallet</span>}
+              <img src="/imgs/wallet/mathWallet.png" />
             </li>
             <li className={!!(connector === walletconnect) ? 'active' : ''} onClick={() => changeWallet(walletconnect)}>
               <span>WalletConnet</span>

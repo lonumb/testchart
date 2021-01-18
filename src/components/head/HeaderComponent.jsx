@@ -14,7 +14,7 @@ import { usePopupState, bindToggle, bindPopover, bindHover } from 'material-ui-p
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionRechargeModal, actionWithdrawModal, actionWalletModal } from '../../store/actions/CommonAction';
-import { walletconnect } from '../wallet/Connectors';
+import { injected, walletconnect } from '../wallet/Connectors';
 import { supportedChainIds, chainConfig } from '../../components/wallet/Config'
 
 import OwnPopover from '../popover/OwnPopover';
@@ -44,6 +44,7 @@ const HeaderComponent = () => {
     window.navigator.clipboard.writeText(account).then(
       () => {
         console.log('success');
+        alert('复制成功!');
       },
       (err) => console.log('fail')
     );
@@ -57,6 +58,13 @@ const HeaderComponent = () => {
       setNetwork(true);
     }
   }, [active, chainId]);
+
+  const getConnectionUrl = (library) => {
+    if (connector === injected && window.ethereum && window.ethereum.isMathWallet) {
+      return 'mathWallet';
+    }
+    return library.connection.url;
+  };
 
   return (
     <div className="header">
@@ -78,14 +86,14 @@ const HeaderComponent = () => {
             {t('navAccount')}
           </NavLink>
         </li>
-        <li className="item">
+        {/* <li className="item">
           <a href="">{t('navPublic')}</a>
         </li>
         <li className="item">
           <a href="">
             {t('navMore')} <ExpandMoreRoundedIcon />
           </a>
-        </li>
+        </li> */}
       </ul>
       {/* <div className="news">
         <Notifications />
@@ -130,7 +138,7 @@ const HeaderComponent = () => {
       {active ? (
         <React.Fragment>
           <div className="wallet" {...bindToggle(popupStateWallet)} {...bindHover(popupStateWallet)}>
-            <img src={`/imgs/wallet/${library.connection.url}.png`} width="20" alt="" />
+            <img src={`/imgs/wallet/${getConnectionUrl(library)}.png`} width="20" alt="" />
             <span className="addr">{`${account.substring(0, 6)}…${account.substring(account.length, account.length - 4)}`}</span>
             {!network ? <span className="network">{chainConfig[chainId].networkName}</span> : <span className="network error">Wrong Network</span>}
 
