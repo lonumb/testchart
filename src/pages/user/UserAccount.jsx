@@ -48,12 +48,12 @@ const UserAccount = () => {
 
   // 测试
   useEffect(() => {
-    let poolContract = new PoolContract(library, chainId || chainConfig.defaultChainId, account);
-    let test = async () => {
-      console.log('pool:', await poolContract.getContract());
-      console.log('pool:', await poolContract.getAllPoolInfo());
-    };
-    test();
+    // let poolContract = new PoolContract(library, chainId || chainConfig.defaultChainId, account);
+    // let test = async () => {
+    //   console.log('pool:', await poolContract.getContract());
+    //   console.log('pool:', await poolContract.getAllPoolInfo());
+    // };
+    // test();
   }, [library]);
 
   // 查询余额
