@@ -150,9 +150,21 @@ class TeemoPoolContract extends BaseContract {
     let contract = this.getContract(poolInfo);
     if (!contract) return;
 
+    if (poolInfo.erc20Pool) {
+      return contract.methods
+      .lpDeposit(tokenAmount, mine)
+      .send({ from: this._userAddress })
+      .on('error', function (error) {})
+      .on('transactionHash', function (hash) {
+        console.log('lpDeposit transactionHash: ', hash);
+      })
+      .on('receipt', (receipt) => {
+        console.log('lpDeposit receipt: ', receipt);
+      });
+    }
     return contract.methods
-    .lpDeposit(tokenAmount, mine)
-    .send({ from: this._userAddress })
+    .lpDeposit(mine)
+    .send({ from: this._userAddress, value: tokenAmount })
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {
       console.log('lpDeposit transactionHash: ', hash);
