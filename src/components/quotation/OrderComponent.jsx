@@ -17,6 +17,7 @@ import QuoteFactoryContract from '../../common/contract/QuoteFactoryContract';
 import * as Tools from '../../utils/Tools';
 import { fromWei, toBN, toWei } from 'web3-utils';
 import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Constants'
+import { emitter } from '../../utils/event';
 
 // 建仓类型: 市价
 const OPEN_TYPE_MARKET = 2
@@ -79,41 +80,48 @@ const OrderComponent = (props) => {
   }
 
   async function getData() {
-    console.log('getData available: ', isAvailable());
+    console.log('OrderComponent getData available: ', isAvailable());
     if (!isAvailable()) {
       return Promise.error('not available');
     }
     return Promise.all([
       // 是否授权
       (poolInfo.erc20Pool ? tokenContract.getAllowance(account, poolInfo.tokenAddr) : Promise.resolve(MAX_UINT256_VALUE)).then((res) => {
-        console.log('setAllowance: ', res);
+        console.log('OrderComponent setAllowance: ', res);
         setAllowance(res || 0);
       }),
       // 查询余额
       poolProxyContract.getBalanceByPoolInfo(poolInfo, account).then((res) => {
-        console.log('setBasicAssetBalance: ', res);
+        console.log('OrderComponent setBasicAssetBalance: ', res);
         setBasicAssetBalance(res);
       }),
     ]);
   }
+
+  const getDataFunc = async () => {
+    var retryCount = 0;
+    while (retryCount < 5) {
+      try {
+        await getData();
+        return
+      } catch (e) {
+        retryCount++;
+      }
+    }
+  };
+
+  useEffect(() => {
+    emitter.on('refreshBalance', async () => { 
+      console.log('OrderComponent refreshBalance', active, account , poolInfo, poolInfo.poolAddr);
+      getDataFunc();
+    });
+  }, [])
 
   useEffect(async () => {
     if (active && account && poolInfo.poolAddr) {
       console.log('poolInfo: ', poolInfo);
       tokenContract = new ERC20Contract(library, chainId, account);
       poolProxyContract = new PoolProxyContract(library, chainId, account);
-
-      const getDataFunc = async () => {
-        var retryCount = 0;
-        while (retryCount < 5) {
-          try {
-            await getData();
-            return
-          } catch (e) {
-            retryCount++;
-          }
-        }
-      };
 
       getDataFunc();
     } else {
@@ -267,7 +275,8 @@ const OrderComponent = (props) => {
         console.log('openMarketSwap transactionHash: ', hash);
       })
       .on('receipt', async (receipt) => {
-        alert('市价建仓成功');
+        emitter.emit('refreshOrder');
+        console.log('市价建仓成功');
         await getData();
       });
     } else {
@@ -297,7 +306,8 @@ const OrderComponent = (props) => {
         console.log('openMarketSwap transactionHash: ', hash);
       })
       .on('receipt', async (receipt) => {
-        alert('限价建仓成功');
+        emitter.emit('refreshOrder');
+        console.log('限价建仓成功');
         await getData();
       });
     }

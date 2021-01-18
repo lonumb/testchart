@@ -15,6 +15,7 @@ import SwapTradeContract from '../../../common/contract/SwapTradeContract';
 import { BSFLAG_LONG, BSFLAG_SHORT } from '../../../utils/Constants'
 import { fromWei, toBN, toWei } from 'web3-utils';
 import * as Tools from '../../../utils/Tools';
+import { emitter } from '../../../utils/event';
 
 // 止盈比例列表
 const profitRateList = [25, 50, 75, 100, 150, 200];
@@ -54,34 +55,39 @@ const EntrustComponent = () => {
     }
     return Promise.all([
       swapTradeContract.getAllOrder(poolInfo).then((res) => {
-        console.log('getAllOrder: ', res);
+        console.log('EntrustComponent getAllOrder: ', res);
         setOrderList(res || []);
-        var list = orderList.filter((item) => item.closePrice == 0);
-        console.log(`list: `, list);
       }),
       swapTradeContract.getAllLimitOrder(poolInfo).then((res) => {
-        console.log('getAllLimitOrder: ', res);
+        console.log('EntrustComponent getAllLimitOrder: ', res);
         setLimitOrderList(res || []);
       }),
     ]);
   }
 
+  const getDataFunc = async () => {
+    var retryCount = 0;
+    while (retryCount < 5) {
+      try {
+        await getData();
+        return
+      } catch (e) {
+        retryCount++;
+      }
+    }
+  };
+
+  useEffect(() => {
+    emitter.on('refreshOrder', async () => { 
+      console.log('refreshOrder', active, account , poolInfo, poolInfo.poolAddr);
+      getDataFunc();
+    });
+  }, [])
+
   useEffect(() => {
     if (active && account && poolInfo.poolAddr) {
       teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       swapTradeContract = new SwapTradeContract(library, chainId, account);
-
-      const getDataFunc = async () => {
-        var retryCount = 0;
-        while (retryCount < 5) {
-          try {
-            await getData();
-            return
-          } catch (e) {
-            retryCount++;
-          }
-        }
-      };
 
       getDataFunc();
     } else {
@@ -100,7 +106,8 @@ const EntrustComponent = () => {
     teemoPoolContract
     .closeMarketSwap(poolInfo, order)
     .on('receipt', async (receipt) => {
-      alert('平仓成功');
+      emitter.emit('refreshBalance');
+      console.log('平仓成功');
       setOrderList(orderList.filter((item) => item.orderId != order.orderId));
       //await getData();
     });
@@ -111,7 +118,8 @@ const EntrustComponent = () => {
     teemoPoolContract
     .cancelLimitSwap(poolInfo, limitOrder)
     .on('receipt', async (receipt) => {
-      alert('撤销成功');
+      emitter.emit('refreshBalance');
+      console.log('撤销成功');
       setLimitOrderList(limitOrderList.filter((item) => item.orderId != limitOrder.orderId));
       //await getData();
     });
