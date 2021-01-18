@@ -143,6 +143,42 @@ class TeemoPoolContract extends BaseContract {
       console.log('updateSwapByRate receipt: ', receipt);
     });
   }
+
+  // LP充值
+  lpDeposit(poolInfo, tokenAmount, mine = false) {
+    console.log('lpDeposit: ', poolInfo, tokenAmount, mine);
+    let contract = this.getContract(poolInfo);
+    if (!contract) return;
+
+    return contract.methods
+    .lpDeposit(tokenAmount, mine)
+    .send({ from: this._userAddress })
+    .on('error', function (error) {})
+    .on('transactionHash', function (hash) {
+      console.log('lpDeposit transactionHash: ', hash);
+    })
+    .on('receipt', (receipt) => {
+      console.log('lpDeposit receipt: ', receipt);
+    });
+  }
+
+  // LP提现
+  lpWithdraw(poolInfo, lpAmount) {
+    console.log('lpWithdraw: ', poolInfo, lpAmount);
+    let contract = this.getContract(poolInfo);
+    if (!contract) return;
+
+    return contract.methods
+    .lpWithdraw(lpAmount)
+    .send({ from: this._userAddress })
+    .on('error', function (error) {})
+    .on('transactionHash', function (hash) {
+      console.log('lpWithdraw transactionHash: ', hash);
+    })
+    .on('receipt', (receipt) => {
+      console.log('lpWithdraw receipt: ', receipt);
+    });
+  }
 }
 
 export default TeemoPoolContract;

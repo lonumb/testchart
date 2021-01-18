@@ -38,7 +38,7 @@ const profitRateList = [25, 50, 75, 100, 150, 200];
 // 止损比例列表
 const stopRateList = [30, 40, 50, 60, 70, 80];
 
-let tokenContract = null;
+let erc20Contract = null;
 let poolProxyContract = null;
 
 const OrderComponent = (props) => {
@@ -86,7 +86,7 @@ const OrderComponent = (props) => {
     }
     return Promise.all([
       // 是否授权
-      (poolInfo.erc20Pool ? tokenContract.getAllowance(account, poolInfo.tokenAddr) : Promise.resolve(MAX_UINT256_VALUE)).then((res) => {
+      (poolInfo.erc20Pool ? erc20Contract.getAllowance(account, poolInfo.tokenAddr, poolInfo.poolAddr) : Promise.resolve(MAX_UINT256_VALUE)).then((res) => {
         console.log('OrderComponent setAllowance: ', res);
         setAllowance(res || 0);
       }),
@@ -120,13 +120,13 @@ const OrderComponent = (props) => {
   useEffect(async () => {
     if (active && account && poolInfo.poolAddr) {
       console.log('poolInfo: ', poolInfo);
-      tokenContract = new ERC20Contract(library, chainId, account);
+      erc20Contract = new ERC20Contract(library, chainId, account);
       poolProxyContract = new PoolProxyContract(library, chainId, account);
 
       getDataFunc();
     } else {
       poolProxyContract = null;
-      tokenContract = null;
+      erc20Contract = null;
       setBasicAssetBalance(null)
       setAllowance(null);
     }
@@ -178,9 +178,9 @@ const OrderComponent = (props) => {
 
   // 授权
   function approveToPool() {
-    if (!tokenContract) return;
-    tokenContract
-    .approve(account, poolInfo.tokenAddr)      
+    if (!erc20Contract) return;
+    erc20Contract
+    .approve(account, poolInfo.tokenAddr, poolInfo.poolAddr)      
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {
       console.log('approve transactionHash: ', hash);

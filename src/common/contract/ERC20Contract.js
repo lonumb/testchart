@@ -27,20 +27,20 @@ class ERC20Contract extends BaseContract {
   getBalanceOf(userAddress, tokenContractAddress) {
     let contract = this.getContract(tokenContractAddress);
     if (!contract) return;
-    console.log('contract.methods', contract.methods);
+    //console.log('contract.methods', contract.methods);
     return contract.methods.balanceOf(userAddress).call();
   }
 
   // 获取授权额度
-  getAllowance(userAddress, tokenContractAddress, spender = getConfigByChainID(this._chainId).teemoContractAddress) {
-    console.log('getAllowance', userAddress, tokenContractAddress, spender);
+  getAllowance(userAddress, tokenContractAddress, spender) {
+    //console.log('getAllowance', userAddress, tokenContractAddress, spender);
     let contract = this.getContract(tokenContractAddress);
     if (!contract) return;
     return contract.methods.allowance(userAddress, spender).call();
   }
 
   // 授权扣款
-  approve(userAddress, tokenContractAddress, spender = getConfigByChainID(this._chainId).teemoContractAddress) {
+  approve(userAddress, tokenContractAddress, spender) {
     let contract = this.getContract(tokenContractAddress);
     if (!contract) return;
     return contract.methods

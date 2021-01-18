@@ -44,7 +44,19 @@ class PoolProxyContract extends BaseContract {
             if (!erc20Pool) {
               symbol = getConfigByChainID(this._chainId).mainSymbol;
             }
-            temp.push({ poolAddr, tokenAddr, fundAddr, riskAddr, swapTradeAddr, mineAddr, symbol, decimals, erc20Pool });
+            temp.push({ 
+              poolAddr, 
+              tokenAddr, 
+              lptokenAddr: poolAddr, 
+              fundAddr, 
+              riskAddr, 
+              swapTradeAddr, 
+              mineAddr, 
+              symbol, 
+              decimals, 
+              lpdecimals: 18,
+              erc20Pool 
+            });
           });
         }
         return temp;
@@ -58,6 +70,16 @@ class PoolProxyContract extends BaseContract {
       return contract.getBalanceOf(address, poolInfo.tokenAddr);
     } else {
       return this._web3.eth.getBalance(address);
+    }
+  }
+
+  getPoolBalanceByPoolInfo(poolInfo) {
+    if (!this._web3 && !poolInfo) return Promise.error('web3 == null || poolInfo == null');
+    if (poolInfo.erc20Pool) {
+      var contract = new ERC20Contract(...this.getArgs());
+      return contract.getBalanceOf(poolInfo.poolAddr, poolInfo.tokenAddr);
+    } else {
+      return this._web3.eth.getBalance(poolInfo.poolAddr);
     }
   }
 }
