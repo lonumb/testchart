@@ -7,6 +7,8 @@ const defaultState = {
   productList: [],
   period: '1',
   ticker: {},
+  quote: {},
+  quoteMap: {},
   tickerAll: { '1D': {} },
 };
 
@@ -25,17 +27,43 @@ const tradeReducer = (state = defaultState, action) => {
       break;
 
     case Types.CURRENT_PERIOD:
-      nextState = { ...state, period: params };
-      break;
+        nextState = { ...state, period: params };
+        break;
 
+    case Types.QUOTE:
+      // C: "1329.92"
+      // H: "1344.38"
+      // L: "1211.80"
+      // LP: "1329.92"
+      // O: "1240.44"
+      // PC: "1240.46"
+      // S: "eth"
+      // T: "1611027000"
+      // datatype: "snap"
+        let quote = {
+          close: parseFloat(params.C),
+          high: parseFloat(params.H),
+          low: parseFloat(params.L),
+          open: parseFloat(params.O),
+          preClose: parseFloat(params.PC),
+          symbol: params.S,
+          time: parseInt(params.T) * 1000,
+          datatype: params.datatype,
+        };
+        var quoteMap = state.quoteMap;
+        quoteMap[quote.symbol] = quote;
+        nextState = { ...state, quote, quoteMap };
+        break;
+    
     case Types.TICKER_UPDATE:
-      let { T, O, H, L, C, num = 0, datatype } = params;
+      let { T, O, H, L, C, S, num = 0, datatype } = params;
       let ticker = {
         time: parseInt(T) * 1000,
         open: parseFloat(O),
         high: parseFloat(H),
         low: parseFloat(L),
         close: parseFloat(C),
+        symbol: S,
         volume: parseFloat(num),
       };
       if (datatype === 'dayk') {

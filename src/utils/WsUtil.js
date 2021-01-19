@@ -1,5 +1,5 @@
 import { generateRandomAlphaNum } from './Tools';
-import { actionTickerUpdate } from '../store/actions/TradeAction';
+import { actionTickerUpdate, actionQuote } from '../store/actions/TradeAction';
 
 export default {
   timer: undefined,
@@ -107,6 +107,7 @@ export default {
 
       case 13501: // ticker数据
         // that.props.updateTicker(msg);
+        actionQuote(msg)(dispatch);
         break;
 
       case 13502: // 委托列表

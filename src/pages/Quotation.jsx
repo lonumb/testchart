@@ -16,7 +16,7 @@ const periodMap = { line: '1mink', 1: '1mink', 5: '5mink', 15: '15mink', 30: '30
 
 const Quotation = (props) => {
   const dispatch = useDispatch();
-  const { productInfo, period } = useSelector((state) => state.trade);
+  const { productList, productInfo, period } = useSelector((state) => state.trade);
 
   useEffect(() => {
     // 查询币种列表(产品)
@@ -28,8 +28,26 @@ const Quotation = (props) => {
     if (!productInfo.symbol) return;
     WsUtil.init(dispatch, () => {
       WsUtil.sendMsg('13007', {
-        sub: [{ symbol: productInfo.symbol.toLowerCase(), datatype: [periodMap[period], periodMap['1D']] }],
+        //sub: [{ symbol: productInfo.symbol.toLowerCase(), datatype: [periodMap[period], periodMap['1D']] }],
+
+        sub: productList.map((item) => {
+          return {
+            symbol: item.symbol.toLowerCase(), 
+            datatype: item.symbol == productInfo.symbol ? [periodMap[period], periodMap['1D'], 'snap'] : ['snap'],
+          };
+        }),
+        'unsub': [],
       });
+
+      // WsUtil.sendMsg('13007', {
+      //   sub: productList.map((item) => {
+      //     return {
+      //       symbol: item.symbol.toLowerCase(), 
+      //       datatype: ['snap'],
+      //     };
+      //   }),
+      //   'unsub': [],
+      // });
     });
     return () => {
       // 关闭

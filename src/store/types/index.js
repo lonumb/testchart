@@ -10,3 +10,4 @@ export const POOL_INFO = 'POOL_INFO';
 
 export const CURRENT_PERIOD = 'CURRENT_PERIOD';
 export const TICKER_UPDATE = 'TICKER_UPDATE';
+export const QUOTE = 'QUOTE';

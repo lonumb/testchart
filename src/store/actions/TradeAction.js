@@ -99,3 +99,9 @@ export const actionTickerUpdate = (data) => {
     dispatch(createAction(Types.TICKER_UPDATE)(data));
   };
 };
+
+export const actionQuote = (data) => {
+  return (dispatch) => {
+    dispatch(createAction(Types.QUOTE)(data));
+  };
+};

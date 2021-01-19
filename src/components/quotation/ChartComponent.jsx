@@ -88,8 +88,9 @@ const ChartComponent = () => {
   const dispatch = useDispatch();
   const popupStateMin = usePopupState({ variant: 'popover', popupId: 'minPopover' });
   const popupStateHour = usePopupState({ variant: 'popover', popupId: 'hourPopover' });
-  const { period, productInfo, ticker } = useSelector((state) => state.trade); // 当前周期
-
+  const { period, productInfo, ticker } = useSelector((state) => {
+    return state.trade;
+  }); // 当前周期
   // 指标列表
   function indicatorFunc() {
     widget.chart().executeActionById('insertIndicator');

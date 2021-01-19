@@ -2,6 +2,7 @@ import PoolProxy from './abi/PoolProxy.json';
 import { getConfigByChainID } from '../../utils/Config'
 import BaseContract from './BaseContract'
 import ERC20Contract from './ERC20Contract'
+import SwapTradeContract from './SwapTradeContract'
 
 class PoolProxyContract extends BaseContract {
   constructor(...args) {
@@ -81,6 +82,46 @@ class PoolProxyContract extends BaseContract {
     } else {
       return this._web3.eth.getBalance(poolInfo.poolAddr);
     }
+  }
+
+  getAllOrder(poolList, status = 0) {
+    var swapTradeContract = new SwapTradeContract(this._library, this._chainId, this._userAddress);
+    if (!swapTradeContract) return [];
+    var promises = [];
+    for (let poolInfo of poolList) {
+      promises.push(swapTradeContract.getAllOrder(poolInfo, status).then((item) => {
+        return item;
+      }));
+    }
+    return Promise.all(promises).then((res) => {
+      var list = [];
+      for (let array of res) {
+        // for (let item of array) {
+        //   list.push(item);
+        // }
+        list = list.concat(array);
+      }
+      return list;
+    });
+  }
+
+  getAllLimitOrder(poolList, status = 0) {
+    var swapTradeContract = new SwapTradeContract(this._library, this._chainId, this._userAddress);
+    if (!swapTradeContract) return [];
+    var promises = [];
+    for (let poolInfo of poolList) {
+      promises.push(swapTradeContract.getAllLimitOrder(poolInfo, status));
+    }
+    return Promise.all(promises).then((res) => {
+      var list = [];
+      for (let array of res) {
+        // for (let item of array) {
+        //   list.push(item);
+        // }
+        list = list.concat(array);
+      }
+      return list;
+    });
   }
 }
 

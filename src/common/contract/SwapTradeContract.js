@@ -22,7 +22,7 @@ class SwapTradeContract extends BaseContract {
       let orderIds = data.orderIds || [];
       let orders = data.orders || [];
       orders.forEach((element, index) => {
-        temp.push({...element, orderId: orderIds[index]});
+        temp.push({...element, orderId: orderIds[index], decimals: poolInfo.decimals, openSymbol: poolInfo.symbol, erc20Pool: poolInfo.erc20Pool, poolInfo});
       });
       return temp;
     });
@@ -39,7 +39,7 @@ class SwapTradeContract extends BaseContract {
       let orderIds = data.orderIds || [];
       let orders = data.orders || [];
       orders.forEach((element, index) => {
-        temp.push({...element, orderId: orderIds[index]});
+        temp.push({...element, orderId: orderIds[index], decimals: poolInfo.decimals, openSymbol: poolInfo.symbol, erc20Pool: poolInfo.erc20Pool, poolInfo});
       });
       return temp;
     });

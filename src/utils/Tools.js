@@ -1,4 +1,5 @@
 import { Decimal } from 'decimal.js';
+import { BSFLAG_LONG, BSFLAG_SHORT } from './Constants'
 
 Decimal.set({ toExpNeg: -30, toExpPos: 30 });
 
@@ -182,3 +183,29 @@ export const generateRandomAlphaNum = (len) => {
   for (; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
   return rdmString.substr(0, len);
 };
+
+/**
+ * 计算订单的盈亏
+ * @param {*} price 
+ * @param {*} order 
+ */
+export const calcOrderPL = (lastPrice, order) => {
+  if (!lastPrice || !order) return null;
+  var plusMinus = order.bsFlag == BSFLAG_LONG ? 1 : -1;
+  //var result = plusMinus * (lastPrice - order.openPrice) / order.openPrice * order.tokenAmount * order.lever;  
+  return Decimal(plusMinus).mul(Decimal(lastPrice).sub(order.openPrice)).div(order.openPrice).mul(order.tokenAmount).mul(order.lever).valueOf();
+}
+
+/**
+ * 计算止损价
+ * @param {*} lastPrice 
+ * @param {*} order 
+ */
+export const calcStopLossPrice = (lastPrice, order) => {
+  if (!lastPrice || !order) return null;
+  if (order.bsFlag == BSFLAG_LONG) {
+    //return Decimal(lastPrice).mul();
+  } else {
+
+  }
+}

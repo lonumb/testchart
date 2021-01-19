@@ -11,6 +11,7 @@ import './entrust.scss';
 import { useWeb3React } from '@web3-react/core';
 import TeemoPoolContract from '../../../common/contract/TeemoPoolContract';
 import SwapTradeContract from '../../../common/contract/SwapTradeContract';
+import PoolProxyContract from '../../../common/contract/PoolProxyContract';
 //import HoldPositionComponent from './subModule/HoldPositionComponent'
 import { BSFLAG_LONG, BSFLAG_SHORT } from '../../../utils/Constants'
 import { fromWei, toBN, toWei } from 'web3-utils';
@@ -24,12 +25,15 @@ const stopRateList = [30, 40, 50, 60, 70, 80];
 
 let teemoPoolContract;
 let swapTradeContract;
+let poolProxyContract;
 
 const EntrustComponent = () => {
   const { t } = useTranslation();
   const { active, library, account, chainId } = useWeb3React();
-  const { poolInfo } = useSelector((state) => state.contract);
-
+  const { poolInfo, poolList } = useSelector((state) => state.contract);
+  const { productInfo, quote, quoteMap } = useSelector((state) => state.trade); // 当前周期
+  //console.log(productInfo, quote, quoteMap);
+  //console.log(quote);
   //const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
   const [orderList, setOrderList] = useState([]);
   const [limitOrderList, setLimitOrderList] = useState([]);
@@ -54,11 +58,11 @@ const EntrustComponent = () => {
       return Promise.error('not available');
     }
     return Promise.all([
-      swapTradeContract.getAllOrder(poolInfo).then((res) => {
+      poolProxyContract.getAllOrder(poolList).then((res) => {
         console.log('EntrustComponent getAllOrder: ', res);
         setOrderList(res || []);
       }),
-      swapTradeContract.getAllLimitOrder(poolInfo).then((res) => {
+      poolProxyContract.getAllLimitOrder(poolList).then((res) => {
         console.log('EntrustComponent getAllLimitOrder: ', res);
         setLimitOrderList(res || []);
       }),
@@ -88,7 +92,7 @@ const EntrustComponent = () => {
     if (active && account && poolInfo.poolAddr) {
       teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       swapTradeContract = new SwapTradeContract(library, chainId, account);
-
+      poolProxyContract = new PoolProxyContract(library, chainId, account);
       getDataFunc();
     } else {
       setOrderList([]);
@@ -104,7 +108,7 @@ const EntrustComponent = () => {
   //平仓
   const onCloseOrderClick = (order) => {
     teemoPoolContract
-    .closeMarketSwap(poolInfo, order)
+    .closeMarketSwap(order.poolInfo, order)
     .on('receipt', async (receipt) => {
       emitter.emit('refreshBalance');
       console.log('平仓成功');
@@ -116,7 +120,7 @@ const EntrustComponent = () => {
   //限价单撤销
   const onRevokeLimitOrderClick = (limitOrder) => {
     teemoPoolContract
-    .cancelLimitSwap(poolInfo, limitOrder)
+    .cancelLimitSwap(limitOrder.poolInfo, limitOrder)
     .on('receipt', async (receipt) => {
       emitter.emit('refreshBalance');
       console.log('撤销成功');
@@ -143,7 +147,7 @@ const EntrustComponent = () => {
       return;
     }
     teemoPoolContract
-    .updateSwapByPrice(poolInfo, setTakeProfitStopLossOrder, fixedTakeProfit, fixedStopLoss)
+    .updateSwapByPrice(setTakeProfitStopLossOrder.poolInfo, setTakeProfitStopLossOrder, fixedTakeProfit, fixedStopLoss)
     .on('receipt', async (receipt) => {
       alert('修改成功');
       var targetOrder = orderList.filter((item) => item.orderId != setTakeProfitStopLossOrder.orderId);
@@ -154,6 +158,19 @@ const EntrustComponent = () => {
       setSetTakeProfitStopLossOrder(null);
       await getData();
     });
+  }
+
+  const calcOrderPL = (order) => {
+    var quote = quoteMap[order.symbol.split('/')[0]];
+    var pl;
+    if (quote) {
+      var price = toWei(quote.close.toString());
+      pl = Tools.calcOrderPL(price, order);
+    }
+    if (pl) {
+      return Tools.fromWei(pl, poolInfo.decimals);
+    }
+    return '--'
   }
 
   return (
@@ -236,12 +253,12 @@ const EntrustComponent = () => {
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
                 <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? '买涨' : '买跌'}</div>
                 <div className="table-column">{fromWei(item.openPrice)}</div>
-                <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
+                <div className="table-column">{Tools.fromWei(item.tokenAmount, item.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 {/* <div className="table-column">+7182.92 USDT</div>
                 <div className="table-column">88.88 USDT</div> */}
                 <div className="table-column">171292.11</div>
-                <div className="table-column">+9128.23 USDT</div>
+                <div className="table-column">{calcOrderPL(item)} { item.openSymbol }</div>
                 <div className="table-column" onClick={() => onSetTakeProfitAndStopLossClick(item)}>
                   {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
