@@ -201,11 +201,33 @@ export const calcOrderPL = (lastPrice, order) => {
  * @param {*} lastPrice 
  * @param {*} order 
  */
-export const calcStopLossPrice = (lastPrice, order) => {
-  if (!lastPrice || !order) return null;
+export const calcStopLossPrice = (order, bottomlimit) => {
+  if (!order) return null;
   if (order.bsFlag == BSFLAG_LONG) {
-    //return Decimal(lastPrice).mul();
+    //order.openPrice * (1 - bottomlimit / 100.0 / order.lever)
+    return Decimal(order.openPrice).mul(1 - bottomlimit / 100.0 / order.lever); 
   } else {
-
+    //order.openPrice * (1 + bottomlimit / 100.0 / order.lever)
+    return Decimal(order.openPrice).mul(1 - bottomlimit / 100.0 / order.lever);
   }
+}
+
+/**
+ * 计算止损价
+ * @param {*} lastPrice 
+ * @param {*} order 
+ */
+export const calcTakeProfitPrice = (order, bottomlimit) => {
+  if (!order) return null;
+  return calcStopLossPrice({...order, bsFlag: order.bsFlag == BSFLAG_LONG ? BSFLAG_SHORT : BSFLAG_LONG}, bottomlimit);
+}
+
+/**
+ * 计算止损价
+ * @param {*} lastPrice 
+ * @param {*} order 
+ */
+export const calcForceClosePrice = (order) => {
+  if (!order) return null;
+  return calcStopLossPrice(order, 100);
 }

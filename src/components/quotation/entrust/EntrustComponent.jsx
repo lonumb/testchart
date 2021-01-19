@@ -168,7 +168,15 @@ const EntrustComponent = () => {
       pl = Tools.calcOrderPL(price, order);
     }
     if (pl) {
-      return Tools.fromWei(pl, poolInfo.decimals);
+      return Tools.fromWei(pl, order.decimals);
+    }
+    return '--'
+  }
+
+  const calcForceClosePrice = (order) => {
+    var price = Tools.calcForceClosePrice(order);
+    if (price) {
+      return Tools.fromWei(price, order.decimals);
     }
     return '--'
   }
@@ -257,7 +265,7 @@ const EntrustComponent = () => {
                 <div className="table-column">{item.lever} X</div>
                 {/* <div className="table-column">+7182.92 USDT</div>
                 <div className="table-column">88.88 USDT</div> */}
-                <div className="table-column">171292.11</div>
+                <div className="table-column">{calcForceClosePrice(item)}</div>
                 <div className="table-column">{calcOrderPL(item)} { item.openSymbol }</div>
                 <div className="table-column" onClick={() => onSetTakeProfitAndStopLossClick(item)}>
                   {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
