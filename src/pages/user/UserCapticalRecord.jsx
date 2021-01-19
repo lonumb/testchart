@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Fragment, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useWeb3React } from '@web3-react/core';
+import { useSelector, useDispatch } from 'react-redux';
 import Table from '../../components/table/OwnTable';
 import TableHead from '../../components/table/OwnTableHead';
 import TableBody from '../../components/table/OwnTableBody';
@@ -8,23 +10,86 @@ import TableCell from '../../components/table/OwnTableCell';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import OwnInput from '../../components/form/OwnInput';
 import OwnDateRange from '../../components/form/OwnDateRange';
+import PoolProxyContract from '../../common/contract/PoolProxyContract';
+import SwapTradeContract from '../../common/contract/SwapTradeContract';
 
 import './userCapticalRecord.scss';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
+
 const rows = [createData('BTC', 882931.762814, '0.000000', '0.000000', '0.000000'), createData('USDT', 11.000128, '0.000000', '0.000000', '0.000000')];
 
+let poolProxyContract = null;
+let swapTradeContract;
+
 const UserAccount = () => {
+  const { active, library, account, chainId } = useWeb3React();
   const { t } = useTranslation();
   const [type, setType] = useState(3); // 类型
   const [currency, setCurrency] = useState(''); // 币种
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
+  const [orderList, setOrderList] = useState([]);
+  const [limitOrderList, setLimitOrderList] = useState([]);
+  const { poolList } = useSelector((state) => state.contract);
+  const { poolInfo, setPoolInfo } = useState(null);
+
+  function isAvailable() {
+    return active && account && poolList;
+  }
+
+  async function getData() {
+    console.log('UserCapticalRecord getData available: ', isAvailable());
+    if (!isAvailable()) {
+      return Promise.error('not available');
+    }
+    return Promise.all([
+      swapTradeContract.getAllOrder(poolInfo).then((res) => {
+        console.log('UserCapticalRecord getAllOrder: ', res);
+        setOrderList(res || []);
+      }),
+      swapTradeContract.getAllLimitOrder(poolInfo).then((res) => {
+        console.log('UserCapticalRecord getAllLimitOrder: ', res);
+        setLimitOrderList(res || []);
+      }),
+    ]);
+  }
+
+  const getDataFunc = async () => {
+    var retryCount = 0;
+    while (retryCount < 5) {
+      try {
+        await getData();
+        return
+      } catch (e) {
+        retryCount++;
+      }
+    }
+  };
+
+  useEffect(async () => {
+    if (active && account && poolList) {
+      poolProxyContract = new PoolProxyContract(library, chainId, account);    
+      swapTradeContract = new SwapTradeContract(library, chainId, account);
+
+      getDataFunc();
+    } else {
+      poolProxyContract = null;
+      swapTradeContract = null;
+    }
+  }, [active, library, account, poolList]);
+
+  useEffect(async () => {
+    if (!poolInfo && poolList && poolList.length > 0) {
+      //setPoolInfo(poolList[0]);
+    }
+  }, [poolList]);
 
   const currencyChange = (event) => {
     setCurrency(event.target.value);
   };
+
   // 搜索查询
   function handleSearch() {
     console.log(dateRange);
@@ -66,9 +131,10 @@ const UserAccount = () => {
           <label htmlFor="">{t('textCurrency')}</label>
           <div className="from-ele">
             <NativeSelect value={currency} onChange={currencyChange} input={<OwnInput />}>
-              <option value="">{t('textSelectTip')}</option>
-              <option value="BTC">BTC</option>
-              <option value="USDT">USDT</option>
+              <option value="-1">全部</option>
+              {poolList.map((item, index) => (
+                  <option key={item.symbol} value={index}>{item.symbol}</option>  
+              ))}
             </NativeSelect>
           </div>
         </div>
