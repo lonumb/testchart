@@ -47,6 +47,7 @@ const EntrustComponent = () => {
   const [stopLossType, setStopLossType] = useState(1); // 止损类型
   const [stopLoss, setStopLoss] = useState(''); // 止损
   const [stopLossRate, setStopLossRate] = useState(''); // 止损比例
+  const [refreshDataObj, setRefreshDataObj] = useState({});
 
   function isAvailable() {
     return active && account && poolInfo && poolInfo.poolAddr;
@@ -85,8 +86,13 @@ const EntrustComponent = () => {
     emitter.on('refreshOrder', async () => { 
       console.log('refreshOrder', active, account , poolInfo, poolInfo.poolAddr);
       getDataFunc();
+      setRefreshDataObj({});
     });
   }, [])
+
+  useEffect(() => {
+    getDataFunc();
+  }, [refreshDataObj])
 
   useEffect(() => {
     if (active && account && poolInfo.poolAddr) {

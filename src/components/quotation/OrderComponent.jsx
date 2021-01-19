@@ -74,6 +74,7 @@ const OrderComponent = (props) => {
   const [leverMax, setLevelMax] = useState(false); // 杠杆最大
   const [leverRate, setLevelRate] = useState(1); // 杠杆比例
   const [basicAssetBalance, setBasicAssetBalance] = useState(null); // 本位资产余额
+  const [refreshDataObj, setRefreshDataObj] = useState({});
 
   function isAvailable() {
     return active && account && poolInfo && poolInfo.poolAddr;
@@ -122,8 +123,13 @@ const OrderComponent = (props) => {
     emitter.on('refreshBalance', async () => { 
       console.log('OrderComponent refreshBalance', active, account , poolInfo, poolInfo.poolAddr);
       getDataFunc();
+      setRefreshDataObj({});
     });
   }, [])
+
+  useEffect(() => {
+    getDataFunc();
+  }, [refreshDataObj])
 
   useEffect(() => {
     if (bond != 0) {
