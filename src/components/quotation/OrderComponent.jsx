@@ -14,6 +14,7 @@ import PoolProxyContract from '../../common/contract/PoolProxyContract';
 import ERC20Contract from '../../common/contract/ERC20Contract';
 import TeemoPoolContract from '../../common/contract/TeemoPoolContract';
 import QuoteFactoryContract from '../../common/contract/QuoteFactoryContract';
+import FundContract from '../../common/contract/FundContract';
 import * as Tools from '../../utils/Tools';
 import { fromWei, toBN, toWei } from 'web3-utils';
 import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Constants'
@@ -40,6 +41,7 @@ const stopRateList = [30, 40, 50, 60, 70, 80];
 
 let erc20Contract = null;
 let poolProxyContract = null;
+let fundContract = null;
 
 const OrderComponent = (props) => {
   const { t } = useTranslation();
@@ -66,7 +68,9 @@ const OrderComponent = (props) => {
   const [fee, setFee] = useState(0); // 手续费
   const [gas, setGas] = useState(0); // gas
   const [lever, setLever] = useState(1); // 杠杆
-  const [maxLever, setMaxLever] = useState(100); // 最大允许的杠杆值
+  
+  const [poolTotalAmount, setPoolTotalAmount] = useState(0); // 池子总量
+  const [maxLever, setMaxLever] = useState(0); // 最大允许的杠杆值
   const [leverMax, setLevelMax] = useState(false); // 杠杆最大
   const [leverRate, setLevelRate] = useState(1); // 杠杆比例
   const [basicAssetBalance, setBasicAssetBalance] = useState(null); // 本位资产余额
@@ -95,6 +99,10 @@ const OrderComponent = (props) => {
         console.log('OrderComponent setBasicAssetBalance: ', res);
         setBasicAssetBalance(res);
       }),
+      fundContract.getPoolTotalAmount(poolInfo).then((res) => {
+        console.log('OrderComponent setPoolTotalAmount: ', res);
+        setPoolTotalAmount(res);
+      }),
     ]);
   }
 
@@ -117,16 +125,34 @@ const OrderComponent = (props) => {
     });
   }, [])
 
+  useEffect(() => {
+    if (bond != 0) {
+      if (poolTotalAmount && poolTotalAmount != 0) {
+        var lever = Math.floor(Tools.fromWei(poolTotalAmount, poolInfo.decimals) / bond);
+        if (lever > 100) {
+          lever = 100;
+        }
+        setMaxLever(lever);
+      } else {
+        setMaxLever(0);
+      }
+    } else {
+      setMaxLever(100);
+    }
+  }, [bond, poolTotalAmount])
+
   useEffect(async () => {
     if (active && account && poolInfo.poolAddr) {
       console.log('poolInfo: ', poolInfo);
       erc20Contract = new ERC20Contract(library, chainId, account);
       poolProxyContract = new PoolProxyContract(library, chainId, account);
+      fundContract = new FundContract(library, chainId, account);
 
       getDataFunc();
     } else {
       poolProxyContract = null;
       erc20Contract = null;
+      fundContract = null;
       setBasicAssetBalance(null)
       setAllowance(null);
     }
@@ -233,6 +259,11 @@ const OrderComponent = (props) => {
     }
     let symbol = 'btc/usdt';
     let fixedLever = parseInt(lever);
+
+    if (fixedLever > maxLever) {
+      alert('池子流动性不足');
+      return;
+    }
     
     var tokenAmount = Tools.toWei(bond.toString(), poolInfo.decimals);
 
