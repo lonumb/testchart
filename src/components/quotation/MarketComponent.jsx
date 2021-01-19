@@ -33,9 +33,9 @@ const MarketComponent = () => {
       </div>
       <div className="market-item">
         <span className={`fz16 ${tickerAll['1D'].CC}`}>{tickerAll['1D'].close || 0}</span>
-        <label htmlFor="">≈10109.02 CNY</label>
+        {/* <label htmlFor="">≈10109.02 CNY</label> */}
       </div>
-      <div className="market-item">
+      {/* <div className="market-item">
         <OwnTooltip
           title={
             <React.Fragment>
@@ -53,8 +53,8 @@ const MarketComponent = () => {
           </label>
         </OwnTooltip>
         <span>0.006%</span>
-      </div>
-      <div className="market-item">
+      </div> */}
+      {/* <div className="market-item">
         <OwnTooltip
           title={
             <React.Fragment>
@@ -70,7 +70,7 @@ const MarketComponent = () => {
           </label>
         </OwnTooltip>
         <span>0.006%</span>
-      </div>
+      </div> */}
       <div className="market-item">
         <label htmlFor="">{t('textHUpDown')}</label>
         <span className={tickerAll['1D'].UDC}>{tickerAll['1D'].UDR || 0}%</span>

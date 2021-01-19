@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import Web3 from 'web3';
 import { useSelector, useDispatch } from 'react-redux';
-import { injected, walletconnect, walletlinkconnect, bsc, isBscSupported } from './Connectors';
+import { injected, walletconnect, walletlinkconnect, bsc, isBscSupported, isWalletlinkSupported } from './Connectors';
 import { useEagerConnect, useInactiveListener } from '../../hooks/Wallet';
 import Modal from '../modal/OwnDialog';
 import * as Types from '../../store/types';
@@ -68,10 +68,12 @@ const WalletConnectModal = () => {
               <span>WalletConnet</span>
               <img src="/imgs/wallet/walletconnet.png" />
             </li>
-            <li className={!!(connector === walletlinkconnect) ? 'active' : ''} onClick={() => changeWallet(walletlinkconnect)}>
+            
+            { isWalletlinkSupported() && <li className={!!(connector === walletlinkconnect) ? 'active' : ''} onClick={() => changeWallet(walletlinkconnect)}>
               <span>Coinbase Wallet</span>
               <img src="/imgs/wallet/coinbaseWalletIcon.svg"/>
-            </li>
+            </li>}
+            
             { isBscSupported() && <li
               className={!!(connector === bsc) ? 'active' : ''}
               onClick={async () => {

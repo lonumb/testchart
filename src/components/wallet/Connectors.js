@@ -21,7 +21,7 @@ export const isWalletconnectSupported = () => {
 }
 
 export const isWalletlinkSupported = () => {
-  return true;
+  return supportedChainIds.filter((item) => item == 1).length > 0;
 }
 
 export const isBscSupported = () => {

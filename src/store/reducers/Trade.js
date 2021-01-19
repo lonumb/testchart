@@ -56,13 +56,14 @@ const tradeReducer = (state = defaultState, action) => {
         break;
     
     case Types.TICKER_UPDATE:
-      let { T, O, H, L, C, S, num = 0, datatype } = params;
+      let { T, O, H, L, C, PC, S, num = 0, datatype } = params;
       let ticker = {
         time: parseInt(T) * 1000,
         open: parseFloat(O),
         high: parseFloat(H),
         low: parseFloat(L),
         close: parseFloat(C),
+        prevClose: parseFloat(PC),
         symbol: S,
         volume: parseFloat(num),
       };
@@ -73,18 +74,20 @@ const tradeReducer = (state = defaultState, action) => {
           // 最新价颜色
           let oldPrice = state.tickerAll['1D'].C || 0;
           let newPrice = ticker.C || 0;
-          ticker['CC'] = newPrice > oldPrice ? 'green' : 'red';
+          ticker['CC'] = newPrice > oldPrice ? 'red' : 'green';
           //涨跌幅计算及颜色
           let diff = Tools.sub(ticker.C || 0, params.PC || 0);
           if (Tools.LT(diff, 0)) {
-            ticker['UDC'] = 'red';
+            ticker['UDC'] = 'green';
           }
           if (Tools.GT(diff, 0)) {
-            ticker['UDC'] = 'green';
+            ticker['UDC'] = 'red';
           }
           ticker['UD'] = Tools.fmtToFixed(Tools.abs(diff || 0), 2);
           // 涨跌幅
-          ticker['UDR'] = params.PC ? Tools.fmtToFixed(Tools.mul(Tools.div(Tools.abs(diff), params.PC || 0), 100), 2) : 0;
+          //ticker['UDR'] = params.PC ? Tools.fmtToFixed(Tools.mul(Tools.div(Tools.abs(diff), params.PC || 0), 100), 2) : 0;
+          //UDR
+          ticker['UDR'] = Tools.fmtToFixed(((params.C - (params.PC || params.O)) / ticker.prevClose * 100), 2);
 
           nextState = { ...state, tickerAll: { '1D': ticker } };
         }
