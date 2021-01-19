@@ -1,5 +1,6 @@
 import { Decimal } from 'decimal.js';
 import { BSFLAG_LONG, BSFLAG_SHORT } from './Constants'
+import moment from 'moment';
 
 Decimal.set({ toExpNeg: -30, toExpPos: 30 });
 
@@ -183,6 +184,14 @@ export const generateRandomAlphaNum = (len) => {
   for (; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
   return rdmString.substr(0, len);
 };
+
+export const formatTime = (time, pattern = 'YYYY-MM-DD HH:mm') => { 
+  if (!time) return '';
+  if (time < 1610000000000) {
+    time *= 1000;
+  }
+  return moment(time).format(pattern);
+}
 
 /**
  * 计算订单的盈亏

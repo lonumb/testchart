@@ -181,6 +181,21 @@ const EntrustComponent = () => {
     return '--'
   }
 
+  const formatLimitOrderStatus = (order) => {
+    switch (order.status) {
+      case "1": {
+        return '已撤单';
+      }
+      case "2": {
+        return '未成交';
+      }
+      case "3": {
+        return '已成交';
+      }
+    }
+    return '--';
+  }
+
   return (
     <div className="entrust">
       <div className="tab-box">
@@ -390,8 +405,8 @@ const EntrustComponent = () => {
                 <div className="table-column">
                   {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}
                 </div>
-                <div className="table-column">状态</div>
-                <div className="table-column">时间</div>
+                <div className="table-column">{formatLimitOrderStatus(item)}</div>
+                <div className="table-column">{Tools.formatTime(item.openTime)}</div>
               </div>
             );
           })
@@ -428,7 +443,7 @@ const EntrustComponent = () => {
               <span>{t('textStopPrice')}</span>
             </OwnTooltip>
           </div>
-          <div className="table-column">状态</div>
+          {/* <div className="table-column">状态</div> */}
           <div className="table-column">时间</div>
         </div>
         )}
@@ -455,8 +470,8 @@ const EntrustComponent = () => {
                 <div className="table-column">
                   {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}
                 </div>
-                <div className="table-column">状态</div>
-                <div className="table-column">时间</div>
+                {/* <div className="table-column">状态</div> */}
+                <div className="table-column">{Tools.formatTime(item.openTime)}</div>
               </div>
             );
           })
