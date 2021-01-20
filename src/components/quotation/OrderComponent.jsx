@@ -134,7 +134,7 @@ const OrderComponent = (props) => {
   useEffect(() => {
     if (bond != 0) {
       if (poolTotalAmount && poolTotalAmount != 0) {
-        var lever = Math.floor(Tools.fromWei(poolTotalAmount, poolInfo.decimals) / bond);
+        var lever = Math.floor(Tools.fromWei(poolTotalAmount, poolInfo.decimals) / 2 / bond);
         if (lever > 100) {
           lever = 100;
         }
