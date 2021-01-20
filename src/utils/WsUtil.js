@@ -1,13 +1,14 @@
 import { generateRandomAlphaNum } from './Tools';
 import { actionTickerUpdate, actionQuote } from '../store/actions/TradeAction';
+import { getEnsumeConfigByChainID } from './Config'
 
 export default {
   timer: undefined,
   socket: undefined,
   // 初始化
-  init: function (dispatch, callback) {
+  init: function (dispatch, callback, chainId) {
     // 创建socket链接
-    this.socket = new WebSocket('ws://test.trade.idefiex.com:9002');
+    this.socket = new WebSocket(getEnsumeConfigByChainID(chainId).quoteWS);
     // socket = new WebSocket(`${window.location.protocol === 'http:' ? 'ws:' : 'wss:'}//${window.location.host}/websocket`);
 
     // 默认打开

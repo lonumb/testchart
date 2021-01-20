@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './quotation.scss';
+import { useWeb3React } from '@web3-react/core';
 
 import MarketComponent from '../components/quotation/MarketComponent';
 import ChartComponent from '../components/quotation/ChartComponent';
@@ -16,16 +17,18 @@ const periodMap = { line: '1mink', 1: '1mink', 5: '5mink', 15: '15mink', 30: '30
 
 const Quotation = (props) => {
   const dispatch = useDispatch();
+  const { chainId } = useWeb3React();
   const { productList, productInfo, period } = useSelector((state) => state.trade);
 
   useEffect(() => {
     // 查询币种列表(产品)
-    actionProductList()(dispatch);
+    actionProductList()(dispatch, chainId);
   }, []);
 
   // websocket订阅
   useEffect(() => {
     if (!productInfo.symbol) return;
+
     WsUtil.init(dispatch, () => {
       WsUtil.sendMsg('13007', {
         //sub: [{ symbol: productInfo.symbol.toLowerCase(), datatype: [periodMap[period], periodMap['1D']] }],
@@ -48,7 +51,7 @@ const Quotation = (props) => {
       //   }),
       //   'unsub': [],
       // });
-    });
+    }, chainId);
     return () => {
       // 关闭
       WsUtil.close();

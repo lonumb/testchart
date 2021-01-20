@@ -5,6 +5,7 @@ import OwnPopover from '../popover/OwnPopover';
 import { usePopupState, bindHover, bindPopover, bindToggle } from 'material-ui-popup-state/hooks';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionPeriodUpdate, apiKData } from '../../store/actions/TradeAction';
+import { useWeb3React } from '@web3-react/core';
 
 import DataFeeds from '../chart/Datafeed';
 import ChartUtil from '../chart/ChartUtil';
@@ -85,6 +86,7 @@ const periodMap = {
 
 const ChartComponent = () => {
   const { t } = useTranslation();
+  const { chainId } = useWeb3React();
   const dispatch = useDispatch();
   const popupStateMin = usePopupState({ variant: 'popover', popupId: 'minPopover' });
   const popupStateHour = usePopupState({ variant: 'popover', popupId: 'hourPopover' });
@@ -151,7 +153,7 @@ const ChartComponent = () => {
       // 创建按钮
       // widget.createButton().attr('title', 'Save chart').on('click', function (e) {widget.save(function (data) {alert('Saved');});}).append('<span>save</span>');
     });
-    apiKData({ symbol: productInfo.symbol, type: periodMap[period].api, period: periodMap[period].value, count: '1000', fromtime: '0' }).then((res) => {
+    apiKData({ symbol: productInfo.symbol, type: periodMap[period].api, period: periodMap[period].value, count: '1000', fromtime: '0', chainId }).then((res) => {
       updateChartData(res);
     });
   }, [productInfo, period]);

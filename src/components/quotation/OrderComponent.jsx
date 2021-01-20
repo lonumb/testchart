@@ -294,7 +294,7 @@ const OrderComponent = (props) => {
         if (fixedStopLoss && Tools.LE(maxPrice, fixedStopLoss)) {
           return alert('止损价不能大于当前价');
         }
-        maxPrice = Tools.mul(maxPrice, 1 + slippage);
+        maxPrice = Tools.mul(maxPrice, 1 + slippage).toString();
       } else {
         //校验止盈价
         if (fixedTakeProfit && Tools.GE(fixedTakeProfit, maxPrice)) {
@@ -304,7 +304,7 @@ const OrderComponent = (props) => {
         if (fixedStopLoss && Tools.LE(fixedStopLoss, maxPrice)) {
           return alert('止损价不能小于当前价');
         }
-        maxPrice = Tools.mul(maxPrice, 1 - slippage);
+        maxPrice = Tools.mul(maxPrice, 1 - slippage).toString();
       }
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openMarketSwap(poolInfo, symbol, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss, maxPrice)

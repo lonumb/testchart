@@ -2,6 +2,8 @@ import axios from 'axios';
 import qs from 'qs';
 // import i18next from 'i18next';
 // import { getBackLang } from '../i18n/LangUtil';
+import { getConfigByChainID } from './Config'
+import { ensumeChainId } from '../components/wallet/Config'
 
 const interceptors = (instance) => {
   // request 拦截器
@@ -52,6 +54,15 @@ const interceptors = (instance) => {
  * @param {*} params
  */
 export function URLENCODED_POST(url, params) {
+  var chainId = ensumeChainId(params.chainId);
+  params.chainId = chainId;
+  var baseUrl = getConfigByChainID(chainId).baseUrl;
+  console.log(`baseUrl: ${baseUrl}`, url, params);
+
+  if (url && !url.startsWith(url)) {
+    url = '/' + url;
+  }
+
   const instance = axios.create({ timeout: 10000, headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' } });
   interceptors(instance);
   //   let token = window.localStorage.getItem('token') || '';
@@ -65,7 +76,7 @@ export function URLENCODED_POST(url, params) {
     }
   }
   paramsTemp = { p: window.JSON.stringify(paramsTemp) };
-  return instance.post(url, qs.stringify(paramsTemp));
+  return instance.post(`${baseUrl}${url}`, qs.stringify(paramsTemp));
 }
 
 /**
@@ -74,6 +85,16 @@ export function URLENCODED_POST(url, params) {
  * @param {*} params
  */
 export function URLENCODED_GET(url, params) {
+  var chainId = ensumeChainId(params.chainId);
+  params.chainId = chainId;
+  var baseUrl = getConfigByChainID(chainId).baseUrl;
+  console.log(`baseUrl: ${baseUrl}`, url, params);
+
+  if (url && !url.startsWith(url)) {
+    url = '/' + url;
+  }
+
+  //chainId
   const instance = axios.create({ timeout: 10000, headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' } });
   interceptors(instance);
   if (!params || Object.keys(params) === 0) params = {};
@@ -88,7 +109,7 @@ export function URLENCODED_GET(url, params) {
     }
   }
   paramsTemp = { p: window.JSON.stringify(params) };
-  return instance.get(`${url}?${qs.stringify(paramsTemp)}`);
+  return instance.get(`${baseUrl}${url}?${qs.stringify(paramsTemp)}`);
 }
 
 /**

@@ -6,9 +6,9 @@ import * as HttpUtil from '../../utils/HttpUtil';
  * 更新产品列表信息
  */
 export const actionProductList = () => {
-  return (dispatch) => {
+  return (dispatch, chainId) => {
     dispatch(getProductInfoFunc({ loading: true }));
-    HttpUtil.URLENCODED_GET('/api/trade/queryproductinfo2.do', {})
+    HttpUtil.URLENCODED_GET('/api/trade/queryproductinfo2.do', {chainId})
       .then((res) => {
         let products = [];
         res.datas.forEach((element) => {
@@ -58,8 +58,8 @@ export const actionPeriodUpdate = (period) => {
  * @param {*} params
  */
 export const apiKData = (params) => {
-  let { symbol, type, period, fromtime, count } = params;
-  let paramsTemp = { symbol: symbol.toLowerCase(), ktype: period, fromtime, totime: '0' };
+  let { symbol, type, period, fromtime, count, chainId } = params;
+  let paramsTemp = { symbol: symbol.toLowerCase(), ktype: period, fromtime, totime: '0', chainId };
   if (count) paramsTemp['count'] = count;
   let func = (res) => {
     let result = [];

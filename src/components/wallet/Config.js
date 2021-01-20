@@ -80,6 +80,14 @@ for (let i = 0;i < supportedChainIds.length; i++) {
 
 export const rpcUrls = url;
 
+export const ensumeChainId = (chainId) => {
+    return isSupportedChainId(chainId) ? chainId : defaultChainId;
+}
+
+export const isSupportedChainId = (chainId) => {
+    return supportedChainIds.indexOf(chainId) != -1;
+}
+
 export default {
     defaultChainId,
     defaultChainConfig: chainConfig[defaultChainId],
@@ -87,5 +95,8 @@ export default {
     rpcUrls: url,
     getChainConfig : (chainId) => {
         return Object.assign({}, chainConfig[chainId])
-    }
+    },
+    getEnsumeChainConfig : (chainId) => {
+        return Object.assign({}, chainConfig[ensumeChainId(chainId)])
+    },
 }
