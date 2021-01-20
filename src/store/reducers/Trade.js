@@ -77,10 +77,10 @@ const tradeReducer = (state = defaultState, action) => {
           ticker['CC'] = newPrice > oldPrice ? 'red' : 'green';
           //涨跌幅计算及颜色
           let diff = Tools.sub(ticker.C || 0, params.PC || 0);
-          if (Tools.LT(diff, 0)) {
+          if (Tools.GE(diff, 0)) {
             ticker['UDC'] = 'green';
           }
-          if (Tools.GT(diff, 0)) {
+          if (Tools.LT(diff, 0)) {
             ticker['UDC'] = 'red';
           }
           ticker['UD'] = Tools.fmtToFixed(Tools.abs(diff || 0), 2);

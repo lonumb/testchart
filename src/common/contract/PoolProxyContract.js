@@ -64,6 +64,48 @@ class PoolProxyContract extends BaseContract {
       });
   }
 
+  //获取头寸信息
+  async getAllPositionInfo() {
+    let contract = this.getContract();
+    if (!contract) return;
+    return contract.methods
+      .getAllPositionInfo()
+      .call()
+      .then((data) => {
+        let temp = [];
+        if (data.allTeemoPoolAddr && data.allTeemoPoolAddr.length) {
+          data.allTeemoPoolAddr.forEach((element, index) => {
+            var poolAddr = data.allTeemoPoolAddr[index];
+            var totalAmount = data.allTotalAmount[index];
+            var totalSupply = data.allTotalSupply[index];
+            var totalTokenAmountIn = data.allTotalTokenAmountIn[index];
+            var totalTokenAmountOut = data.allTotalTokenAmountOut[index];
+            var totalTradeP = data.allTotalTradeP[index];
+            var totalTradeL = data.allTotalTradeL[index];
+
+            temp.push({ 
+              poolAddr, 
+              totalAmount,
+              totalSupply,
+              totalTokenAmountIn,
+              totalTokenAmountOut,
+              totalTradeP,
+              totalTradeL,
+            });
+          });
+        }
+        return temp;
+      });
+  }
+
+  async getPositionInfo(poolAddr) {
+    let contract = this.getContract();
+    if (!contract) return;
+    return contract.methods
+      .getPositionInfo(poolAddr)
+      .call();
+  }
+
   getBalanceByPoolInfo(poolInfo, address = this._userAddress) {
     if (!this._web3 && !poolInfo) return Promise.error('web3 == null || poolInfo == null');
     if (poolInfo.erc20Pool) {
