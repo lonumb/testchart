@@ -26,6 +26,7 @@
   "orderLeverBtn": "最大",
   "orderSenior": "高级",
   "orderWaveLabel": "最高允许成交误差",
+  "orderWaveHint": "因下单时间和实际成交时间导致的价格滑点，不可避免",
   "orderWaveMake": "定制",
   "orderFee": "手续费",
   "entrustTabPosition": "持仓",
@@ -158,5 +159,11 @@
   "periodHour2": "4小时",
   "periodDay": "天",
   "periodWeek": "周线",
-  "periodMonth": "月线"
+  "periodMonth": "月线",
+  "open": "开",
+  "high": "高",
+  "low": "低",
+  "close": "收",
+  "maxLeverResizeHint": "可用最大杠杆根据当前资金池深度以及头寸动态调整",
+  "maxLeverCreateOrderHint": "根据建仓时可用的最大杠杆建仓"
 }

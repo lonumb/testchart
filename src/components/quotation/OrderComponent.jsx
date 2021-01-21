@@ -230,36 +230,36 @@ const OrderComponent = (props) => {
       alert('请输入保证金');
       return;
     }
-    if (isNaN(parseFloat(bond))) {
-      alert('请输入正确的保证金');
-      return;
-    }
+    // if (isNaN(parseFloat(bond))) {
+    //   alert('请输入正确的保证金');
+    //   return;
+    // }
     if (openType === OPEN_TYPE_LIMIT) {
       if (!limitPrice || limitPrice === '') {
-        alert('请输入价格');
+        alert(t('limitPricePlaceholder'));
         return;
       }
-      if (isNaN(parseFloat(limitPrice))) {
-        alert('请输入正确的价格');
-        return;
-      }
+      // if (isNaN(parseFloat(limitPrice))) {
+      //   alert('请输入正确的价格');
+      //   return;
+      // }
     }
-    if (!lever || isNaN(parseInt(lever)) || parseInt(lever < 1)) {
-      alert('请输入正确的杠杆');
-      return;
-    }
+    // if (!lever || isNaN(parseInt(lever)) || parseInt(lever < 1)) {
+    //   alert('请输入正确的杠杆');
+    //   return;
+    // }
     let fixedTakeProfit = 0;
     let fixedStopLoss = 0;
     //开启高级设置 moreFlag
     if (moreFlag) {
-      if (takeProfit && isNaN(parseFloat(takeProfit))) {
-        alert('请输入正确的止盈价');
-        return;
-      }
-      if (stopLoss && isNaN(parseFloat(stopLoss))) {
-        alert('请输入正确的止盈价');
-        return;
-      }
+      // if (takeProfit && isNaN(parseFloat(takeProfit))) {
+      //   alert('请输入正确的止盈价');
+      //   return;
+      // }
+      // if (stopLoss && isNaN(parseFloat(stopLoss))) {
+      //   alert('请输入正确的止盈价');
+      //   return;
+      // }
       fixedTakeProfit = toWei((takeProfit || 0).toString());
       fixedStopLoss = toWei((stopLoss || 0).toString());
     }
@@ -446,15 +446,15 @@ const OrderComponent = (props) => {
 
         <div className="form-ele-desc">
           <label htmlFor="">
-            <OwnTooltip title={<React.Fragment>可用最大杠杆根据当前资金池深度以及头寸动态调整</React.Fragment>} arrow placement="bottom">
-              <font className="tip-text">当前可用最大杠杆:</font>
+            <OwnTooltip title={<React.Fragment>{t('maxLeverResizeHint')}</React.Fragment>} arrow placement="bottom">
+              <font className="tip-text">{t('orderLeverDesc')}</font>
             </OwnTooltip>
             {maxLever}x
           </label>
-          <OwnTooltip title={<React.Fragment>根据建仓时可用的最大杠杆建仓</React.Fragment>} arrow placement="bottom-end">
+          <OwnTooltip title={<React.Fragment>{t('maxLeverCreateOrderHint')}</React.Fragment>} arrow placement="bottom-end">
             <span className="sd tip-text">
               <Checkbox size="small" checked={leverMax} onChange={(e) => onLevelMaxClick(e.target.checked) } />
-              最大
+              {t('orderLeverBtn')}
             </span>
           </OwnTooltip>
         </div>
@@ -516,9 +516,9 @@ const OrderComponent = (props) => {
                 </ul>
               )}
               <div className="form-ele-desc">
-                <OwnTooltip title={<React.Fragment>因下单时间和实际成交时间导致的价格滑点,不可避免</React.Fragment>} arrow placement="bottom">
+                <OwnTooltip title={<React.Fragment>{t('orderWaveHint')}</React.Fragment>} arrow placement="bottom">
                   <label htmlFor="" className="tip-text">
-                    最高滑价
+                    {t('orderWaveLabel')}
                   </label>
                 </OwnTooltip>
                 <span className="sd"></span>

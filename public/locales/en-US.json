@@ -26,6 +26,7 @@
   "orderLeverBtn": "Max",
   "orderSenior": "Advanced",
   "orderWaveLabel": "Limit Slippage",
+  "orderWaveHint": "Slippage will exist because of the time gap between when you place an order and when your trade is executed.",
   "orderWaveMake": "Custom",
   "orderFee": "Fee",
   "entrustTabPosition": "Position",
@@ -158,5 +159,11 @@
   "periodHour2": "4H",
   "periodDay": "D",
   "periodWeek": "1W",
-  "periodMonth": "1M"
+  "periodMonth": "1M",
+  "open": "Open",
+  "high": "High",
+  "low": "Low",
+  "close": "Close",
+  "maxLeverResizeHint": "The Max Leverage will be adjusted according to the depth of funding pool and the status of position.",
+  "maxLeverCreateOrderHint": "Open a position with the Max Leverage"
 }
