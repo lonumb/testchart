@@ -281,13 +281,13 @@ const EntrustComponent = () => {
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
                 <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? '买涨' : '买跌'}</div>
-                <div className="table-column">{fromWei(item.openPrice)}</div>
+                <div className="table-column">{item.openPrice == 0 ? '确认中' : fromWei(item.openPrice)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 {/* <div className="table-column">+7182.92 USDT</div>
                 <div className="table-column">88.88 USDT</div> */}
-                <div className="table-column">{calcForceClosePrice(item)}</div>
-                <div className="table-column">{calcOrderPL(item)} { item.openSymbol }</div>
+                <div className="table-column">{item.openPrice == 0 ? '--' : calcForceClosePrice(item)}</div>
+                <div className="table-column">{item.openPrice == 0 ? '--' : calcOrderPL(item)} { item.openSymbol }</div>
                 <div className="table-column" onClick={() => onSetTakeProfitAndStopLossClick(item)}>
                   {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
                 </div>
