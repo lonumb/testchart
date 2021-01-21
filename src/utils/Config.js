@@ -9,9 +9,9 @@ const config = {
         quoteWS: 'ws://test.trade.idefiex.com:9002',
     },
     97: {
-        quoteContractAddress: '0x8Bb29744c56D11E877893B5004f6ee142D913328',
-        poolContractAddress: '0x379367Bb08c226685df883a56BE7CE7a7A80ffB9',
-        poolProxyContractAddress: '0x647804C55c434DF3EcAA83ae9Dc9ecF2774b900b',
+        quoteContractAddress: '0xB2BeAde5c81c9eAb578A1d979F9DC6Cd22701559',
+        poolContractAddress: '0xd68B80636103c4A5896e659734ED3835bcA05dba',
+        poolProxyContractAddress: '0x04264FD6B73D1E2D21fAED9F283a6031c7C32002',
         baseUrl: 'http://47.90.62.21:9003',
         quoteWS: 'ws://test.trade.idefiex.com:9002',
     },
