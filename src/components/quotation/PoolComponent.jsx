@@ -82,7 +82,7 @@ const PoolComponent = () => {
 
   return (
     <div className="pool" ref={poolRef}>
-      <div className="title-box">{t('navPool')}(${poolInfo.symbol})</div>
+      <div className="title-box">{t('navPool')}({poolInfo.symbol})</div>
       <div className="rate-box">
         <div className="block-column block-red" style={{ height: `${poolHeight}px` }}>
           <div className="block" style={{ height: `${getLongFormatPositionRate(positionInfo)}%` }}></div>
