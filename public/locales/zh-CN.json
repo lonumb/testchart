@@ -1,4 +1,5 @@
 {
+  "contract": "合约",
   "navTrade": "交易",
   "navPool": "流动池",
   "navAccount": "账户",
@@ -20,7 +21,8 @@
   "orderMarket": "市价委托",
   "orderLimit": "限价委托",
   "orderMarketPricePlaceholder": "最优市场价",
-  "orderLeverDesc": "当前可用最大杠杆: ",
+  "limitPricePlaceholder": "请输入价格",
+  "orderLeverDesc": "当前可用最大杠杆:",
   "orderLeverBtn": "最大",
   "orderSenior": "高级",
   "orderWaveLabel": "最高允许成交误差",
@@ -153,7 +155,7 @@
   "periodMin30": "30分钟",
   "periodHour": "小时",
   "periodHour1": "1小时",
-  "periodHour4": "4小时",
+  "periodHour2": "4小时",
   "periodDay": "天",
   "periodWeek": "周线",
   "periodMonth": "月线"

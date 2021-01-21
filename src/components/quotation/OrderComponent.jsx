@@ -355,15 +355,15 @@ const OrderComponent = (props) => {
       <div className="order-box" style={{ height: `${orderHeight}px` }}>
         <div className="btn-box">
           <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : ''}`} onClick={() => setBsflag(BSFLAG_LONG)}>
-            买涨
+            {t('tradeOrderBuy')}
           </button>
           <button className={`btn-default ${bsflag === BSFLAG_SHORT ? 'bg-red' : ''}`} onClick={() => setBsflag(BSFLAG_SHORT)}>
-            买跌
+            {t('tradeOrderSell')}
           </button>
         </div>
 
         <div className="form-ele-desc">
-          <label htmlFor="">钱包</label>
+          <label htmlFor="">{t('walletName')}</label>
           <span className="sd">
             {account ? `${account.substring(0, 6)}…${account.substring(account.length, account.length - 4)}` : '--'}
             {/* <OwnTooltip title={<React.Fragment>需充进Layer2中才可进行交易Layer2上交易更快,gas更低</React.Fragment>} arrow placement="bottom">
@@ -373,7 +373,7 @@ const OrderComponent = (props) => {
         </div>
 
         <div className="form-ele-sl">
-          <label htmlFor="">支付Token</label>
+          <label htmlFor="">{t('orderPaymentLabel')}</label>
           <span></span>
           <select value={poolInfo.symbol} onChange={(e) => switchPoolInfo(e.target.value)}>
             {poolList.map((item) => {
@@ -396,25 +396,25 @@ const OrderComponent = (props) => {
         </div> */}
 
         <div className="form-ele-desc">
-          <label htmlFor="">可用</label>
+          <label htmlFor="">{t('textAvailable')}</label>
           <span className="sd">{basicAssetBalance ? Tools.fromWei(basicAssetBalance, poolInfo.decimals) : '--'}</span>
         </div>
 
         <div className="form-ele-select">
           <select value={openType} onChange={(e) => setOpenType(parseInt(e.target.value))}>
-            <option value={OPEN_TYPE_MARKET}>市价委托</option>
-            <option value={OPEN_TYPE_LIMIT}>限价委托</option>
+            <option value={OPEN_TYPE_MARKET}>{t('orderMarket')}</option>
+            <option value={OPEN_TYPE_LIMIT}>{t('orderLimit')}</option>
           </select>
         </div>
 
         <div className={openType === OPEN_TYPE_MARKET ? 'form-ele-disable' : 'form-ele-input'}>
-          <label htmlFor="">价格</label>
-          <input type="text" value={limitPrice} onChange={(e) => setLimitPrice(Tools.numFmt(e.target.value, 18))} placeholder={openType === OPEN_TYPE_MARKET ? '最优市场价' : '请输入价格'} disabled={openType === OPEN_TYPE_MARKET} />
+          <label htmlFor="">{t('textPrice')}</label>
+          <input type="text" value={limitPrice} onChange={(e) => setLimitPrice(Tools.numFmt(e.target.value, 18))} placeholder={openType === OPEN_TYPE_MARKET ? t('orderMarketPricePlaceholder') : t('limitPricePlaceholder')} disabled={openType === OPEN_TYPE_MARKET} />
         </div>
 
         <div className="form-ele-input">
-          <label htmlFor="">保证金</label>
-          <input type="text" value={bond} onChange={(e) => setBond(Tools.numFmt(e.target.value, poolInfo.decimals))} placeholder="最小为2USDT" />
+          <label htmlFor="">{t('textBond')}</label>
+          <input type="text" value={bond} onChange={(e) => setBond(Tools.numFmt(e.target.value, poolInfo.decimals))} placeholder="" />
         </div>
 
         <ul className="form-list-c4">
@@ -433,7 +433,7 @@ const OrderComponent = (props) => {
         </ul>
 
         <div className="form-ele-input">
-          <label htmlFor="">杠杆</label>
+          <label htmlFor="">{t('textLever')}</label>
           <input type="text" value={lever} onChange={(e) => onLeverClick(e.target.value)} />
           <span className="unit" style={{ color: '#f4f9ff' }}>
             x
@@ -461,7 +461,7 @@ const OrderComponent = (props) => {
 
         <div className="form-ele-more">
           <div className="more-title">
-            <label htmlFor="">高级</label>
+            <label htmlFor="">{t('orderSenior')}</label>
             <span onClick={() => setMoreFlag(!moreFlag)}>
               <DoubleArrowRoundedIcon className={moreFlag ? 'svgup' : 'svgdown'} />
             </span>
@@ -470,15 +470,15 @@ const OrderComponent = (props) => {
           {moreFlag && (
             <Fragment>
               <div className="form-ele-desc">
-                <label htmlFor="">止盈</label>
+                <label htmlFor="">{t('textProfit')}</label>
                 {/* <span className="sd">
                   <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setTakeProfitType(profitType === 1 ? 2 : 1)} />
-                  {profitType === 1 ? '价格' : '比例'}
+                  {profitType === 1 ? t('textPrice') : t('textRate')}
                 </span> */}
               </div>
               <div className="form-ele-input">
-                <label htmlFor="">止盈价</label>
-                <input type="text" placeholder="输入止盈价" value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, 18))} />
+                <label htmlFor="">{t('textProfitPrice')}</label>
+                <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, 18))} />
                 {profitType === 2 && <span className="unit">%</span>}
               </div>
               {profitType === 2 && (
@@ -493,15 +493,15 @@ const OrderComponent = (props) => {
                 </ul>
               )}
               <div className="form-ele-desc">
-                <label htmlFor="">止损</label>
+                <label htmlFor="">{t('textStop')}</label>
                 {/* <span className="sd">
                   <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setStopType(stopType === 1 ? 2 : 1)} />
-                  {profitType === 1 ? '价格' : '比例'}
+                  {profitType === 1 ? t('textPrice') : t('textRate')}
                 </span> */}
               </div>
               <div className="form-ele-input">
-                <label htmlFor="">止损价</label>
-                <input type="text" placeholder="输入止损价" value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, 18))} />
+                <label htmlFor="">{t('textStopPrice')}</label>
+                <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, 18))} />
                 {stopType === 2 && <span className="unit">%</span>}
               </div>
               {stopType === 2 && (
@@ -565,11 +565,11 @@ const OrderComponent = (props) => {
         {
           isTradeAvailable() ? (Tools.GT(allowance || 0, 0) ? (
             <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => createOrder()}>
-              {bsflag === 2 ? '买涨' : '买跌'}
+              {bsflag === 2 ? t('tradeOrderBuy') : t('tradeOrderSell')}
             </button>
           ) : (
             <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => approveToPool()}>
-              授权USDT
+              {t('btnAuth')} {poolInfo.symbol}
             </button>
           )) : (<span></span>)
         }

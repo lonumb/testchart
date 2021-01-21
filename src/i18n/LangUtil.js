@@ -1,12 +1,10 @@
 export const langList = {
   'en-US': { v: 'en_US', vb: 'en', t: 'English' },
-  'zh-CN': { v: 'zh_CN', vb: 'zh_CN', t: '中文' },
-  'ko-KR': { v: 'ko_KR', vb: 'kr', t: '한국어' },
-  'vi-VN': { v: 'vi_VN', vb: 'vi', t: 'Tiếng Việt' },
+  'zh-CN': { v: 'zh_CN', vb: 'zh_CN', t: '简体中文' },
 };
 
 export const getLang = () => {
-  let lang = window.localStorage.getItem('LANGUAGE') || 'zh-CN';
+  let lang = window.localStorage.getItem('LANGUAGE') || 'en-US';
   return lang;
 };
 

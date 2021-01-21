@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actionRechargeModal, actionWithdrawModal, actionWalletModal } from '../../store/actions/CommonAction';
 import { injected, walletconnect } from '../wallet/Connectors';
 import { supportedChainIds, chainConfig } from '../../components/wallet/Config'
+import { langList, getLang, switchLang } from '../../i18n/LangUtil';
 
 import OwnPopover from '../popover/OwnPopover';
 import WithdrawModal from '../account/Withdraw';
@@ -38,6 +39,7 @@ const HeaderComponent = () => {
   const popupStateOrder = usePopupState({ variant: 'popover', popupId: 'orderPopover' });
 
   const [network, setNetwork] = useState(false);
+  const [lang, setLang] = useState('en-US');
 
   // 复制地址
   function copyAddrFunc() {
@@ -59,11 +61,20 @@ const HeaderComponent = () => {
     }
   }, [active, chainId]);
 
+  useEffect(() => {
+    setLang(getLang());
+  }, []);
+
   const getConnectionUrl = (library) => {
     if (connector === injected && window.ethereum && window.ethereum.isMathWallet) {
       return 'mathWallet';
     }
     return library.connection.url;
+  };
+
+  const onLangClick = (lang) => {
+    setLang(lang);
+    switchLang(lang);
   };
 
   return (
@@ -98,7 +109,8 @@ const HeaderComponent = () => {
       {/* <div className="news">
         <Notifications />
       </div> */}
-      {active && (
+      
+      {/* {active && (
         <div className="order-status" {...bindToggle(popupStateOrder)} {...bindHover(popupStateOrder)}>
           1 Pending...
           <OwnPopover {...bindPopover(popupStateOrder)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
@@ -123,14 +135,19 @@ const HeaderComponent = () => {
             </ul>
           </OwnPopover>
         </div>
-      )}
+      )} */}
 
       <div className="language" {...bindToggle(popupStateLang)} {...bindHover(popupStateLang)}>
-        English <ExpandMoreRoundedIcon />
+        {langList[lang].t} <ExpandMoreRoundedIcon />
         <OwnPopover {...bindPopover(popupStateLang)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
           <ul className="lang-list">
-            <li className="active">English</li>
-            <li onClick={() => console.log('简体中文')}>简体中文</li>
+            {Object.keys(langList).map((item) => {
+                return (
+                  <li className={lang == item ? 'active' : ''} onClick={() => onLangClick(item)} key={item}>
+                    {langList[item].t}
+                  </li>
+                );
+            })}
           </ul>
         </OwnPopover>
       </div>

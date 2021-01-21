@@ -230,7 +230,7 @@ const EntrustComponent = () => {
         {/* 持仓 head */}
         {active && type === 1 && (
           <div className="table-head">
-          <div className="table-column">合约</div>
+          <div className="table-column">{t('contract')}</div>
           <div className="table-column">{t('textDir')}</div>
 
           <div className="table-column tip-text">
@@ -280,7 +280,7 @@ const EntrustComponent = () => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
-                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? '买涨' : '买跌'}</div>
+                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
                 <div className="table-column">{item.openPrice == 0 ? '确认中' : fromWei(item.openPrice)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
@@ -305,12 +305,12 @@ const EntrustComponent = () => {
         {/* 当前委托 head */}
         {active && type === 2 && (
           <div className="table-head">
-          <div className="table-column">合约</div>
+          <div className="table-column">{t('contract')}</div>
           <div className="table-column">{t('textDir')}</div>
 
           <div className="table-column tip-text">
             <OwnTooltip title={<React.Fragment>{t('entrustPriceDesc')}</React.Fragment>} arrow placement="bottom">
-              <span>委托价</span>
+              <span>{t('textEntrustPrice')}</span>
             </OwnTooltip>
           </div>
 
@@ -336,7 +336,7 @@ const EntrustComponent = () => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
-                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? '买涨' : '买跌'}</div>
+                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
                 <div className="table-column">{fromWei(item.openPrice)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
@@ -363,7 +363,7 @@ const EntrustComponent = () => {
         {/* 历史委托 head */}
         {active && type === 3 && (
           <div className="table-head">
-          <div className="table-column">合约</div>
+          <div className="table-column">{t('contract')}</div>
           <div className="table-column">{t('textDir')}</div>
 
           <div className="table-column tip-text">
@@ -385,8 +385,8 @@ const EntrustComponent = () => {
               <span>{t('textStopPrice')}</span>
             </OwnTooltip>
           </div>
-          <div className="table-column">状态</div>
-          <div className="table-column">时间</div>
+          <div className="table-column">{t('textStatus')}</div>
+          <div className="table-column">{t('textTime')}</div>
         </div>
         )}
         {/* 历史委托 body */}
@@ -395,7 +395,7 @@ const EntrustComponent = () => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
-                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? '买涨' : '买跌'}</div>
+                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
                 <div className="table-column">{fromWei(item.openPrice)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
                 <div className="table-column">{item.lever} X</div>
@@ -421,7 +421,7 @@ const EntrustComponent = () => {
         {/* 已平仓 head */}
         {active && type === 4 && (
           <div className="table-head">
-          <div className="table-column">合约</div>
+          <div className="table-column">{t('contract')}</div>
           <div className="table-column">{t('textDir')}</div>
 
           <div className="table-column tip-text">
@@ -450,7 +450,7 @@ const EntrustComponent = () => {
             </OwnTooltip>
           </div>
           {/* <div className="table-column">状态</div> */}
-          <div className="table-column">时间</div>
+          <div className="table-column">t('textTime')</div>
         </div>
         )}
         {/* 已平仓 body */}
@@ -459,7 +459,7 @@ const EntrustComponent = () => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
-                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? '买涨' : '买跌'}</div>
+                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
                 <div className="table-column">{fromWei(item.openPrice)}</div>
                 <div className="table-column">{fromWei(item.openPrice)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</div>
@@ -494,7 +494,7 @@ const EntrustComponent = () => {
           </div>
           <div className="form-ele-input">
             <label htmlFor="">{t('textProfitPrice')}</label>
-            <input type="text" placeholder="输入止盈价" value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, 18))} />
+            <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, 18))} />
             {profitType === 2 && <span className="unit">%</span>}
           </div>
           {/* <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div> */}
@@ -518,7 +518,7 @@ const EntrustComponent = () => {
           </div>
           <div className="form-ele-input">
             <label htmlFor="">{t('textStopPrice')}</label>
-            <input type="text" placeholder="输入止损价" value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, 18))} />
+            <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, 18))} />
             {stopLossType === 2 && <span className="unit">%</span>}
           </div>
           {/* <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div> */}
@@ -534,7 +534,7 @@ const EntrustComponent = () => {
             </ul>
           )}
           <div className="form-error"></div>
-          <button className="btn-primary" onClick={e=> onModifyTakeProfitAndStopLossClick()}>确认修改</button>
+          <button className="btn-primary" onClick={e=> onModifyTakeProfitAndStopLossClick()}>{t('btnConfirm')}</button>
         </div>
       </OwnDialogModal>
     </div>
