@@ -12,6 +12,9 @@ import OwnInput from '../../components/form/OwnInput';
 import OwnDateRange from '../../components/form/OwnDateRange';
 import PoolProxyContract from '../../common/contract/PoolProxyContract';
 import SwapTradeContract from '../../common/contract/SwapTradeContract';
+import * as Tools from '../../utils/Tools';
+import { BSFLAG_LONG, BSFLAG_SHORT } from '../../utils/Constants'
+import { fromWei, toBN, toWei } from 'web3-utils';
 
 import './userCapticalRecord.scss';
 
@@ -19,7 +22,7 @@ function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
 
-const rows = [createData('BTC', 882931.762814, '0.000000', '0.000000', '0.000000'), createData('USDT', 11.000128, '0.000000', '0.000000', '0.000000')];
+const rows = [createData('BTC11', 882931.762814, '0.000000', '0.000000', '0.000000'), createData('USDT', 11.000128, '0.000000', '0.000000', '0.000000')];
 
 let poolProxyContract = null;
 let swapTradeContract;
@@ -45,12 +48,12 @@ const UserAccount = () => {
       return Promise.error('not available');
     }
     return Promise.all([
-      swapTradeContract.getAllOrder(poolInfo).then((res) => {
-        console.log('UserCapticalRecord getAllOrder: ', res);
+      poolProxyContract.getAllOrder(poolList).then((res) => {
+        console.log('UserCapticalRecord setAllOrder: ', res);
         setOrderList(res || []);
       }),
-      swapTradeContract.getAllLimitOrder(poolInfo).then((res) => {
-        console.log('UserCapticalRecord getAllLimitOrder: ', res);
+      poolProxyContract.getAllLimitOrder(poolList).then((res) => {
+        console.log('UserCapticalRecord setAllLimitOrder: ', res);
         setLimitOrderList(res || []);
       }),
     ]);
@@ -98,6 +101,21 @@ const UserAccount = () => {
   // 重置
   function handleReset() {}
 
+  const formatLimitOrderStatus = (order) => {
+    switch (order.status) {
+      case "1": {
+        return '已撤单';
+      }
+      case "2": {
+        return '未成交';
+      }
+      case "3": {
+        return '已成交';
+      }
+    }
+    return '--';
+  }
+
   return (
     <div className="user-capital-record">
       <div className="head-box">
@@ -115,9 +133,9 @@ const UserAccount = () => {
           <li className={`item ${type === 4 ? 'active' : ''}`} onClick={() => setType(4)}>
             {t('textClose')}
           </li>
-          <li className={`item ${type === 5 ? 'active' : ''}`} onClick={() => setType(5)}>
+          {/* <li className={`item ${type === 5 ? 'active' : ''}`} onClick={() => setType(5)}>
             {t('navPool')}
-          </li>
+          </li> */}
         </ul>
       </div>
       <div className="search-box">
@@ -131,9 +149,9 @@ const UserAccount = () => {
           <label htmlFor="">{t('textCurrency')}</label>
           <div className="from-ele">
             <NativeSelect value={currency} onChange={currencyChange} input={<OwnInput />}>
-              <option value="-1">全部</option>
+              <option value="">全部</option>
               {poolList.map((item, index) => (
-                  <option key={item.symbol} value={index}>{item.symbol}</option>  
+                  <option key={item.symbol} value={item.symbol}>{item.symbol}</option>  
               ))}
             </NativeSelect>
           </div>
@@ -152,7 +170,7 @@ const UserAccount = () => {
         </div> */}
       </div>
       <div className="table-wrap">
-        {(type === 1 || type === 2) && (
+        {/* {(type === 1) && (
           <Table>
             <TableHead>
               <TableRow>
@@ -178,39 +196,66 @@ const UserAccount = () => {
             </TableBody>
           </Table>
         )}
+
+        {(type === 2) && (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{t('textTime')}</TableCell>
+                <TableCell>{t('textCurrency')}</TableCell>
+                <TableCell>{t('textNum')}</TableCell>
+                <TableCell>Txid</TableCell>
+                <TableCell>{t('textStatus')}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {limitOrderList.filter((item) => item.closePrice != 0).map((item, index) => (
+                <TableRow key={item.symbol}>
+                  <TableCell component="th" scope="row">
+                  </TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>已提交</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )} */}
+
         {type === 3 && (
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t('textTime')}(UTC+8)</TableCell>
+                <TableCell>{t('textTime')}</TableCell>
                 <TableCell>{t('textProductCode')}</TableCell>
-                <TableCell>{t('textType')}</TableCell>
+                {/* <TableCell>{t('textType')}</TableCell> */}
                 <TableCell>{t('textDir')}</TableCell>
                 <TableCell>{t('textPrice')}</TableCell>
                 <TableCell>{t('textBond')}</TableCell>
                 <TableCell>{t('textLever')}</TableCell>
                 <TableCell>{t('textProfit')}</TableCell>
                 <TableCell>{t('textStop')}</TableCell>
-                <TableCell>Txid</TableCell>
+                {/* <TableCell>Txid</TableCell> */}
                 <TableCell>{t('textStatus')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.name}>
+              {limitOrderList.filter((item) => currency == '' || currency == item.openSymbol).map((item) => (
+                <TableRow key={item.orderId}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {Tools.formatTime(item.openTime)}
                   </TableCell>
-                  <TableCell>{row.calories}</TableCell>
-                  <TableCell>{row.fat}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
+                  <TableCell>{item.symbol}</TableCell>
+                  {/* <TableCell></TableCell> */}
+                  <TableCell>{item.bsFlag == BSFLAG_LONG ? '买涨' : '买跌'}</TableCell>
+                  <TableCell>{fromWei(item.openPrice)}</TableCell>
+                  <TableCell>{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</TableCell>
+                  <TableCell>{item.lever} X</TableCell>
+                  <TableCell>{item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'}</TableCell>
+                  <TableCell>{item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}</TableCell>
+                  {/* <TableCell></TableCell> */}
+                  <TableCell>{formatLimitOrderStatus(item)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -220,35 +265,35 @@ const UserAccount = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t('textCloseTime')}(UTC+8)</TableCell>
+                <TableCell>{t('textCloseTime')}</TableCell>
                 <TableCell>{t('textProductCode')}</TableCell>
                 <TableCell>{t('textClosePrice')}</TableCell>
                 <TableCell>{t('textBond')}</TableCell>
                 <TableCell>{t('textLever')}</TableCell>
-                <TableCell>{t('textProfitStop')}</TableCell>
-                <TableCell>Txid</TableCell>
-                <TableCell>{t('textCloseType')}</TableCell>
+                {/* <TableCell>{t('textProfitStop')}</TableCell> */}
+                {/* <TableCell>Txid</TableCell> */}
+                {/* <TableCell>{t('textCloseType')}</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.name}>
+              {orderList.filter((item) => (currency == '' || currency == item.openSymbol) && item.closePrice != 0).map((item) => (
+                <TableRow key={item.orderId}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {Tools.formatTime(item.openTime)}
                   </TableCell>
-                  <TableCell>{row.calories}</TableCell>
-                  <TableCell>{row.fat}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
+                  <TableCell>{item.symbol}</TableCell>
+                  <TableCell>{Tools.fromWei(item.closePrice, 18)}</TableCell>
+                  <TableCell>{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</TableCell>
+                  <TableCell>{item.lever} X</TableCell>
+                  {/* <TableCell>--</TableCell> */}
+                  {/* <TableCell></TableCell> */}
+                  {/* <TableCell></TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         )}
-        {type === 5 && (
+        {/* {type === 5 && (
           <Table>
             <TableHead>
               <TableRow>
@@ -275,7 +320,7 @@ const UserAccount = () => {
               ))}
             </TableBody>
           </Table>
-        )}
+        )} */}
       </div>
     </div>
   );

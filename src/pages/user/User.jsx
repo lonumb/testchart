@@ -13,11 +13,11 @@ const User = (props) => {
     <div className="account-wrap">
       <div className="sidebar">
         <ul className="menu-box">
-          <li className="menu-item">
+          {/* <li className="menu-item">
             <NavLink to="/user/center">
               <AccountBalanceWalletIcon /> {t('menuAccount')}
             </NavLink>
-          </li>
+          </li> */}
           <li className="menu-item">
             <NavLink to="/user/rw-record">
               <ListAltIcon /> {t('menuRecord')}

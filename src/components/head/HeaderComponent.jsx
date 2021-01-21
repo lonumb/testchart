@@ -78,7 +78,7 @@ const HeaderComponent = () => {
         </li>
         <li className="item">
           <NavLink
-            to="/user/center"
+            to="/user/rw-record"
             isActive={(match, location) => {
               return location.pathname ? location.pathname.indexOf('/user') !== -1 : false;
             }}
