@@ -44,7 +44,6 @@ const PoolComponent = () => {
     }
   };
 
-  
   useEffect(() => {
     // 设置列表高度
     setPoolHeight(poolRef.current.clientHeight - 65);
@@ -61,34 +60,54 @@ const PoolComponent = () => {
     }
   }, [active, library, account, poolInfo]);
 
+  const getFormatPosition = (position) => {
+    var result = Tools.fromWei(position || '0', (poolInfo ? poolInfo.decimals : 0));
+    if (result < 0) {
+      result = 0;
+    }
+    return result;
+  }
+
+  const getLongFormatPositionRate = (poolInfo) => {
+    var totalP = getFormatPosition(poolInfo.totalP);
+    var total = Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0);
+    return Tools.numFmt(totalP / total, 2);
+  }
+
+  const getShortFormatPositionRate = () => {
+    var totalL = getFormatPosition(poolInfo.totalP);
+    var total = Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0);
+    return Tools.numFmt(totalL / total, 2);
+  }
+
   return (
     <div className="pool" ref={poolRef}>
       <div className="title-box">{t('navPool')}(${poolInfo.symbol})</div>
       <div className="rate-box">
         <div className="block-column block-red" style={{ height: `${poolHeight}px` }}>
-          <div className="block" style={{ height: `${100}%` }}></div>
+          <div className="block" style={{ height: `${getLongFormatPositionRate(positionInfo)}%` }}></div>
         </div>
         <div className="block-column block-green" style={{ height: `${poolHeight}px` }}>
-          <div className="block" style={{ height: `${60}%` }}></div>
+          <div className="block" style={{ height: `${getShortFormatPositionRate(positionInfo)}%` }}></div>
         </div>
         <div className="block-info">
           <div className="row">
             <span className="label0">{t('poolMany')}</span>
             <span className="label1">{t('poolCirculate')}:</span>
             <span className="label2">{Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0)}</span>
-            <span className="label3">(30.22%)</span>
+            <span className="label3">({Tools.numFmt(100 - getLongFormatPositionRate(positionInfo), 2)}%)</span>
             <span className="label1">{t('poolPosition')}:</span>
-            <span className="label2">1234414</span>
-            <span className="label3">(30.22%)</span>
+            <span className="label2">{getFormatPosition(positionInfo.totalP)}</span>
+            <span className="label3">({getLongFormatPositionRate(positionInfo)}%)</span>
           </div>
           <div className="row">
             <span className="label0">{t('poolEmpty')}</span>
             <span className="label1">{t('poolCirculate')}:</span>
             <span className="label2">{Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0)}</span>
-            <span className="label3">(30.22%)</span>
+            <span className="label3">({Tools.numFmt(100 - getShortFormatPositionRate(positionInfo), 2)}%)</span>
             <span className="label1">{t('poolPosition')}:</span>
-            <span className="label2">1234414</span>
-            <span className="label3">(30.22%)</span>
+            <span className="label2">{getFormatPosition(positionInfo.totalL)}</span>
+            <span className="label3">({getShortFormatPositionRate(positionInfo)}%)</span>
           </div>
         </div>
       </div>

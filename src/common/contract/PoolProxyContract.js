@@ -82,6 +82,10 @@ class PoolProxyContract extends BaseContract {
             var totalTokenAmountOut = data.allTotalTokenAmountOut[index];
             var totalTradeP = data.allTotalTradeP[index];
             var totalTradeL = data.allTotalTradeL[index];
+            var longOrderTotalAmount = data.allLongOrderTotalAmount[index];
+            var shortOrderTotalAmount = data.allShortOrderTotalAmount[index];
+            var totalP = data.allTotalP[index];
+            var totalL = data.allTotalL[index];
 
             temp.push({ 
               poolAddr, 
@@ -91,6 +95,10 @@ class PoolProxyContract extends BaseContract {
               totalTokenAmountOut,
               totalTradeP,
               totalTradeL,
+              longOrderTotalAmount,
+              shortOrderTotalAmount,
+              totalP,
+              totalL
             });
           });
         }

@@ -62,12 +62,13 @@ const PoolInfo = () => {
   const [amount, setAmount] = useState('');
 
   const { poolList } = useSelector((state) => state.contract);
-  const [ totalAmountList, setTotalAmountList ] = useState([]);
+  //const [ totalAmountList, setTotalAmountList ] = useState([]);
   const [ userFundList, setUserFundList ] = useState([]);
   const [ tokenBalanceList, setTokenBalanceList ] = useState([]);
   const [ lptokenBalanceList, setLptokenBalanceList ] = useState([]);
   const [ tokenAllowanceList, setTokenAllowanceList ] = useState([]);
   const [ lptokenAllowanceList, setLptokenAllowanceList ] = useState([]);
+  const [ positionInfoList, setPositionInfoList ] = useState([]);
   const [ refreshObj, setRefreshObj ] = useState({});
   
   function isAvailable() {
@@ -79,14 +80,14 @@ const PoolInfo = () => {
     if (!isAvailable()) {
       return Promise.error('not available');
     }
-    var totalAmountPromises = [];
+    //var totalAmountPromises = [];
     var userFundPromises = [];
     var tokenBalancePromises = [];
     var lptokenBalancePromises = [];   
     var tokenAllowancePromises = []; 
     var lptokenAllowancePromises = []; 
     for (let poolInfo of poolList) {
-      totalAmountPromises.push(fundContract.getPoolTotalAmount(poolInfo));
+      //totalAmountPromises.push(fundContract.getPoolTotalAmount(poolInfo));
       userFundPromises.push(fundContract.getUserFundInfo(poolInfo));
       tokenBalancePromises.push(poolProxyContract.getBalanceByPoolInfo(poolInfo));
       lptokenBalancePromises.push(erc20Contract.getBalanceOf(account, poolInfo.lptokenAddr));
@@ -94,10 +95,10 @@ const PoolInfo = () => {
       lptokenAllowancePromises.push(erc20Contract.getAllowance(account, poolInfo.lptokenAddr, poolInfo.poolAddr));
     }
     return Promise.all([
-      Promise.all(totalAmountPromises).then((res) => {
-        console.log('totalAmountList: ', res);
-        setTotalAmountList(res || []);
-      }),
+      // Promise.all(totalAmountPromises).then((res) => {
+      //   console.log('totalAmountList: ', res);
+      //   setTotalAmountList(res || []);
+      // }),
       Promise.all(userFundPromises).then((res) => {
         console.log('userFundList: ', res);
         setUserFundList(res || []);
@@ -117,6 +118,10 @@ const PoolInfo = () => {
       Promise.all(lptokenAllowancePromises).then((res) => {
         console.log('lptokenAllowanceList: ', res);
         setLptokenAllowanceList(res || []);
+      }),
+      poolProxyContract.getAllPositionInfo().then((res) => {
+        console.log('positionInfoList: ', res);
+        setPositionInfoList(res || []);
       }),
     ]);
   }
@@ -145,6 +150,64 @@ const PoolInfo = () => {
       erc20Contract = null;
     }
   }, [active, library, account, poolList]);
+
+  const getPositionInfo = (poolAddr) => {
+    var result = (positionInfoList || []).filter((item) => item.poolAddr == poolAddr);
+    if (result.length > 0) {
+      return result[0];
+    }
+    return null;
+  };
+
+  const getLongFormatPosition = (poolInfo) => {
+    var positionInfo = getPositionInfo(poolInfo.poolAddr);
+    if (!positionInfo) {
+      return '0';
+    }
+    var result = Tools.fromWei(positionInfo.totalL || '0', (poolInfo ? poolInfo.decimals : 0));
+    if (result < 0) {
+      result = 0;
+    }
+    return result;
+  }
+
+  const getShortFormatPosition = (poolInfo) => {
+    var positionInfo = getPositionInfo(poolInfo.poolAddr);
+    if (!positionInfo) {
+      return '0';
+    }
+    var result = Tools.fromWei(positionInfo.totalL || '0', (poolInfo ? poolInfo.decimals : 0));
+    if (result < 0) {
+      result = 0;
+    }
+    return result;
+  }
+
+  const getLongFormatPositionRate = (poolInfo) => {
+    var positionInfo = getPositionInfo(poolInfo.poolAddr);
+    if (!positionInfo) {
+      return '0';
+    }
+    var totalP = getLongFormatPosition(poolInfo);
+    var total = Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0);
+    return Tools.numFmt(totalP / total, 2);
+  }
+
+  const getShortFormatPositionRate = (poolInfo) => {
+    var positionInfo = getPositionInfo(poolInfo.poolAddr);
+    if (!positionInfo) {
+      return '0';
+    }
+    var totalL = getShortFormatPosition(poolInfo);
+    var total = Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0);
+    return Tools.numFmt(totalL / total, 2);
+  }
+
+  const getTotalPl = (poolInfo) => {
+    var p = getLongFormatPosition(poolInfo);
+    var l = getShortFormatPosition(poolInfo);
+    return Tools.fromWei(Tools.div(p + l, 2), (poolInfo ? poolInfo.decimals : 0));
+  }
 
   const getPledgeAmount = (userFund) => {
     return Tools.sub(userFund.tokenAmountIn, userFund.tokenAmountOut);
@@ -259,7 +322,7 @@ const PoolInfo = () => {
                 <div className="line"></div>
                 <div className="title-item">
                   <label htmlFor="">{t('poolTotal')}</label>
-                  <div className="num">{totalAmountList.length > index ? Tools.fromWei(totalAmountList[index], item.decimals) : '--' } { item.symbol }</div>
+                  <div className="num">{getPositionInfo(item.poolAddr) ? Tools.fromWei(getPositionInfo(item.poolAddr).totalAmount, item.decimals) : '--' } { item.symbol }</div>
                 </div>
                 {/* <div className="title-item">
                   <label htmlFor="">{t('poolYearProfit')}</label>
@@ -287,42 +350,42 @@ const PoolInfo = () => {
                 <ul className="info-columns">
                   <li>
                     <label htmlFor="">{t('poolCirculate')}</label>
-                    <span>81949.736192</span>
+                    <span>{getPositionInfo(item.poolAddr) ? Tools.fromWei(Tools.div(getPositionInfo(item.poolAddr).totalAmount, 2), item.decimals) : '--' }</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPosition')}</label>
-                    <span>172849.736192</span>
+                    <span>{getLongFormatPosition(item)}</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPositionRate')}</label>
-                    <span>50.10%</span>
+                    <span>{getLongFormatPositionRate(item)}%</span>
                   </li>
                 </ul>
                 <div className="progress-box">
                   <div className="progress-one"></div>
-                  <div className="progress-red" style={{ width: '60%' }}></div>
+                  <div className="progress-red" style={{ width: `${getLongFormatPositionRate(item)}%` }}></div>
                 </div>
                 <span className="title">{t('poolEmpty')}</span>
                 <ul className="info-columns">
                   <li>
                     <label htmlFor="">{t('poolCirculate')}</label>
-                    <span>81949.736192</span>
+                    <span>{getPositionInfo(item.poolAddr) ? Tools.fromWei(Tools.div(getPositionInfo(item.poolAddr).totalAmount, 2), item.decimals) : '--' }</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPosition')}</label>
-                    <span>172849.736192</span>
+                    <span>{getShortFormatPosition(item)}</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPositionRate')}</label>
-                    <span>50.10%</span>
+                    <span>{getShortFormatPositionRate(item)}%</span>
                   </li>
                 </ul>
                 <div className="progress-box">
                   <div className="progress-one"></div>
-                  <div className="progress-green" style={{ width: '30%' }}></div>
+                  <div className="progress-green" style={{ width: `${getShortFormatPositionRate(item)}%` }}></div>
                 </div>
                 <div className="loss-profit">
-                  {t('poolFloatProfitStop')}： <span className="red">-9829.112930</span>
+                  {t('poolFloatProfitStop')}： <span className="red">{getTotalPl(item)}</span>
                 </div>
                 <div className="form-wrap">
                   <div className="form-box">
