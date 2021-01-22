@@ -15,7 +15,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionRechargeModal, actionWithdrawModal, actionWalletModal } from '../../store/actions/CommonAction';
 import { injected, walletconnect } from '../wallet/Connectors';
-import { supportedChainIds, chainConfig } from '../../components/wallet/Config'
+import { supportedChainIds, chainConfig, isSupportedChainId } from '../../components/wallet/Config'
 import { langList, getLang, switchLang } from '../../i18n/LangUtil';
 
 import OwnPopover from '../popover/OwnPopover';
@@ -157,7 +157,7 @@ const HeaderComponent = () => {
           <div className="wallet" {...bindToggle(popupStateWallet)} {...bindHover(popupStateWallet)}>
             <img src={`/imgs/wallet/${getConnectionUrl(library)}.png`} width="20" alt="" />
             <span className="addr">{`${account.substring(0, 6)}…${account.substring(account.length, account.length - 4)}`}</span>
-            {!network ? <span className="network">{chainConfig[chainId].networkName}</span> : <span className="network error">Wrong Network</span>}
+            {isSupportedChainId(chainId) ? <span className="network">{chainConfig[chainId].networkName}</span> : <span className="network error">Wrong Network</span>}
 
             <ArrowDropDownRoundedIcon style={{ fontSize: 32, margin: '0 -6px 0 -5px' }} />
           </div>

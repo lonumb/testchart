@@ -28,7 +28,7 @@ export const isBscSupported = () => {
   return supportedChainIds.filter((item) => item == 56 || item == 97).length > 0;
 }
 
-export const injected = new InjectedConnector({ supportedChainIds });
+export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42, 56, 97, 1337] });
 
 export const network = new NetworkConnector({
   urls: rpcUrls,

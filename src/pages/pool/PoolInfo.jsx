@@ -410,7 +410,7 @@ const PoolInfo = () => {
                     {
                       tokenAllowanceList.length < index ? (<div></div>) 
                       : isTokenApproved(item, index) ? (<button className="btn-default" onClick={e=> deposit(item, index)}>{t('btnPledge')}</button>) 
-                      : (<button className="btn-default" onClick={e=> tokenApprove(item, index)}>授权</button>)
+                      : (<button className="btn-default" onClick={e=> tokenApprove(item, index)}>{t('btnAuth')}</button>)
                     }
 
                     {/* {tokenBalanceAllowanceList.length > index ? 
@@ -436,7 +436,7 @@ const PoolInfo = () => {
                     {
                       tokenAllowanceList.length < index ? (<div></div>) 
                       : isLptokenApproved(item, index) ? (<button className="btn-primary" onClick={e=> withdraw(item, index)}>{t('btnUnlock')}</button>) 
-                      : (<button className="btn-default" onClick={e=> lptokenApprove(item, index)}>授权</button>)
+                      : (<button className="btn-default" onClick={e=> lptokenApprove(item, index)}>{t('btnAuth')}</button>)
                     }
                     
                   </div>

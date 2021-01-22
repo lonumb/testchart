@@ -104,13 +104,13 @@ const UserAccount = () => {
   const formatLimitOrderStatus = (order) => {
     switch (order.status) {
       case "1": {
-        return '已撤单';
+        return t('listStatusRevoke');
       }
       case "2": {
-        return '未成交';
+        return t('Not_success');
       }
       case "3": {
-        return '已成交';
+        return t('listStatusDeal');
       }
     }
     return '--';
@@ -149,7 +149,7 @@ const UserAccount = () => {
           <label htmlFor="">{t('textCurrency')}</label>
           <div className="from-ele">
             <NativeSelect value={currency} onChange={currencyChange} input={<OwnInput />}>
-              <option value="">全部</option>
+              <option value="">{t('all')}</option>
               {poolList.map((item, index) => (
                   <option key={item.symbol} value={item.symbol}>{item.symbol}</option>  
               ))}
@@ -248,12 +248,12 @@ const UserAccount = () => {
                   </TableCell>
                   <TableCell>{item.symbol}</TableCell>
                   {/* <TableCell></TableCell> */}
-                  <TableCell>{item.bsFlag == BSFLAG_LONG ? '买涨' : '买跌'}</TableCell>
+                  <TableCell>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</TableCell>
                   <TableCell>{fromWei(item.openPrice)}</TableCell>
                   <TableCell>{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</TableCell>
                   <TableCell>{item.lever} X</TableCell>
-                  <TableCell>{item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'}</TableCell>
-                  <TableCell>{item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}</TableCell>
+                  <TableCell>{item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')}</TableCell>
+                  <TableCell>{item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}</TableCell>
                   {/* <TableCell></TableCell> */}
                   <TableCell>{formatLimitOrderStatus(item)}</TableCell>
                 </TableRow>

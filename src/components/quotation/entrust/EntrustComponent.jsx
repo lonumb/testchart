@@ -190,13 +190,13 @@ const EntrustComponent = () => {
   const formatLimitOrderStatus = (order) => {
     switch (order.status) {
       case "1": {
-        return '已撤单';
+        return t('listStatusRevoke');
       }
       case "2": {
-        return '未成交';
+        return t('Not_success');
       }
       case "3": {
-        return '已成交';
+        return t('listStatusDeal');
       }
     }
     return '--';
@@ -289,10 +289,10 @@ const EntrustComponent = () => {
                 <div className="table-column">{item.openPrice == 0 ? '--' : calcForceClosePrice(item)}</div>
                 <div className="table-column">{item.openPrice == 0 ? '--' : calcOrderPL(item)} { item.openSymbol }</div>
                 <div className="table-column" onClick={() => onSetTakeProfitAndStopLossClick(item)}>
-                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => onSetTakeProfitAndStopLossClick(item)}>
-                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}  <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column">
                   <span className="link" onClick={(e)=> onCloseOrderClick(item)}>{t('textClose')}</span>
@@ -341,19 +341,19 @@ const EntrustComponent = () => {
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 {/* <div className="table-column" onClick={() => setVisible(true)}>
-                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}  <Edit style={{ fontSize: '14px' }} />
                 </div> */}
                 <div className="table-column">
-                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'}
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')}
                 </div>
                 <div className="table-column">
-                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}
                 </div>
                 <div className="table-column">
-                  <span className="link" onClick={(e)=> onRevokeLimitOrderClick(item)}>撤销</span>
+                  <span className="link" onClick={(e)=> onRevokeLimitOrderClick(item)}>{t('btnRevoke')}</span>
                 </div>
               </div>
             );
@@ -368,7 +368,7 @@ const EntrustComponent = () => {
 
           <div className="table-column tip-text">
             <OwnTooltip title={<React.Fragment>{t('entrustPriceDesc')}</React.Fragment>} arrow placement="bottom">
-              <span>委托价</span>
+              <span>{t('textEntrustPrice')}</span>
             </OwnTooltip>
           </div>
 
@@ -400,16 +400,16 @@ const EntrustComponent = () => {
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 {/* <div className="table-column" onClick={() => setVisible(true)}>
-                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}  <Edit style={{ fontSize: '14px' }} />
                 </div> */}
                 <div className="table-column">
-                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'}
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')}
                 </div>
                 <div className="table-column">
-                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}
                 </div>
                 <div className="table-column">{formatLimitOrderStatus(item)}</div>
                 <div className="table-column">{Tools.formatTime(item.openTime)}</div>
@@ -426,13 +426,13 @@ const EntrustComponent = () => {
 
           <div className="table-column tip-text">
             <OwnTooltip title={<React.Fragment>{t('entrustPriceDesc')}</React.Fragment>} arrow placement="bottom">
-              <span>建仓价</span>
+              <span>{t('entrustPrice')}</span>
             </OwnTooltip>
           </div>
 
           <div className="table-column tip-text">
             <OwnTooltip title={<React.Fragment>{t('entrustPriceDesc')}</React.Fragment>} arrow placement="bottom">
-              <span>平仓价</span>
+              <span>{t('textClosePrice')}</span>
             </OwnTooltip>
           </div>
 
@@ -450,7 +450,7 @@ const EntrustComponent = () => {
             </OwnTooltip>
           </div>
           {/* <div className="table-column">状态</div> */}
-          <div className="table-column">t('textTime')</div>
+          <div className="table-column">{t('textTime')}</div>
         </div>
         )}
         {/* 已平仓 body */}
@@ -465,16 +465,16 @@ const EntrustComponent = () => {
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 {/* <div className="table-column" onClick={() => setVisible(true)}>
-                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'} <Edit style={{ fontSize: '14px' }} />
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
                 </div>
                 <div className="table-column" onClick={() => setVisible(true)}>
-                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}  <Edit style={{ fontSize: '14px' }} />
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}  <Edit style={{ fontSize: '14px' }} />
                 </div> */}
                 <div className="table-column">
-                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : '未设置'}
+                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')}
                 </div>
                 <div className="table-column">
-                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : '未设置'}
+                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}
                 </div>
                 {/* <div className="table-column">状态</div> */}
                 <div className="table-column">{Tools.formatTime(item.openTime)}</div>
