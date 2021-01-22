@@ -288,10 +288,10 @@ const OrderComponent = (props) => {
 
     if (tokenAmount * fixedLever > totalAmount) {
       if (fixedLever > 1) {
-        alert(t('Leverage_err').replaceAll('#{p}', maxLever));
+        alert(t('Leverage_err', { p: maxLever }));
         return;
       }
-      alert(t('Margin_err').replaceAll('#{p}', totalAmount).replaceAll('#{token}', poolInfo.symbol));
+      alert(t('Margin_err', { p: totalAmount, token: poolInfo.symbol }));
       return;
     }
     //TODO 校验余额

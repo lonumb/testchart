@@ -32,7 +32,7 @@ const AsyncImportComponent = function (importComp) {
     ) : (
       <div className="loading">
         <CircularProgress />
-        <span>加载中...</span>
+        <span>{t('textLoading')}</span>
       </div>
     );
   }
