@@ -6,7 +6,7 @@ import { usePopupState, bindHover, bindPopover, bindToggle } from 'material-ui-p
 import { useSelector, useDispatch } from 'react-redux';
 import { actionPeriodUpdate, apiKData } from '../../store/actions/TradeAction';
 import { useWeb3React } from '@web3-react/core';
-
+import { getBackLang } from '../../i18n/LangUtil'
 import DataFeeds from '../chart/Datafeed';
 import ChartUtil from '../chart/ChartUtil';
 import './chart.scss';
@@ -146,7 +146,7 @@ const ChartComponent = () => {
       ...chartOption,
       symbol: `${productInfo.symbol}/USDT`,
       interval: period === 'line' ? '1' : period,
-      locale: 'zh',
+      locale: getBackLang(),
     });
     widget.onChartReady(function () {
       widget.chart().setChartType(period === 'line' ? 2 : 1); // k线类型

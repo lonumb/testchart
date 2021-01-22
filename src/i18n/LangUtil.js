@@ -1,6 +1,6 @@
 export const langList = {
   'en-US': { v: 'en_US', vb: 'en', t: 'English' },
-  'zh-CN': { v: 'zh_CN', vb: 'zh_CN', t: '简体中文' },
+  'zh-CN': { v: 'zh_CN', vb: 'zh', t: '简体中文' },
 };
 
 export const getLang = () => {
