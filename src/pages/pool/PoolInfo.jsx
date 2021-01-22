@@ -68,6 +68,9 @@ const PoolInfo = () => {
   const [ lptokenBalanceList, setLptokenBalanceList ] = useState([]);
   const [ tokenAllowanceList, setTokenAllowanceList ] = useState([]);
   const [ lptokenAllowanceList, setLptokenAllowanceList ] = useState([]);
+  const [ tokenApprovingObj, setTokenApprovingObj ] = useState({});
+  const [ lptokenApprovingObj, setLpTokenApprovingObj ] = useState({});
+
   const [ positionInfoList, setPositionInfoList ] = useState([]);
   const [ refreshObj, setRefreshObj ] = useState({});
   
@@ -254,30 +257,34 @@ const PoolInfo = () => {
   };
 
   const tokenApprove = (poolInfo, index) => {
-    if (!erc20Contract) return;
+    if (!erc20Contract || tokenApprovingObj[poolInfo.tokenAddr]) return;
+    
     erc20Contract
     .approve(account, poolInfo.tokenAddr, poolInfo.poolAddr)      
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {
+      setTokenApprovingObj({ ...tokenApprovingObj, [poolInfo.tokenAddr]: true });
     })
     .on('receipt', async (receipt) => {
       console.log('approve receipt: ', receipt);
+      setTokenApprovingObj({ ...tokenApprovingObj, [poolInfo.tokenAddr]: false });
       tokenAllowanceList[index] = MAX_UINT256_VALUE;
       setTokenAllowanceList(tokenAllowanceList);
-
       await getData();
     });
   };
 
   const lptokenApprove = (poolInfo, index) => {
-    if (!erc20Contract) return;
+    if (!erc20Contract || lptokenApprovingObj[poolInfo.lptokenAddr]) return;
     erc20Contract
     .approve(account, poolInfo.lptokenAddr, poolInfo.poolAddr)      
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {
+      setLpTokenApprovingObj({ ...lptokenApprovingObj, [poolInfo.lptokenAddr]: true });
     })
     .on('receipt', async (receipt) => {
       console.log('approve receipt: ', receipt);
+      setLpTokenApprovingObj({ ...lptokenApprovingObj, [poolInfo.lptokenAddr]: false });
       lptokenAllowanceList[index] = MAX_UINT256_VALUE;
       setLptokenAllowanceList(lptokenAllowanceList);
       await getData();
@@ -410,7 +417,7 @@ const PoolInfo = () => {
                     {
                       tokenAllowanceList.length < index ? (<div></div>) 
                       : isTokenApproved(item, index) ? (<button className="btn-default" onClick={e=> deposit(item, index)}>{t('btnPledge')}</button>) 
-                      : (<button className="btn-default" onClick={e=> tokenApprove(item, index)}>{t('btnAuth')}</button>)
+                      : (<button className="btn-default" onClick={e=> tokenApprove(item, index)}>{tokenApprovingObj[item.tokenAddr] ? t('btnAuthing') : t('btnAuth')}</button>)
                     }
 
                     {/* {tokenBalanceAllowanceList.length > index ? 
@@ -436,7 +443,7 @@ const PoolInfo = () => {
                     {
                       tokenAllowanceList.length < index ? (<div></div>) 
                       : isLptokenApproved(item, index) ? (<button className="btn-primary" onClick={e=> withdraw(item, index)}>{t('btnUnlock')}</button>) 
-                      : (<button className="btn-default" onClick={e=> lptokenApprove(item, index)}>{t('btnAuth')}</button>)
+                      : (<button className="btn-default" onClick={e=> lptokenApprove(item, index)}>{lptokenApprovingObj[item.lptokenAddr] == true ? t('btnAuthing') : t('btnAuth')}</button>)
                     }
                     
                   </div>

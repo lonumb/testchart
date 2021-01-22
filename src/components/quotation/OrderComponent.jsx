@@ -68,6 +68,7 @@ const OrderComponent = (props) => {
   const [fee, setFee] = useState(0); // 手续费
   const [gas, setGas] = useState(0); // gas
   const [lever, setLever] = useState(1); // 杠杆
+  const [approving, setApproving] = useState(false);
   
   const [poolTotalAmount, setPoolTotalAmount] = useState(0); // 池子总量
   const [maxLever, setMaxLever] = useState(0); // 最大允许的杠杆值
@@ -210,14 +211,16 @@ const OrderComponent = (props) => {
 
   // 授权
   function approveToPool() {
-    if (!erc20Contract) return;
+    if (!erc20Contract || approving) return;
     erc20Contract
     .approve(account, poolInfo.tokenAddr, poolInfo.poolAddr)      
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {
+      setApproving(true);
       console.log('approve transactionHash: ', hash);
     })
     .on('receipt', (receipt) => {
+      setApproving(false);
       setAllowance(MAX_UINT256_VALUE);
       console.log('approve receipt: ', receipt);
     });
@@ -572,7 +575,7 @@ const OrderComponent = (props) => {
             </button>
           ) : (
             <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => approveToPool()}>
-              {t('btnAuth')} {poolInfo.symbol}
+              { approving ? t('btnAuthing') : `${t('btnAuth')}${poolInfo.symbol}`}
             </button>
           )) : (<span></span>)
         }
