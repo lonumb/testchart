@@ -39,6 +39,7 @@ const profitRateList = [25, 50, 75, 100, 150, 200];
 // 止损比例列表
 const stopRateList = [30, 40, 50, 60, 70, 80];
 
+let quoteFactoryContract = null;
 let erc20Contract = null;
 let poolProxyContract = null;
 let fundContract = null;
@@ -71,7 +72,7 @@ const OrderComponent = (props) => {
   const [approving, setApproving] = useState(false);
   
   const [poolTotalAmount, setPoolTotalAmount] = useState(0); // 池子总量
-  const [maxLever, setMaxLever] = useState(0); // 最大允许的杠杆值
+  const [maxLever, setMaxLever] = useState(1); // 最大允许的杠杆值
   const [leverMax, setLevelMax] = useState(false); // 杠杆最大
   const [leverRate, setLevelRate] = useState(1); // 杠杆比例
   const [basicAssetBalance, setBasicAssetBalance] = useState(null); // 本位资产余额
@@ -95,15 +96,18 @@ const OrderComponent = (props) => {
       (poolInfo.erc20Pool ? erc20Contract.getAllowance(account, poolInfo.tokenAddr, poolInfo.poolAddr) : Promise.resolve(MAX_UINT256_VALUE)).then((res) => {
         console.log('OrderComponent setAllowance: ', res);
         setAllowance(res || 0);
+        return res;
       }),
       // 查询余额
       poolProxyContract.getBalanceByPoolInfo(poolInfo, account).then((res) => {
         console.log('OrderComponent setBasicAssetBalance: ', res);
         setBasicAssetBalance(res);
+        return res;
       }),
       fundContract.getPoolTotalAmount(poolInfo).then((res) => {
         console.log('OrderComponent setPoolTotalAmount: ', res);
         setPoolTotalAmount(res);
+        return res;
       }),
     ]);
   }
@@ -139,9 +143,12 @@ const OrderComponent = (props) => {
         if (lever > 100) {
           lever = 100;
         }
+        if (lever < 1) {
+          lever = 1;
+        }
         setMaxLever(lever);
       } else {
-        setMaxLever(0);
+        setMaxLever(1);
       }
     } else {
       setMaxLever(100);
@@ -151,12 +158,14 @@ const OrderComponent = (props) => {
   useEffect(async () => {
     if (active && account && poolInfo.poolAddr) {
       console.log('poolInfo: ', poolInfo);
+      quoteFactoryContract = new QuoteFactoryContract(library, chainId, account);
       erc20Contract = new ERC20Contract(library, chainId, account);
       poolProxyContract = new PoolProxyContract(library, chainId, account);
       fundContract = new FundContract(library, chainId, account);
 
       getDataFunc();
     } else {
+      quoteFactoryContract = null;
       poolProxyContract = null;
       erc20Contract = null;
       fundContract = null;
@@ -233,62 +242,61 @@ const OrderComponent = (props) => {
       alert(t('Margin_hint'));
       return;
     }
-    // if (isNaN(parseFloat(bond))) {
-    //   alert('请输入正确的保证金');
-    //   return;
-    // }
-    if (openType === OPEN_TYPE_LIMIT) {
-      if (!limitPrice || limitPrice === '') {
-        alert(t('limitPricePlaceholder'));
-        return;
-      }
-      // if (isNaN(parseFloat(limitPrice))) {
-      //   alert('请输入正确的价格');
-      //   return;
-      // }
+    if (openType === OPEN_TYPE_LIMIT && (!limitPrice || limitPrice === '')) {
+      alert(t('limitPricePlaceholder'));
+      return;
     }
-    // if (!lever || isNaN(parseInt(lever)) || parseInt(lever < 1)) {
-    //   alert('请输入正确的杠杆');
-    //   return;
-    // }
     let fixedTakeProfit = 0;
     let fixedStopLoss = 0;
     //开启高级设置 moreFlag
     if (moreFlag) {
-      // if (takeProfit && isNaN(parseFloat(takeProfit))) {
-      //   alert('请输入正确的止盈价');
-      //   return;
-      // }
-      // if (stopLoss && isNaN(parseFloat(stopLoss))) {
-      //   alert('请输入正确的止盈价');
-      //   return;
-      // }
       fixedTakeProfit = toWei((takeProfit || 0).toString());
       fixedStopLoss = toWei((stopLoss || 0).toString());
     }
     let symbol = 'btc/usdt';
     let fixedLever = parseInt(lever);
 
-    if (fixedLever > maxLever) {
-      alert('池子流动性不足');
+    var tokenAmount = Tools.toWei(bond.toString(), poolInfo.decimals);
+    var res;
+    try {
+      res = await Promise.all([
+        fundContract.getPoolTotalAmount(poolInfo).then((res) => {
+          console.log('OrderComponent setPoolTotalAmount: ', res);
+          setPoolTotalAmount(res);
+          return res;
+        }),
+        quoteFactoryContract.getNewPrice(symbol).then((res) => {
+          console.log('quote: ', res);
+          return res;
+        }),
+        // poolProxyContract.getBalanceByPoolInfo(poolInfo, account).then((res) => {
+        //   console.log('OrderComponent setBasicAssetBalance: ', res);
+        //   setBasicAssetBalance(res);
+        //   return res;
+        // }),
+      ]);
+    } catch(e) {
+      console.log(e);
       return;
     }
-    
-    var tokenAmount = Tools.toWei(bond.toString(), poolInfo.decimals);
 
-    //TODO 校验余额
-    if (openType == OPEN_TYPE_MARKET) {
-      let maxPrice;
-      try {
-        let quoteFactoryContract = new QuoteFactoryContract(library, chainId, account);
-        let quote = await quoteFactoryContract.getNewPrice(symbol);
-        console.log('quote: ', quote);
-        maxPrice = quote.newPrice;
-      } catch(e) {
-        console.log(e);
+    var poolTotalAmount = res[0];
+    var quote = res[1];
+    //var balance = res[2];
+
+    var totalAmount = Math.floor(Tools.fromWei(poolTotalAmount, poolInfo.decimals) / 2);
+
+    if (tokenAmount * fixedLever > totalAmount) {
+      if (fixedLever > 1) {
+        alert(t('Leverage_err').replaceAll('#{p}', maxLever));
         return;
       }
-      //console.log(`maxPrice: `, toBN(maxPrice).mul(toBN((1 + slippage).toString())).toString())
+      alert(t('Margin_err').replaceAll('#{p}', totalAmount).replaceAll('#{token}', poolInfo.symbol));
+      return;
+    }
+    //TODO 校验余额
+    if (openType == OPEN_TYPE_MARKET) {
+      let maxPrice = quote.newPrice;
       if (bsflag == BSFLAG_LONG) {
         //校验止盈价
         if (fixedTakeProfit && Tools.GE(maxPrice, fixedTakeProfit)) {
@@ -298,7 +306,6 @@ const OrderComponent = (props) => {
         if (fixedStopLoss && Tools.LE(maxPrice, fixedStopLoss)) {
           return alert(t('takeLossGTHint') + fromWei(maxPrice));
         }
-        //maxPrice = Tools.mul(maxPrice, 1 + slippage);
         maxPrice = toWei((fromWei(maxPrice) * (1 + slippage)).toString());
       } else {
         //校验止盈价
@@ -309,13 +316,11 @@ const OrderComponent = (props) => {
         if (fixedStopLoss && Tools.LE(fixedStopLoss, maxPrice)) {
           return alert(t('stopLossLTHint') + fromWei(maxPrice));
         }
-        //maxPrice = Tools.mul(maxPrice, 1 - slippage);
         maxPrice = toWei((fromWei(maxPrice) * (1 - slippage)).toString());
       }
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openMarketSwap(poolInfo, symbol, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss, maxPrice)
       .on('transactionHash', function (hash) {
-        console.log('openMarketSwap transactionHash: ', hash);
       })
       .on('receipt', async (receipt) => {
         emitter.emit('refreshOrder');
@@ -346,7 +351,6 @@ const OrderComponent = (props) => {
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openLimitSwap(poolInfo, symbol, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
       .on('transactionHash', function (hash) {
-        console.log('openMarketSwap transactionHash: ', hash);
       })
       .on('receipt', async (receipt) => {
         emitter.emit('refreshOrder');
