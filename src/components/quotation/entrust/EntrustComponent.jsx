@@ -113,6 +113,7 @@ const EntrustComponent = () => {
 
   //平仓
   const onCloseOrderClick = (order) => {
+    if (!order || order.openPrice == 0) return;
     teemoPoolContract
     .closeMarketSwap(order.poolInfo, order)
     .on('receipt', async (receipt) => {
@@ -281,7 +282,7 @@ const EntrustComponent = () => {
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
                 <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
-                <div className="table-column">{item.openPrice == 0 ? '确认中' : fromWei(item.openPrice)}</div>
+                <div className="table-column">{item.openPrice == 0 ? t('Wait_Price') : fromWei(item.openPrice)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 {/* <div className="table-column">+7182.92 USDT</div>

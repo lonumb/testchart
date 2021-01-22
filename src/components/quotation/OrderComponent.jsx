@@ -227,7 +227,7 @@ const OrderComponent = (props) => {
   const createOrder = async () => {
     if (!isTradeAvailable()) return;
     if (!bond || bond === '') {
-      alert('请输入保证金');
+      alert(t('Margin_hint'));
       return;
     }
     // if (isNaN(parseFloat(bond))) {
@@ -285,26 +285,29 @@ const OrderComponent = (props) => {
         console.log(e);
         return;
       }
+      //console.log(`maxPrice: `, toBN(maxPrice).mul(toBN((1 + slippage).toString())).toString())
       if (bsflag == BSFLAG_LONG) {
         //校验止盈价
         if (fixedTakeProfit && Tools.GE(maxPrice, fixedTakeProfit)) {
-          return alert('止盈价不能小于当前价');
+          return alert(t('takeProfitLTHint') + fromWei(maxPrice));
         }
         //校验止损价
         if (fixedStopLoss && Tools.LE(maxPrice, fixedStopLoss)) {
-          return alert('止损价不能大于当前价');
+          return alert(t('takeLossGTHint') + fromWei(maxPrice));
         }
-        maxPrice = Tools.mul(maxPrice, 1 + slippage).toString();
+        //maxPrice = Tools.mul(maxPrice, 1 + slippage);
+        maxPrice = toWei((fromWei(maxPrice) * (1 + slippage)).toString());
       } else {
         //校验止盈价
         if (fixedTakeProfit && Tools.GE(fixedTakeProfit, maxPrice)) {
-          return alert('止盈价不能大于当前价');
+          return alert(t('takeProfitGTHint') + fromWei(maxPrice));
         }
         //校验止损价
         if (fixedStopLoss && Tools.LE(fixedStopLoss, maxPrice)) {
-          return alert('止损价不能小于当前价');
+          return alert(t('stopLossLTHint') + fromWei(maxPrice));
         }
-        maxPrice = Tools.mul(maxPrice, 1 - slippage).toString();
+        //maxPrice = Tools.mul(maxPrice, 1 - slippage);
+        maxPrice = toWei((fromWei(maxPrice) * (1 - slippage)).toString());
       }
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openMarketSwap(poolInfo, symbol, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss, maxPrice)
@@ -321,20 +324,20 @@ const OrderComponent = (props) => {
       if (bsflag == BSFLAG_LONG) {
         //校验止盈价
         if (fixedTakeProfit && Tools.GE(openPrice, fixedTakeProfit)) {
-          return alert('止盈价不能小于' + takeProfit);
+          return alert(t('takeProfitLTHint') + takeProfit);
         }
         //校验止损价
         if (fixedStopLoss && Tools.LE(openPrice, fixedStopLoss)) {
-          return alert('止损价不能大于' + stopLoss);
+          return alert(t('takeLossGTHint') + stopLoss);
         }
       } else {
         //校验止盈价
         if (fixedTakeProfit && Tools.GE(fixedTakeProfit, openPrice)) {
-          return alert('止盈价不能大于' + takeProfit);
+          return alert(t('takeProfitGTHint') + takeProfit);
         }
         //校验止损价
         if (fixedStopLoss && Tools.LE(fixedStopLoss, openPrice)) {
-          return alert('止损价不能小于' + stopLoss);
+          return alert(t('stopLossLTHint') + stopLoss);
         }
       }
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
