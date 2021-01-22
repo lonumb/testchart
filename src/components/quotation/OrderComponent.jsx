@@ -256,7 +256,6 @@ const OrderComponent = (props) => {
     let symbol = 'btc/usdt';
     let fixedLever = parseInt(lever);
 
-    var tokenAmount = Tools.toWei(bond.toString(), poolInfo.decimals);
     var res;
     try {
       res = await Promise.all([
@@ -286,7 +285,7 @@ const OrderComponent = (props) => {
 
     var totalAmount = Math.floor(Tools.fromWei(poolTotalAmount, poolInfo.decimals) / 2);
 
-    if (tokenAmount * fixedLever > totalAmount) {
+    if (bond * fixedLever > totalAmount) {
       if (fixedLever > 1) {
         alert(t('Leverage_err', { p: maxLever }));
         return;
@@ -294,6 +293,8 @@ const OrderComponent = (props) => {
       alert(t('Margin_err', { p: totalAmount, token: poolInfo.symbol }));
       return;
     }
+    var tokenAmount = Tools.toWei(bond.toString(), poolInfo.decimals);
+
     //TODO 校验余额
     if (openType == OPEN_TYPE_MARKET) {
       let maxPrice = quote.newPrice;
