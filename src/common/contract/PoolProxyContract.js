@@ -3,6 +3,8 @@ import { getConfigByChainID } from '../../utils/Config'
 import BaseContract from './BaseContract'
 import ERC20Contract from './ERC20Contract'
 import SwapTradeContract from './SwapTradeContract'
+import TeemoPool from './abi/TeemoPool.json';
+const abicoder = require('web3-eth-abi');
 
 class PoolProxyContract extends BaseContract {
   constructor(...args) {
@@ -171,6 +173,103 @@ class PoolProxyContract extends BaseContract {
         list = list.concat(array);
       }
       return list;
+    });
+  }
+
+  async queryLastTrades(poolList, size = 15) {
+    if (!this._web3) return [];
+    var contractAddress = getConfigByChainID(this._chainId).poolProxyContractAddress;
+
+    let lastScanBlock = global.localStorage.getItem(`lastScanBlock_${contractAddress}`) || 0;
+    var blockNumber = await this._web3.eth.getBlockNumber();
+    console.log('lastScanBlock: ', lastScanBlock, ' blockNumber: ', blockNumber);
+    var logs = await this.queryPoolEvents(poolList, lastScanBlock + 1, blockNumber);
+    if (logs.length > size) {
+        logs = logs.slice(logs.length - size, logs.length);
+    }
+    if (logs.length < size) {
+        let lastLogs = global.localStorage.getItem(`lastLogs_${contractAddress}`) || [];
+        let dsize = logs.length - size;
+        let index = logs.length - 1;
+        while (dsize > 0 && index > 0) {
+            logs = [lastLogs[index]].concat(logs);
+            dsize--;
+            index--;
+        }
+    }
+    let promises = [];
+    for (let log of logs) {
+      let contract = this.getContract();
+      promises.push(log.order ? Promise.resolve(log.order) : contract.methods.getOrder(log.origin.address, log.orderID).call().then((res) => {
+        log.order = res;
+        return res;
+      }));
+    }
+    await Promise.all(promises);
+    global.localStorage.setItem(`lastScanBlock_${contractAddress}`, blockNumber);
+    global.localStorage.setItem(`lastLogs_${contractAddress}`, logs);
+    //console.log(JSON.stringify(logs, 0, 2));
+  }
+
+  queryPoolEvents(poolList, fromBlock = 1, toBlock) {
+    if (!this._web3) return [];
+    console.log('pool addrs: ', poolList.map((item) => item.poolAddr));
+    return this._web3.eth.getPastLogs({
+        fromBlock,
+        toBlock,
+        address: poolList.map((item) => item.poolAddr)
+    }).then((res) => {
+        var eventAbi = {};
+        TeemoPool.abi.forEach((item) => { 
+            if (item.type === 'event') {
+                let sign = item.name + '('
+                let seq = '';
+                for (let p of item['inputs']) {
+                    sign += (seq + p.type);
+                    seq = ',';
+                }
+                sign += ')'
+
+                eventAbi[this._web3.utils.sha3(sign)] = item;
+            }
+        });
+        //console.log(eventAbi);
+
+        var result = [];
+        res.forEach(async (item) => {
+            //console.log(item);
+            let abi = eventAbi[item.topics[0]];
+            //console.log(abi);
+            if (
+                (abi.name == 'OpenMarketSwap' && abi.openPrice != '0') 
+                || abi.name == 'TradeLimitSwap'
+                || abi.name == 'SetOrderPrice'
+                || abi.name == 'CloseMarketSwap'
+            ) {
+                let inputs = abi.inputs;
+                let res = abicoder.decodeLog(inputs, item.data, item.topics.slice(1, item.topics.length));
+                res._name = abi.name;
+                res.orderID = res.orderID || res._orderID;
+                res.origin = item;
+
+                if (res._name == 'SetOrderPrice') {
+                  res._name = 'OpenMarketSwap';
+                  res.openPrice = res._price;
+                }
+                if (res._name == 'TradeLimitSwap') {
+                  res._name = 'OpenMarketSwap';
+                }
+
+                let pool = poolList.find((e) => e.poolAddr == item.address);
+
+                res.openSymbol = pool.symbol;
+                res.decimals = pool.decimals;
+
+                //console.log(res);
+                result.push(res);
+            }
+        });
+        return result;
     });
   }
 }

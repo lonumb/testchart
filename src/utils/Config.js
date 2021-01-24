@@ -12,7 +12,7 @@ const config = {
         quoteContractAddress: '0x0f093fB9f50206742B9a242609D90B909f0EA12F',
         poolContractAddress: '0xacC6Ad29D0eE3Ac5EAFACA5EC97E3182e2d7dFB2',
         poolProxyContractAddress: '0x8B118F1daefF0Adcf42A5B5F9386719d03138828',
-        baseUrl: 'https://47.90.62.21',
+        baseUrl: 'https://mvp.teemo.finance',
         quoteWS: 'wss://mvp.teemo.finance/ws',
     },
     1337 : {
