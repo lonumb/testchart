@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
 import Reply from '@material-ui/icons/Reply';
 import PoolProxyContract from '../../common/contract/PoolProxyContract';
+import * as Tools from '../../utils/Tools';
+import { fromWei, toBN, toWei } from 'web3-utils';
 import './record.scss';
 
 let poolProxyContract = null;
@@ -30,6 +32,7 @@ const RecordComponent = () => {
       poolProxyContract.queryLastTrades(poolList).then(res => {
         console.log('RecordComponent setRecordList: ', res);
         setRecordList(res || []);
+        return res;
       }),
     ]);
   }
@@ -46,9 +49,22 @@ const RecordComponent = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (chainId) {
+  //     var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
+  //     let lastLogs = JSON.parse(lastLogsStr) || [];
+  //   }
+  // }, [chainId]);
+
   useEffect(async () => {
     if (active && account && poolList) {
       poolProxyContract = new PoolProxyContract(library, chainId, account);
+
+      if (recordList.length == 0) {
+        var list = poolProxyContract.getLocalLastTrades();
+        console.log('RecordComponent local setRecordList: ', list);
+        setRecordList(list || []);
+      }
       getDataFunc();
     } else {
       poolProxyContract = null;
@@ -70,7 +86,7 @@ const RecordComponent = () => {
     if (!timer) {
       timer = setInterval(async () => {
         await getData();
-      }, 1000 * 10);
+      }, 10000);
     }
     return () => {
       clearInterval(timer);
@@ -92,10 +108,11 @@ const RecordComponent = () => {
             return (
               <div className="list-item" key={index}>
                 <div className="column">18:57:20</div>
-                <div className="column">{t('textClose')}</div>
-                <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>17545.42</div>
+                <div className="column">{item._name == 'OpenMarketSwap' ? t('textBuild') 
+                                : item._name == 'CloseMarketSwap' ? t('textClose') : ''}</div>
+                <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{Tools.numFmt(Tools.fromWei(item.order.openPrice, item.decimals), 2)}</div>
                 <div className="column">
-                  0.242114 {index % 7 === 0 ? 'Sushi' : 'BTC'} <Reply />
+                  {Tools.fromWei(item.order.tokenAmount, item.decimals)} {item.openSymbol} <Reply />
                 </div>
               </div>
             );

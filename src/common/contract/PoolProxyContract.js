@@ -176,24 +176,39 @@ class PoolProxyContract extends BaseContract {
     });
   }
 
-  async queryLastTrades(poolList, size = 15) {
+  getLocalLastTrades() {
+    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
+    let lastLogs = JSON.parse(lastLogsStr) || [];
+    return lastLogs;
+  }
+
+  async queryLastTrades(poolList, size = 30) {
     if (!this._web3) return [];
     var contractAddress = getConfigByChainID(this._chainId).poolProxyContractAddress;
 
-    let lastScanBlock = global.localStorage.getItem(`lastScanBlock_${contractAddress}`) || 0;
+    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
+    let lastLogs = JSON.parse(lastLogsStr) || [];
+
+    let lastScanBlock = 0;
+    if (lastLogs && lastLogs.length > 0) {
+      var log = lastLogs[lastLogs.length - 1];
+      lastScanBlock = log.origin.blockNumber;
+    }
     var blockNumber = await this._web3.eth.getBlockNumber();
     console.log('lastScanBlock: ', lastScanBlock, ' blockNumber: ', blockNumber);
-    var logs = await this.queryPoolEvents(poolList, lastScanBlock + 1, blockNumber);
+    var logs = [];
+    try {
+      logs = await this.queryPoolEvents(poolList, lastScanBlock + 1, blockNumber);
+    } catch (e) {
+      return lastLogs;
+    }
     if (logs.length > size) {
         logs = logs.slice(logs.length - size, logs.length);
     }
     if (logs.length < size) {
-        let lastLogs = global.localStorage.getItem(`lastLogs_${contractAddress}`) || [];
-        let dsize = logs.length - size;
-        let index = logs.length - 1;
-        while (dsize > 0 && index > 0) {
+        let index = lastLogs.length - 1;
+        while (logs.length < size && index > 0) {
             logs = [lastLogs[index]].concat(logs);
-            dsize--;
             index--;
         }
     }
@@ -205,10 +220,14 @@ class PoolProxyContract extends BaseContract {
         return res;
       }));
     }
-    await Promise.all(promises);
-    global.localStorage.setItem(`lastScanBlock_${contractAddress}`, blockNumber);
-    global.localStorage.setItem(`lastLogs_${contractAddress}`, logs);
-    //console.log(JSON.stringify(logs, 0, 2));
+    try {
+      await Promise.all(promises);
+    } catch (e) {
+      return lastLogs;
+    }
+    global.localStorage.setItem(`lastLogs_${this._chainId}`, JSON.stringify(logs));
+    //global.localStorage.setItem(`lastScanBlock_${contractAddress}`, blockNumber);
+    return logs;
   }
 
   queryPoolEvents(poolList, fromBlock = 1, toBlock) {
@@ -240,12 +259,10 @@ class PoolProxyContract extends BaseContract {
             //console.log(item);
             let abi = eventAbi[item.topics[0]];
             //console.log(abi);
-            if (
-                (abi.name == 'OpenMarketSwap' && abi.openPrice != '0') 
-                || abi.name == 'TradeLimitSwap'
-                || abi.name == 'SetOrderPrice'
-                || abi.name == 'CloseMarketSwap'
-            ) {
+            if (abi && abi.name && ((abi.name == 'OpenMarketSwap' && abi.openPrice != '0') 
+              || abi.name == 'TradeLimitSwap'
+              || abi.name == 'SetOrderPrice'
+              || abi.name == 'CloseMarketSwap')) {
                 let inputs = abi.inputs;
                 let res = abicoder.decodeLog(inputs, item.data, item.topics.slice(1, item.topics.length));
                 res._name = abi.name;
