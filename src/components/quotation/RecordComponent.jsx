@@ -14,6 +14,7 @@ const RecordComponent = () => {
   const { t } = useTranslation();
   const { active, library, account, chainId } = useWeb3React();
   const { poolList } = useSelector((state) => state.contract);
+  const [ refreshObj, setRefreshObj ] = useState({});
 
   const recordRef = useRef();
   const [recordList, setRecordList] = useState([]);
@@ -81,11 +82,24 @@ const RecordComponent = () => {
     setListHeight(recordRef.current.clientHeight - 56);
   }, []);
 
+  useEffect(async () => {
+    try {
+      await getData();
+    } catch (e) {
+      console.log(e);
+    }
+  }, [refreshObj]);
+
   useEffect(() => {
     let timer = undefined;
     if (!timer) {
       timer = setInterval(async () => {
-        await getData();
+        setRefreshObj({});
+        // try {
+        //   await getData();
+        // } catch (e) {
+        //   console.log(e);
+        // }
       }, 10000);
     }
     return () => {

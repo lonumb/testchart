@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actionProductInfo } from '../../store/actions/TradeAction';
 import OwnTooltip from '../tooltip/OwnTooltip';
 import OwnPopover from '../popover/OwnPopover';
+import * as Tools from '../../utils/Tools';
 import './market.scss';
 
 const MarketComponent = () => {
@@ -32,7 +33,7 @@ const MarketComponent = () => {
         </OwnPopover>
       </div>
       <div className="market-item">
-        <span className={`fz16 ${tickerAll['1D'].CC}`}>{tickerAll['1D'].close || 0}</span>
+        <span className={`fz16 ${tickerAll['1D'].CC}`}>{Tools.toStringAsFixed(tickerAll['1D'].close || 0, productInfo.decimal || 2)}</span>
         {/* <label htmlFor="">≈10109.02 CNY</label> */}
       </div>
       {/* <div className="market-item">
@@ -73,15 +74,15 @@ const MarketComponent = () => {
       </div> */}
       <div className="market-item">
         <label htmlFor="">{t('textHUpDown')}</label>
-        <span className={tickerAll['1D'].UDC}>{tickerAll['1D'].UDR || 0}%</span>
+        <span className={tickerAll['1D'].UDC}>{Tools.toStringAsFixed(tickerAll['1D'].UDR || 0, productInfo.decimal || 2)}%</span>
       </div>
       <div className="market-item">
         <label htmlFor="">{t('textHHigh')}</label>
-        <span>{tickerAll['1D'].high || 0}</span>
+        <span>{Tools.toStringAsFixed(tickerAll['1D'].high || 0, productInfo.decimal || 2)}</span>
       </div>
       <div className="market-item">
         <label htmlFor="">{t('textHLow')}</label>
-        <span>{tickerAll['1D'].low || 0}</span>
+        <span>{Tools.toStringAsFixed(tickerAll['1D'].low || 0, productInfo.decimal || 2)}</span>
       </div>
     </div>
   );

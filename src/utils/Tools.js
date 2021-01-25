@@ -55,6 +55,32 @@ export function fmtDec(num, dec = 8) {
   return result
 }
 
+export function toStringAsFixed(num, dec = 8) {
+  if (!num) {
+    num = '';
+  }
+  num = (num || '').toString();
+  if (num && num.indexOf('.') == -1) {
+    num += '.';
+  }
+  var arr = num.split('.');
+  var result = num;
+  if (arr.length === 2) {
+      if (arr[1].length > dec) {
+        arr[1] = arr[1].substring(0, dec);
+      }
+      while (arr[1].length < dec) {
+        arr[1] = arr[1] + '0';
+      }
+      result = arr.join('.');
+
+      if (result.length > 0 && result.endsWith(".")) {
+          result = result.substring(0, result.length - 1)
+      }
+  }
+  return result
+}
+
 export function fromWei(num, decimal = 18) {
   return div(num, Math.pow(10, decimal)).valueOf();
 }
@@ -214,10 +240,10 @@ export const calcStopLossPrice = (order, bottomlimit) => {
   if (!order) return null;
   if (order.bsFlag == BSFLAG_LONG) {
     //order.openPrice * (1 - bottomlimit / 100.0 / order.lever)
-    return Decimal(order.openPrice).mul(1 - bottomlimit / 100.0 / order.lever); 
+    return Decimal(order.openPrice).mul(1 - bottomlimit / 100.0 / order.lever).valueOf(); 
   } else {
     //order.openPrice * (1 + bottomlimit / 100.0 / order.lever)
-    return Decimal(order.openPrice).mul(1 - bottomlimit / 100.0 / order.lever);
+    return Decimal(order.openPrice).mul(1 - bottomlimit / 100.0 / order.lever).valueOf();
   }
 }
 

@@ -1,30 +1,59 @@
 import { createAction } from 'redux-actions';
 import * as Types from '../types';
 import * as HttpUtil from '../../utils/HttpUtil';
-
+import { products } from '../../utils/Config'
 /**
  * 更新产品列表信息
  */
 export const actionProductList = () => {
+//   {
+//     "index": 12,
+//     "symbol": "EOS",
+//     "name": "柚子",
+//     "decimal": "4",
+//     "unit": "0.001",
+//     "maxtotalamount": "100000.00",
+//     "fee": "0.0004",
+//     "fee2": "0.0004",
+//     "isoptions": "0",
+//     "levermin": "5",
+//     "levermax": "100",
+//     "leverdefault": "100",
+//     "leverlist": "5,10,20,30,50,75,100",
+//     "amountmin": "2.00",
+//     "amountmax": "100000.00",
+//     "marginratio": "0.00001",
+//     "spreadbuy": "0.0005",
+//     "spreadsell": "0.0005",
+//     "fundfeetime": "1611561600",
+//     "fundfeedirect": "0",
+//     "fundfeeratio": "0.0001",
+//     "legalSymbol": "USDT"
+// },
   return (dispatch, chainId) => {
-    dispatch(getProductInfoFunc({ loading: true }));
-    HttpUtil.URLENCODED_GET('/api/trade/queryproductinfo2.do', {chainId})
-      .then((res) => {
-        let products = [];
-        res.datas.forEach((element) => {
-          products.push({ ...element, symbol: element.symbol.toUpperCase(), legalSymbol: 'USDT' });
-        });
-        // 产品信息加载中
-        dispatch(createAction(Types.PRODUCT_LIST)({ productList: products }));
-        // 更新产品信息
-        dispatch(getProductInfoFunc({ product: products[0] || {}, loading: false }));
-      })
-      .catch((error) => {
-        dispatch(getProductInfoFunc({ loading: false }));
-      });
-
-    //
+    // 产品信息加载中
+    dispatch(createAction(Types.PRODUCT_LIST)({ productList: products }));  
+    dispatch(getProductInfoFunc({ product: products[0] || {}, loading: false }));
   };
+
+  // return (dispatch, chainId) => {
+  //   dispatch(getProductInfoFunc({ loading: true }));
+
+  //   HttpUtil.URLENCODED_GET('/api/trade/queryproductinfo2.do', {chainId})
+  //     .then((res) => {
+  //       let products = [];
+  //       res.datas.forEach((element) => {
+  //         products.push({ ...element, symbol: element.symbol.toUpperCase(), legalSymbol: 'USDT' });
+  //       });
+  //       // 产品信息加载中
+  //       dispatch(createAction(Types.PRODUCT_LIST)({ productList: products }));
+  //       // 更新产品信息
+  //       dispatch(getProductInfoFunc({ product: products[0] || {}, loading: false }));
+  //     })
+  //     .catch((error) => {
+  //       dispatch(getProductInfoFunc({ loading: false }));
+  //     });
+  // };
 };
 
 /**

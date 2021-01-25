@@ -199,6 +199,7 @@ class PoolProxyContract extends BaseContract {
     var logs = [];
     try {
       logs = await this.queryPoolEvents(poolList, lastScanBlock + 1, blockNumber);
+      console.log('logs: ', logs);
     } catch (e) {
       return lastLogs;
     }
@@ -221,7 +222,8 @@ class PoolProxyContract extends BaseContract {
       }));
     }
     try {
-      await Promise.all(promises);
+      let orders = await Promise.all(promises);
+      console.log('orders: ', orders);
     } catch (e) {
       return lastLogs;
     }

@@ -49,6 +49,7 @@ const OrderComponent = (props) => {
   const dispatch = useDispatch();
   const rechargeVisible = useSelector((state) => state.common.recharge.visible);
   const { poolList, poolInfo } = useSelector((state) => state.contract);
+  const { productInfo } = useSelector((state) => state.trade);
   const { active, library, account, chainId } = useWeb3React();
   const orderRef = useRef();
   const [orderHeight, setOrderHeight] = useState(0);
@@ -420,7 +421,7 @@ const OrderComponent = (props) => {
 
         <div className={openType === OPEN_TYPE_MARKET ? 'form-ele-disable' : 'form-ele-input'}>
           <label htmlFor="">{t('textPrice')}</label>
-          <input type="text" value={limitPrice} onChange={(e) => setLimitPrice(Tools.numFmt(e.target.value, 18))} placeholder={openType === OPEN_TYPE_MARKET ? t('orderMarketPricePlaceholder') : t('limitPricePlaceholder')} disabled={openType === OPEN_TYPE_MARKET} />
+          <input type="text" value={limitPrice} onChange={(e) => setLimitPrice(Tools.numFmt(e.target.value, productInfo.decimal))} placeholder={openType === OPEN_TYPE_MARKET ? t('orderMarketPricePlaceholder') : t('limitPricePlaceholder')} disabled={openType === OPEN_TYPE_MARKET} />
         </div>
 
         <div className="form-ele-input">

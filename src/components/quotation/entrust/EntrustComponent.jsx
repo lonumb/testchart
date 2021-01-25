@@ -31,7 +31,7 @@ const EntrustComponent = () => {
   const { t } = useTranslation();
   const { active, library, account, chainId } = useWeb3React();
   const { poolInfo, poolList } = useSelector((state) => state.contract);
-  const { productInfo, quote, quoteMap } = useSelector((state) => state.trade); // 当前周期
+  const { productList, productInfo, quote, quoteMap } = useSelector((state) => state.trade); // 当前周期
   //console.log(productInfo, quote, quoteMap);
   //console.log(quote);
   //const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
@@ -138,6 +138,9 @@ const EntrustComponent = () => {
 
   //点击设置止盈止损按钮
   const onSetTakeProfitAndStopLossClick = (order) => {
+    if (order.openPrice == 0) {
+      return;
+    }
     setSetTakeProfitStopLossOrder(order)
     setTakeProfit(order.pLimitPrice && order.pLimitPrice != '0' ? fromWei(order.pLimitPrice) : '');
     setStopLoss(order.lLimitPrice && order.lLimitPrice != '0' ? fromWei(order.lLimitPrice) : '');
@@ -183,7 +186,7 @@ const EntrustComponent = () => {
   const calcForceClosePrice = (order) => {
     var price = Tools.calcForceClosePrice(order);
     if (price) {
-      return Tools.fromWei(price, order.decimals);
+      return formatPrice(price, order.symbol);
     }
     return '--'
   }
@@ -201,6 +204,14 @@ const EntrustComponent = () => {
       }
     }
     return '--';
+  }
+
+  const formatPrice = (price, symbol) => {
+    var productConfig = productList.find((item) => item.pair == symbol);
+    if (productConfig) {
+      return Tools.toStringAsFixed(fromWei(price), productConfig.decimal);
+    }
+    return fromWei(price);
   }
 
   return (
@@ -282,7 +293,7 @@ const EntrustComponent = () => {
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
                 <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
-                <div className="table-column">{item.openPrice == 0 ? t('Wait_Price') : fromWei(item.openPrice)}</div>
+                <div className="table-column">{item.openPrice == 0 ? t('Wait_Price') : formatPrice(item.openPrice, item.symbol)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 {/* <div className="table-column">+7182.92 USDT</div>
@@ -290,13 +301,13 @@ const EntrustComponent = () => {
                 <div className="table-column">{item.openPrice == 0 ? '--' : calcForceClosePrice(item)}</div>
                 <div className="table-column">{item.openPrice == 0 ? '--' : calcOrderPL(item)} { item.openSymbol }</div>
                 <div className="table-column" onClick={() => onSetTakeProfitAndStopLossClick(item)}>
-                  {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
+                  {item.pLimitPrice != 0 ? formatPrice(item.pLimitPrice, item.symbol) : t('entrustSPPriceTip')} { item.openPrice == 0 ? (<div></div>) : (<Edit style={{ fontSize: '14px' }} />) }
                 </div>
                 <div className="table-column" onClick={() => onSetTakeProfitAndStopLossClick(item)}>
-                  {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}  <Edit style={{ fontSize: '14px' }} />
+                  {item.lLimitPrice != 0 ? formatPrice(item.lLimitPrice, item.symbol) : t('entrustSPPriceTip')} { item.openPrice == 0 ? (<div></div>) : (<Edit style={{ fontSize: '14px' }} />) }
                 </div>
                 <div className="table-column">
-                  <span className="link" onClick={(e)=> onCloseOrderClick(item)}>{t('textClose')}</span>
+                  <span className={item.openPrice == 0 ? 'disable-link' : 'link'} onClick={(e)=> onCloseOrderClick(item)}>{t('textClose')}</span>
                 </div>
               </div>
             );
