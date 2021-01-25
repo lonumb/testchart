@@ -183,8 +183,7 @@ class PoolProxyContract extends BaseContract {
   }
 
   async queryLastTrades(poolList, size = 30) {
-    if (!this._web3) return [];
-    var contractAddress = getConfigByChainID(this._chainId).poolProxyContractAddress;
+    if (!this._web3 || poolList.length == 0) return this.getLocalLastTrades() || [];
 
     var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
     let lastLogs = JSON.parse(lastLogsStr) || [];
@@ -199,6 +198,7 @@ class PoolProxyContract extends BaseContract {
     var logs = [];
     try {
       logs = await this.queryPoolEvents(poolList, lastScanBlock + 1, blockNumber);
+      logs = logs.filter((item) => item.order.openPrice != 0);
       console.log('logs: ', logs);
     } catch (e) {
       return lastLogs;
@@ -208,7 +208,7 @@ class PoolProxyContract extends BaseContract {
     }
     if (logs.length < size) {
         let index = lastLogs.length - 1;
-        while (logs.length < size && index > 0) {
+        while (logs.length < size && index >= 0) {
             logs = [lastLogs[index]].concat(logs);
             index--;
         }
@@ -261,7 +261,7 @@ class PoolProxyContract extends BaseContract {
             //console.log(item);
             let abi = eventAbi[item.topics[0]];
             //console.log(abi);
-            if (abi && abi.name && ((abi.name == 'OpenMarketSwap' && abi.openPrice != '0') 
+            if (abi && abi.name && (abi.name == 'OpenMarketSwap'
               || abi.name == 'TradeLimitSwap'
               || abi.name == 'SetOrderPrice'
               || abi.name == 'CloseMarketSwap')) {

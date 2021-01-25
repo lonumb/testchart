@@ -58,7 +58,7 @@ const RecordComponent = () => {
   // }, [chainId]);
 
   useEffect(async () => {
-    if (active && account && poolList) {
+    if (active && account && poolList.length > 0) {
       poolProxyContract = new PoolProxyContract(library, chainId, account);
 
       if (recordList.length == 0) {
