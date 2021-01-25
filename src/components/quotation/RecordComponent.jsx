@@ -121,7 +121,7 @@ const RecordComponent = () => {
           {recordList.map((item, index) => {
             return (
               <div className="list-item" key={index}>
-                <div className="column">18:57:20</div>
+                <div className="column">{Tools.formatTime(item.time || new Date().getTime(), 'HH:mm:ss')}</div>
                 <div className="column">{item._name == 'OpenMarketSwap' ? t('textBuild') 
                                 : item._name == 'CloseMarketSwap' ? t('textClose') : ''}</div>
                 <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{Tools.numFmt(Tools.fromWei(item.order.openPrice, item.decimals), 2)}</div>
