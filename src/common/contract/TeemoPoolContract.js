@@ -44,13 +44,13 @@ class TeemoPoolContract extends BaseContract {
   }
 
   // 限价建仓
-  openLimitSwap(poolInfo, symbol, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice) {
-    console.log('openLimitSwap: ', poolInfo.poolAddr, symbol, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice);
+  openLimitSwap(poolInfo, symbol, newPrice, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice) {
+    console.log('openLimitSwap: ', poolInfo.poolAddr, symbol, newPrice, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice);
     let contract = this.getContract(poolInfo);
     if (!contract) return;
     if (poolInfo.erc20Pool) {
       return contract.methods
-        .openLimitSwap(symbol, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice)
+        .openLimitSwap(symbol, newPrice, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice)
         .send({ from: this._userAddress })
         .on('error', function (error) {})
         .on('transactionHash', function (hash) {
@@ -61,7 +61,7 @@ class TeemoPoolContract extends BaseContract {
         });
     }
     return contract.methods
-    .openLimitSwap(symbol, limitPrice, lever, bsFlag, pLimitPrice, lLimitPrice)
+    .openLimitSwap(symbol, newPrice, limitPrice, lever, bsFlag, pLimitPrice, lLimitPrice)
     .send({ from: this._userAddress, value: tokenAmount })
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {

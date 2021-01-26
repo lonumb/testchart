@@ -415,7 +415,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct SwapTrade.SwapOrder[]",
+        "internalType": "struct SwapTradeLibrary.SwapOrder[]",
         "name": "orders",
         "type": "tuple[]"
       }
@@ -506,7 +506,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct SwapTrade.SwapLimitOrder[]",
+        "internalType": "struct SwapTradeLibrary.SwapLimitOrder[]",
         "name": "orders",
         "type": "tuple[]"
       }
@@ -525,6 +525,11 @@
         "internalType": "string",
         "name": "_symbol",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_newPrice",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -899,19 +904,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_validBlocks",
-        "type": "uint256"
-      }
-    ],
-    "name": "setValidBlocks",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "bytes32",
         "name": "_orderID",
         "type": "bytes32"
@@ -1014,17 +1006,12 @@
         "type": "bytes32[]"
       }
     ],
-    "name": "isValidating",
+    "name": "getSymbol",
     "outputs": [
       {
-        "internalType": "bool",
-        "name": "status",
-        "type": "bool"
-      },
-      {
-        "internalType": "uint256",
-        "name": "blockIndex",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
       }
     ],
     "stateMutability": "view",

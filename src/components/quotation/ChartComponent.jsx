@@ -166,8 +166,6 @@ const ChartComponent = () => {
     ChartUtil.onRealTimeCallback(ticker);
   }, [ticker]);
 
-
-
   return (
     <div className="chart">
       <ul className="own-tool-bar">

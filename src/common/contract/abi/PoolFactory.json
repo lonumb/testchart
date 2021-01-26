@@ -715,19 +715,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_validBlocks",
-        "type": "uint256"
-      }
-    ],
-    "name": "setValidBlocks",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address payable",
         "name": "_receiver",
         "type": "address"

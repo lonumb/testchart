@@ -70,6 +70,10 @@ const OrderComponent = (props) => {
   const [basicAssetBalance, setBasicAssetBalance] = useState(null); // 本位资产余额
   const [refreshDataObj, setRefreshDataObj] = useState({});
 
+  const { quote } = useSelector((state) => {
+    return state.trade;
+  }); 
+
   function isAvailable() {
     return active && account && poolInfo && poolInfo.poolAddr;
   }
@@ -266,6 +270,8 @@ const OrderComponent = (props) => {
       alert(t('limitPricePlaceholder'));
       return;
     }
+    if (!quote || !quote.close) return;
+    let newPrice = toWei(quote.close.toString());
     let fixedTakeProfit = 0;
     let fixedStopLoss = 0;
     //开启高级设置 moreFlag
@@ -284,10 +290,10 @@ const OrderComponent = (props) => {
           setPoolTotalAmount(res);
           return res;
         }),
-        quoteFactoryContract.getNewPrice(symbol).then((res) => {
-          console.log('quote: ', res);
-          return res;
-        }),
+        // quoteFactoryContract.getNewPrice(symbol).then((res) => {
+        //   console.log('quote: ', res);
+        //   return res;
+        // }),
         // poolProxyContract.getBalanceByPoolInfo(poolInfo, account).then((res) => {
         //   console.log('OrderComponent setBasicAssetBalance: ', res);
         //   setBasicAssetBalance(res);
@@ -300,8 +306,8 @@ const OrderComponent = (props) => {
     }
 
     var poolTotalAmount = res[0];
-    var quote = res[1];
-    //var balance = res[2];
+    //var quote = res[1];
+    //let newPrice = quote.newPrice;
 
     var formatPoolTotalAmount = Tools.fromWei(poolTotalAmount, poolInfo.decimals);
     var totalAmount = formatPoolTotalAmount / 2;
@@ -318,7 +324,7 @@ const OrderComponent = (props) => {
 
     //TODO 校验余额
     if (openType == OPEN_TYPE_MARKET) {
-      let maxPrice = quote.newPrice;
+      let maxPrice = newPrice;
       if (bsflag == BSFLAG_LONG) {
         //校验止盈价
         if (fixedTakeProfit && Tools.GE(maxPrice, fixedTakeProfit)) {
@@ -371,7 +377,7 @@ const OrderComponent = (props) => {
         }
       }
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-      teemoPoolContract.openLimitSwap(poolInfo, symbol, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
+      teemoPoolContract.openLimitSwap(poolInfo, symbol, newPrice, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
       .on('transactionHash', function (hash) {
       })
       .on('receipt', async (receipt) => {
