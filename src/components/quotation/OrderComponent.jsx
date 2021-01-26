@@ -204,7 +204,7 @@ const OrderComponent = (props) => {
     //rate / 100.0
     setBondRate(rate);
     if (basicAssetBalance) {
-      setBond(Tools.fromWei(Tools.mul(basicAssetBalance, rate / 100.0), poolInfo.openDecimal));
+      setBond(Tools.numFmt(Tools.fromWei(Tools.mul(basicAssetBalance, rate / 100.0), poolInfo.decimals), poolInfo.openDecimal));
     }
   }
 
