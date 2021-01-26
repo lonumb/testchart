@@ -15,7 +15,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionRechargeModal, actionWithdrawModal, actionWalletModal } from '../../store/actions/CommonAction';
 import { injected, walletconnect } from '../wallet/Connectors';
-import { supportedChainIds, chainConfig, isSupportedChainId } from '../../components/wallet/Config'
+import { supportedChainIds, chainConfig, isSupportedChainId, ensumeChainId } from '../../components/wallet/Config'
 import { langList, getLang, switchLang } from '../../i18n/LangUtil';
 
 import OwnPopover from '../popover/OwnPopover';
@@ -176,20 +176,20 @@ const HeaderComponent = () => {
                   <ListAltIcon />
                   {t('menuTradeRecord')}
                 </li>
-                <li onClick={() => history.push('/user/center')}>
+                {/* <li onClick={() => history.push('/user/center')}>
                   <AccountBalanceWalletIcon />
                   {t('menuWalletDetail')}
                 </li>
                 <li className="line" onClick={() => history.push('/user/setting')}>
                   <SettingsIcon />
                   {t('menuPersonSetting')}
-                </li>
+                </li> */}
                 <li onClick={() => copyAddrFunc()}>
                   <FileCopyIcon />
                   {t('copyAddress')}
                 </li>
                 <li>
-                  <a href={`https://etherscan.io/address/${account}`} target="_blank" rel="noopener noreferrer">
+                  <a href={`${chainConfig[ensumeChainId(chainId)].explorerUrl}/address/${account}`} target="_blank" rel="noopener noreferrer">
                     <StorageIcon />
                     {t('menuAddressDetail')}
                   </a>

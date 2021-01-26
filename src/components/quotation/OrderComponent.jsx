@@ -148,21 +148,25 @@ const OrderComponent = (props) => {
   }, [openType])
 
   useEffect(() => {
+    var l = 100;
     if (bond != 0) {
       if (poolTotalAmount && poolTotalAmount != 0) {
-        var lever = Math.floor(Tools.fromWei(poolTotalAmount, poolInfo.decimals) / 2 / bond);
-        if (lever > 100) {
-          lever = 100;
+        l = Math.floor(Tools.fromWei(poolTotalAmount, poolInfo.decimals) / 2 / bond);
+        if (l > 100) {
+          l = 100;
         }
-        if (lever < 1) {
-          lever = 1;
+        if (l < 1) {
+          l = 1;
         }
-        setMaxLever(lever);
       } else {
-        setMaxLever(1);
+        l = 1;
       }
     } else {
-      setMaxLever(100);
+      l = 100;
+    }
+    setMaxLever(l);
+    if (lever > l) {
+      setLever(l);
     }
   }, [bond, poolTotalAmount])
 
@@ -202,6 +206,10 @@ const OrderComponent = (props) => {
     if (basicAssetBalance) {
       setBond(Tools.fromWei(Tools.mul(basicAssetBalance, rate / 100.0), poolInfo.openDecimal));
     }
+  }
+
+  const onBondInputChanged = (bond) => {
+    setBond(Tools.numFmt(bond, poolInfo.openDecimal));
   }
 
   const onLeverInputChanged = (lever) => {
@@ -437,7 +445,7 @@ const OrderComponent = (props) => {
 
         <div className="form-ele-input">
           <label htmlFor="">{t('textBond')}</label>
-          <input type="text" value={bond} onChange={(e) => setBond(Tools.numFmt(e.target.value, poolInfo.openDecimal))} placeholder="" />
+          <input type="text" value={bond} onChange={(e) => onBondInputChanged(e.target.value) } placeholder="" />
         </div>
 
         <ul className="form-list-c4">
