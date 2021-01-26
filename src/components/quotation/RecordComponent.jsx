@@ -32,8 +32,10 @@ const RecordComponent = () => {
     return Promise.all([
       poolProxyContract.queryLastTrades(poolList).then(res => {
         console.log('RecordComponent setRecordList: ', res);
-        setRecordList(res || []);
+        setRecordList(res.reverse() || []);
         return res;
+      }).catch((e) => {
+        console.log(`queryLastTrades err: `, e);
       }),
     ]);
   }
@@ -64,7 +66,7 @@ const RecordComponent = () => {
       if (recordList.length == 0) {
         var list = poolProxyContract.getLocalLastTrades();
         console.log('RecordComponent local setRecordList: ', list);
-        setRecordList(list || []);
+        setRecordList(list.reverse() || []);
       }
       getDataFunc();
     } else {

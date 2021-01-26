@@ -201,9 +201,9 @@ class PoolProxyContract extends BaseContract {
     var logs = [];
     try {
       logs = await this.queryPoolEvents(poolList, lastScanBlock + 1, blockNumber);
-      logs = logs.filter((item) => item.order.openPrice != 0);
       console.log('logs: ', logs);
     } catch (e) {
+      console.log(e);
       return lastLogs;
     }
     if (logs.length > size) {
@@ -228,6 +228,7 @@ class PoolProxyContract extends BaseContract {
       let orders = await Promise.all(promises);
       console.log('orders: ', orders);
     } catch (e) {
+      console.log(e);
       return lastLogs;
     }
     global.localStorage.setItem(`lastLogs_${this._chainId}`, JSON.stringify(logs));
@@ -297,7 +298,7 @@ class PoolProxyContract extends BaseContract {
                 result.push(res);
             }
         });
-        return result;
+        return result.filter((item) => item._name != 'OpenMarketSwap' || item.openPrice != 0);
     });
   }
 }

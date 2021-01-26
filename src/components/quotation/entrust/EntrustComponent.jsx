@@ -91,6 +91,23 @@ const EntrustComponent = () => {
   }, [])
 
   useEffect(() => {
+    let timer = undefined;
+    if (!timer) {
+      timer = setInterval(async () => {
+        setRefreshDataObj({});
+        // try {
+        //   await getData();
+        // } catch (e) {
+        //   console.log(e);
+        // }
+      }, 10000);
+    }
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
     getDataFunc();
   }, [refreshDataObj])
 
