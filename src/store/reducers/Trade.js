@@ -23,7 +23,9 @@ const tradeReducer = (state = defaultState, action) => {
 
     case Types.PRODUCT_INFO:
       let { loading, product = {} } = params;
-      nextState = { ...state, productInfo: product, loading };
+
+      var q = state.quoteMap[product.symbol.toLowerCase()];
+      nextState = { ...state, quote: q || {}, productInfo: product, loading };
       break;
 
     case Types.CURRENT_PERIOD:
@@ -50,9 +52,22 @@ const tradeReducer = (state = defaultState, action) => {
           time: parseInt(params.T) * 1000,
           datatype: params.datatype,
         };
+
+        quote['UDR'] = Tools.fmtToFixed(((params.C - (params.PC || params.O)) / params.PC * 100), 2);
+        quote['UDC'] = quote['UDR'] >= 0 ? 'green' : 'red';
+
         var quoteMap = state.quoteMap;
+        let oldQuote = quoteMap[quote.symbol];
+        if (oldQuote) {
+          quote.lastPrice = oldQuote.close;
+        }
         quoteMap[quote.symbol] = quote;
-        nextState = { ...state, quote, quoteMap };
+
+        if (state.productInfo.symbol.toLowerCase() == quote.symbol) {
+          nextState = { ...state, quote, quoteMap };
+        } else {
+          nextState = { ...state, quoteMap };
+        }
         break;
     
     case Types.TICKER_UPDATE:
