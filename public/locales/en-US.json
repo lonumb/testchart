@@ -220,5 +220,21 @@
   "Wallet_hint2": "If no, you can click on the MetaMask plug-ins to evoke a pop-up.",
   "Try_again": "Try Again",
   "Provide_liquidity": "Provide Liquidity",
-  "Leverage_err": "Max Leverage:{{p}}x"
+  "Leverage_err": "Max Leverage:{{p}}x",
+  "Close_price_hint": "Market price when position is closed",
+  "Limit_price_hint": "Set price of opening order",
+  "Open_tpsl_hint": "Can be set after successful opening",
+  "Teemo_test_title1": "Teemo Liquidity Test Credits",
+  "Teemo_test_title2": "Teemo Transaction Test Credits",
+  "Teemo_test_maintitle": "Test Credits",
+  "Teemo_test_subtitle1": "Test Rules:",
+  "Teemo_test_rule1": "1. Test date: XXXXX~XXXXXX",
+  "Teemo_test_rule2": "2. In this test, the transactions and liquidity pools both require using mainnet tokens. However, the profit or loss made by the transaction or liquidity pool will not actually affect your principal. Only the data will be recorded for subsequent function improvement and test credits calculation based on certain rules.",
+  "Teemo_test_rule3": "3. Test credits can be converted into official tokens after the TEEMO project is officially launched",
+  "Teemo_test_rule4": "Note: The test tokens will not be credited to your wallet; the data will be bound to the wallet account you use",
+  "Teemo_test_rule5": "4. If you provide liquidity in the liquidity pool, please be sure to withdraw your pledged liquidity before XXXX. The withdrawal portal will be closed on XXXX.",
+  "Teemo_test_subtitle2": "Credit scoring rules:",
+  "Teemo_test_calculate_rule1": "Every time a user opens a position, it counts as 0.1 point; every time a user closes a position, it counts according to the profit and loss of the order: if there are profits, the points will be calculated based on the number of profits (1 point is counted for every 1BNB profit); if there is a loss, no points will be counted.",
+  "Teemo_test_calculate_rule2": "Each block is scored with 10 points. Points are allocated according to the proportion of funds pledged in the BNB liquidity pool at the time. Then the overall points will be calculated when the pledged funds are unlocked.",
+  "Teemo_test_calculate_rule3": "Calculation deadline:"
 }

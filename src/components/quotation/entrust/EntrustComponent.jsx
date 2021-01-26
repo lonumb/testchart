@@ -321,7 +321,7 @@ const EntrustComponent = () => {
           <div className="table-column">{t('textDir')}</div>
 
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>{t('entrustPriceDesc')}</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('Limit_price_hint')}</React.Fragment>} arrow placement="bottom">
               <span>{t('textEntrustPrice')}</span>
             </OwnTooltip>
           </div>
@@ -379,7 +379,7 @@ const EntrustComponent = () => {
           <div className="table-column">{t('textDir')}</div>
 
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>{t('entrustPriceDesc')}</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('Limit_price_hint')}</React.Fragment>} arrow placement="bottom">
               <span>{t('textEntrustPrice')}</span>
             </OwnTooltip>
           </div>
@@ -443,7 +443,7 @@ const EntrustComponent = () => {
           </div>
 
           <div className="table-column tip-text">
-            <OwnTooltip title={<React.Fragment>{t('entrustPriceDesc')}</React.Fragment>} arrow placement="bottom">
+            <OwnTooltip title={<React.Fragment>{t('Close_price_hint')}</React.Fragment>} arrow placement="bottom">
               <span>{t('textClosePrice')}</span>
             </OwnTooltip>
           </div>
