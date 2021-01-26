@@ -46,7 +46,7 @@ const HeaderComponent = () => {
     window.navigator.clipboard.writeText(account).then(
       () => {
         console.log('success');
-        alert('复制成功!');
+        alert(t('Copy_success'));
       },
       (err) => console.log('fail')
     );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
+import { useTranslation } from 'react-i18next';
 import Web3 from 'web3';
 import { useSelector, useDispatch } from 'react-redux';
 import { injected, walletconnect, walletlinkconnect, bsc, isBscSupported, isWalletlinkSupported } from './Connectors';
@@ -10,6 +11,7 @@ import './connect.scss';
 
 const WalletConnectModal = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { library, connector, activate } = useWeb3React();
   const [activatingConnector, setActivatingConnector] = useState();
   const { visible } = useSelector((state) => state.common.wallet);
@@ -35,7 +37,7 @@ const WalletConnectModal = () => {
 
   return (
     <div>
-      <Modal visible={visible} onClose={() => dispatch({ type: Types.WALLET_VISIBLE, payload: { visible: !visible } })} title="选择钱包供应商" maxWidth="md">
+      <Modal visible={visible} onClose={() => dispatch({ type: Types.WALLET_VISIBLE, payload: { visible: !visible } })} title={t('Choose_wallet')} maxWidth="md">
         <div className="wallet-connect">
           <ul>
           <li
