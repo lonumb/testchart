@@ -47,6 +47,8 @@ class PoolProxyContract extends BaseContract {
             if (!erc20Pool) {
               symbol = getConfigByChainID(this._chainId).mainSymbol;
             }
+            //目前都是2
+            var openDecimal = 2;
             temp.push({ 
               poolAddr, 
               tokenAddr, 
@@ -58,7 +60,8 @@ class PoolProxyContract extends BaseContract {
               symbol, 
               decimals, 
               lpdecimals: 18,
-              erc20Pool 
+              erc20Pool,
+              openDecimal,
             });
           });
         }
@@ -100,7 +103,7 @@ class PoolProxyContract extends BaseContract {
               longOrderTotalAmount,
               shortOrderTotalAmount,
               totalP,
-              totalL
+              totalL,
             });
           });
         }

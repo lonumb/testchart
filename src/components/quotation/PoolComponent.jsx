@@ -13,6 +13,7 @@ const PoolComponent = () => {
   const poolRef = useRef();
   const [poolHeight, setPoolHeight] = useState(0);
   const { poolInfo } = useSelector((state) => state.contract);
+  const { productInfo } = useSelector((state) => state.trade);
   const [positionInfo, setPositionInfo] = useState({});
 
   function isAvailable() {
@@ -65,7 +66,7 @@ const PoolComponent = () => {
     if (result < 0) {
       result = 0;
     }
-    return result;
+    return Tools.toStringAsFixed(result, poolInfo.openDecimal);
   }
 
   const getLongFormatPositionRate = (poolInfo) => {

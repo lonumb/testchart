@@ -62,6 +62,7 @@ const PoolInfo = () => {
   const [amount, setAmount] = useState('');
 
   const { poolList } = useSelector((state) => state.contract);
+  const { productList, productInfo } = useSelector((state) => state.trade);
   //const [ totalAmountList, setTotalAmountList ] = useState([]);
   const [ userFundList, setUserFundList ] = useState([]);
   const [ tokenBalanceList, setTokenBalanceList ] = useState([]);
@@ -171,7 +172,7 @@ const PoolInfo = () => {
     if (result < 0) {
       result = 0;
     }
-    return result;
+    return Tools.toStringAsFixed(result, poolInfo.openDecimal);
   }
 
   const getShortFormatPosition = (poolInfo) => {
@@ -183,7 +184,7 @@ const PoolInfo = () => {
     if (result < 0) {
       result = 0;
     }
-    return result;
+    return Tools.toStringAsFixed(result, poolInfo.openDecimal);
   }
 
   const getLongFormatPositionRate = (poolInfo) => {
@@ -209,7 +210,17 @@ const PoolInfo = () => {
   const getTotalPl = (poolInfo) => {
     var p = getLongFormatPosition(poolInfo);
     var l = getShortFormatPosition(poolInfo);
-    return Tools.fromWei(Tools.div(p + l, 2), (poolInfo ? poolInfo.decimals : 0));
+    if (l == 0) {
+      return 0;
+    }
+    try {
+      return Tools.fromWei(Tools.div(p + l, 2), (poolInfo ? poolInfo.decimals : 0));
+    } catch (e) {
+      console.log('p ', p);
+      console.log('l ', l);
+      console.log(e);
+    }
+    return '';
   }
 
   const getPledgeAmount = (userFund) => {
@@ -224,7 +235,7 @@ const PoolInfo = () => {
   };
 
   const tokenBalanceFormInputChanged = (poolInfo, index, value) => {
-    let formatValue = Tools.numFmt(value, poolInfo.decimals);
+    let formatValue = Tools.numFmt(value, poolInfo.openDecimal);
     poolInfo._tokenBalanceInput = formatValue;
     setRefreshObj({});
   };

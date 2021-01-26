@@ -116,6 +116,14 @@ const UserAccount = () => {
     return '--';
   }
 
+  const calcOrderPL = (order) => {
+    var pl = Tools.calcOrderPL(toWei(order.closePrice.toString()), order);
+    if (pl) {
+      return Tools.fromWei(pl, order.decimals);
+    }
+    return '--'
+  }
+
   return (
     <div className="user-capital-record">
       <div className="head-box">
@@ -270,7 +278,7 @@ const UserAccount = () => {
                 <TableCell>{t('textClosePrice')}</TableCell>
                 <TableCell>{t('textBond')}</TableCell>
                 <TableCell>{t('textLever')}</TableCell>
-                {/* <TableCell>{t('textProfitStop')}</TableCell> */}
+                <TableCell>{t('textProfitStop')}</TableCell>
                 {/* <TableCell>Txid</TableCell> */}
                 {/* <TableCell>{t('textCloseType')}</TableCell> */}
               </TableRow>
@@ -285,7 +293,7 @@ const UserAccount = () => {
                   <TableCell>{Tools.fromWei(item.closePrice, 18)}</TableCell>
                   <TableCell>{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</TableCell>
                   <TableCell>{item.lever} X</TableCell>
-                  {/* <TableCell>--</TableCell> */}
+                  <TableCell>calcOrderPL(item)</TableCell>
                   {/* <TableCell></TableCell> */}
                   {/* <TableCell></TableCell> */}
                 </TableRow>

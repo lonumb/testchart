@@ -25,15 +25,6 @@ const OPEN_TYPE_MARKET = 2
 // 建仓类型: 限价
 const OPEN_TYPE_LIMIT = 1
 
-const marks = [
-  { value: 0, label: '1x' },
-  { value: 20, label: '20x' },
-  { value: 40, label: '40x' },
-  { value: 60, label: '60x' },
-  { value: 80, label: '80x' },
-  { value: 100, label: '100x' },
-];
-
 // 止盈比例列表
 const profitRateList = [25, 50, 75, 100, 150, 200];
 // 止损比例列表
@@ -113,6 +104,15 @@ const OrderComponent = (props) => {
     ]);
   }
 
+  const marks = [
+    { value: 0, label: '1x' },
+    // { value: 20, label: '20x' },
+    // { value: 40, label: '40x' },
+    // { value: 60, label: '60x' },
+    // { value: 80, label: '80x' },
+    { value: 100, label: `${maxLever}x` },
+  ];
+
   const getDataFunc = async () => {
     var retryCount = 0;
     while (retryCount < 5) {
@@ -134,8 +134,18 @@ const OrderComponent = (props) => {
   }, [])
 
   useEffect(() => {
+    setLimitPrice('');
+    setTakeProfit('');
+    setStopLoss('');
+  }, [productInfo])
+
+  useEffect(() => {
     getDataFunc();
   }, [refreshDataObj])
+
+  useEffect(() => {
+    setLimitPrice('');
+  }, [openType])
 
   useEffect(() => {
     if (bond != 0) {
@@ -190,11 +200,12 @@ const OrderComponent = (props) => {
     //rate / 100.0
     setBondRate(rate);
     if (basicAssetBalance) {
-      setBond(Tools.fromWei(Tools.mul(basicAssetBalance, rate / 100.0), poolInfo.decimals));
+      setBond(Tools.fromWei(Tools.mul(basicAssetBalance, rate / 100.0), poolInfo.openDecimal));
     }
   }
 
-  const onLeverClick = (lever) => {
+  const onLeverInputChanged = (lever) => {
+    if (leverMax) return;
     let fixedLever = Tools.numFmt(lever, 0);
     if (fixedLever > maxLever) {
       fixedLever = maxLever;            
@@ -254,7 +265,7 @@ const OrderComponent = (props) => {
       fixedTakeProfit = toWei((takeProfit || 0).toString());
       fixedStopLoss = toWei((stopLoss || 0).toString());
     }
-    let symbol = 'btc/usdt';
+    let symbol = productInfo.pair;
     let fixedLever = parseInt(lever);
 
     var res;
@@ -426,7 +437,7 @@ const OrderComponent = (props) => {
 
         <div className="form-ele-input">
           <label htmlFor="">{t('textBond')}</label>
-          <input type="text" value={bond} onChange={(e) => setBond(Tools.numFmt(e.target.value, poolInfo.decimals))} placeholder="" />
+          <input type="text" value={bond} onChange={(e) => setBond(Tools.numFmt(e.target.value, poolInfo.openDecimal))} placeholder="" />
         </div>
 
         <ul className="form-list-c4">
@@ -446,7 +457,7 @@ const OrderComponent = (props) => {
 
         <div className="form-ele-input">
           <label htmlFor="">{t('textLever')}</label>
-          <input type="text" value={lever} onChange={(e) => onLeverClick(e.target.value)} />
+          <input type="text" value={lever} onChange={(e) => onLeverInputChanged(e.target.value)} />
           <span className="unit" style={{ color: '#f4f9ff' }}>
             x
           </span>
@@ -490,7 +501,7 @@ const OrderComponent = (props) => {
               </div>
               <div className="form-ele-input">
                 <label htmlFor="">{t('textProfitPrice')}</label>
-                <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, 18))} />
+                <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, productInfo.decimal))} />
                 {profitType === 2 && <span className="unit">%</span>}
               </div>
               {profitType === 2 && (
@@ -513,7 +524,7 @@ const OrderComponent = (props) => {
               </div>
               <div className="form-ele-input">
                 <label htmlFor="">{t('textStopPrice')}</label>
-                <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, 18))} />
+                <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, productInfo.decimal))} />
                 {stopType === 2 && <span className="unit">%</span>}
               </div>
               {stopType === 2 && (
