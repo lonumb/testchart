@@ -90,7 +90,7 @@ const ChartComponent = () => {
   const dispatch = useDispatch();
   const popupStateMin = usePopupState({ variant: 'popover', popupId: 'minPopover' });
   const popupStateHour = usePopupState({ variant: 'popover', popupId: 'hourPopover' });
-  const { period, productInfo, ticker } = useSelector((state) => {
+  const { period, productInfo, quote, ticker } = useSelector((state) => {
     return state.trade;
   }); // 当前周期
   // 指标列表
