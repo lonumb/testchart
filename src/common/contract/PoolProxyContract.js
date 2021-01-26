@@ -16,7 +16,7 @@ class PoolProxyContract extends BaseContract {
     if (!this._web3) return;
     if (!this._contract) {
       var contractAddress = getConfigByChainID(this._chainId).poolProxyContractAddress;
-      let contract = new this._web3.eth.Contract(PoolProxy.abi, contractAddress, { from: this._userAddress });
+      let contract = new this._web3.eth.Contract(PoolProxy, contractAddress, { from: this._userAddress });
       this._contract = contract;
       return contract;
     } else {
@@ -241,7 +241,7 @@ class PoolProxyContract extends BaseContract {
         address: poolList.map((item) => item.poolAddr)
     }).then((res) => {
         var eventAbi = {};
-        TeemoPool.abi.forEach((item) => { 
+        TeemoPool.forEach((item) => { 
             if (item.type === 'event') {
                 let sign = item.name + '('
                 let seq = '';

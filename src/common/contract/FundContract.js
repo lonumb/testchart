@@ -9,7 +9,7 @@ class FundContract extends BaseContract {
   // 获取合约对象
   getContract(poolInfo) {
     if (!this._web3) return;
-    let contract = new this._web3.eth.Contract(Fund.abi, poolInfo.fundAddr, { from: this._userAddress });
+    let contract = new this._web3.eth.Contract(Fund, poolInfo.fundAddr, { from: this._userAddress });
     return contract;
   }
 

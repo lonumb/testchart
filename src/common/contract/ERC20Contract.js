@@ -13,13 +13,13 @@ class ERC20Contract extends BaseContract {
   getContract(tokenContractAddress) {
     if (!this._web3) return;
     // if (!this._contract) {
-    //   let contract = new this._web3.eth.Contract(ERC20.abi, tokenContractAddress);
+    //   let contract = new this._web3.eth.Contract(ERC20, tokenContractAddress);
     //   this._contract = contract;
     //   return contract;
     // } else {
     //   return this._contract;
     // }
-    let contract = new this._web3.eth.Contract(ERC20.abi, tokenContractAddress);
+    let contract = new this._web3.eth.Contract(ERC20, tokenContractAddress);
     return contract;
   }
 

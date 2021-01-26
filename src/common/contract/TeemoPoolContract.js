@@ -10,7 +10,7 @@ class TeemoPoolContract extends BaseContract {
   // 获取合约对象
   getContract(poolInfo) {
     if (!this._web3) return;
-    let contract = new this._web3.eth.Contract(poolInfo.erc20Pool ? TeemoPool.abi : TeemoWPool.abi, poolInfo.poolAddr, { from: this._userAddress });
+    let contract = new this._web3.eth.Contract(poolInfo.erc20Pool ? TeemoPool : TeemoWPool, poolInfo.poolAddr, { from: this._userAddress });
     return contract;
   }
 

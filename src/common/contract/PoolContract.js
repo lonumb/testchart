@@ -17,7 +17,7 @@ class PoolContract {
       console.log(`this._chainId: ${this._chainId}, `, getConfigByChainID(this._chainId));
       var contractAddress = getConfigByChainID(this._chainId).poolContractAddress;
       console.log(`contractAddress: ${contractAddress}`);
-      let contract = new this._web3.eth.Contract(PoolFactory.abi, contractAddress, { from: this._userAddress });
+      let contract = new this._web3.eth.Contract(PoolFactory, contractAddress, { from: this._userAddress });
       this._contract = contract;
       return contract;
     } else {

@@ -9,7 +9,7 @@ class SwapTradeContract extends BaseContract {
   // 获取合约对象
   getContract(poolInfo) {
     if (!this._web3) return;
-    let contract = new this._web3.eth.Contract(SwapTrade.abi, poolInfo.swapTradeAddr, { from: this._userAddress });
+    let contract = new this._web3.eth.Contract(SwapTrade, poolInfo.swapTradeAddr, { from: this._userAddress });
     return contract;
   }
 
