@@ -303,7 +303,8 @@ const OrderComponent = (props) => {
     var quote = res[1];
     //var balance = res[2];
 
-    var totalAmount = Math.floor(Tools.fromWei(poolTotalAmount, poolInfo.decimals) / 2);
+    var formatPoolTotalAmount = Tools.fromWei(poolTotalAmount, poolInfo.decimals);
+    var totalAmount = formatPoolTotalAmount / 2;
 
     if (bond * fixedLever > totalAmount) {
       if (fixedLever > 1) {
