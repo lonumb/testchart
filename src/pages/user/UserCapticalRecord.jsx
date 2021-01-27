@@ -275,6 +275,7 @@ const UserAccount = () => {
               <TableRow>
                 <TableCell>{t('textCloseTime')}</TableCell>
                 <TableCell>{t('textProductCode')}</TableCell>
+                <TableCell>{t('textDir')}</TableCell>
                 <TableCell>{t('textClosePrice')}</TableCell>
                 <TableCell>{t('textBond')}</TableCell>
                 <TableCell>{t('textLever')}</TableCell>
@@ -290,6 +291,7 @@ const UserAccount = () => {
                     {Tools.formatTime(item.closeTime)}
                   </TableCell>
                   <TableCell>{item.symbol.toUpperCase()}</TableCell>
+                  <TableCell>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</TableCell>
                   <TableCell>{Tools.fromWei(item.closePrice, 18)}</TableCell>
                   <TableCell>{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</TableCell>
                   <TableCell>{item.lever} X</TableCell>

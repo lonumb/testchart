@@ -249,7 +249,7 @@ export const calcStopLossPrice = (order, bottomlimit) => {
     return Decimal(order.openPrice).mul(1 - bottomlimit / 100.0 / order.lever).valueOf(); 
   } else {
     //order.openPrice * (1 + bottomlimit / 100.0 / order.lever)
-    return Decimal(order.openPrice).mul(1 - bottomlimit / 100.0 / order.lever).valueOf();
+    return Decimal(order.openPrice).mul(1 + bottomlimit / 100.0 / order.lever).valueOf();
   }
 }
 

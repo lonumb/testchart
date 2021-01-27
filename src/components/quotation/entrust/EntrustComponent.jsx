@@ -309,7 +309,7 @@ const EntrustComponent = () => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
-                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
+                <div className={item.bsFlag == BSFLAG_LONG ? "table-column green" : "table-column red"}>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
                 <div className="table-column">{item.openPrice == 0 ? t('Wait_Price') : formatPrice(item.openPrice, item.symbol)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
@@ -365,7 +365,7 @@ const EntrustComponent = () => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
-                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
+                <div className={item.bsFlag == BSFLAG_LONG ? "table-column green" : "table-column red"}>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
                 <div className="table-column">{formatPrice(item.openPrice, item.symbol)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
@@ -424,7 +424,7 @@ const EntrustComponent = () => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
-                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
+                <div className={item.bsFlag == BSFLAG_LONG ? "table-column green" : "table-column red"}>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
                 <div className="table-column">{formatPrice(item.openPrice, item.symbol)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
                 <div className="table-column">{item.lever} X</div>
@@ -488,7 +488,7 @@ const EntrustComponent = () => {
             return (
               <div className="table-row" key={`en${index}`}>
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
-                <div className="table-column green">{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
+                <div className={item.bsFlag == BSFLAG_LONG ? "table-column green" : "table-column red"}>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
                 <div className="table-column">{formatPrice(item.openPrice, item.symbol)}</div>
                 <div className="table-column">{formatPrice(item.openPrice, item.symbol)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</div>

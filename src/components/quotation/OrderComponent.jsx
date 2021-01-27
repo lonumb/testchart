@@ -276,7 +276,9 @@ const OrderComponent = (props) => {
 
   // 下单
   const createOrder = async () => {
-    if (!isTradeAvailable()) return;
+    if (!isTradeAvailable()) {
+      console.log('wallet disabled, return');
+    }
     if (!bond || bond === '') {
       alert(t('Margin_hint'));
       return;
@@ -285,7 +287,10 @@ const OrderComponent = (props) => {
       alert(t('limitPricePlaceholder'));
       return;
     }
-    if (!quote || !quote.close) return;
+    if (!quote || !quote.close) {
+      console.log('quote is null, return');
+      return;
+    }
     let newPrice = toWei(quote.close.toString());
     let fixedTakeProfit = 0;
     let fixedStopLoss = 0;
