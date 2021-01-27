@@ -5,9 +5,9 @@ import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import OwnTooltip from '../../tooltip/OwnTooltip';
 import OwnDialogModal from '../../modal/OwnDialog';
 
-import { useSelector } from 'react-redux';
 import './entrust.scss';
-
+import { actionWalletModal } from '../../../store/actions/CommonAction';
+import { useSelector, useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
 import TeemoPoolContract from '../../../common/contract/TeemoPoolContract';
 import SwapTradeContract from '../../../common/contract/SwapTradeContract';
@@ -29,6 +29,8 @@ let poolProxyContract;
 
 const EntrustComponent = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const { active, library, account, chainId } = useWeb3React();
   const { poolInfo, poolList } = useSelector((state) => state.contract);
   const { productList, productInfo, quote, quoteMap } = useSelector((state) => state.trade); // 当前周期
@@ -195,6 +197,15 @@ const EntrustComponent = () => {
       pl = Tools.calcOrderPL(price, order);
     }
     if (pl) {
+      // if (parseInt(Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal)) < 10 && quote) {
+      //   var price = toWei(quote.close.toString());
+      //   pl = Tools.calcOrderPL(price, order);
+
+      //   console.log(`bug: pl: ${Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal)}, close: ${price}, order: ${JSON.stringify(order)}, order2: ${JSON.stringify(order, 0, 2)}`);
+      // } else {
+      //   console.log(`pl: ${Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal)}, close: ${price}, order: ${JSON.stringify(order)}, order2: ${JSON.stringify(order, 0, 2)}`);
+      // }
+      //console.log(Tools.fromWei(pl, order.decimals));
       return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal);
     }
     return '--'
@@ -252,7 +263,7 @@ const EntrustComponent = () => {
       <div className="table-box">
         {!active ? (
           <div className="no-login">
-            <button className="btn-primary">{t('walletUnconnectTip')}</button>
+            <button className="btn-primary" onClick={() => actionWalletModal(true)(dispatch)}>{t('walletUnconnectTip')}</button>
           </div>
         ) : (<div></div>)}
 

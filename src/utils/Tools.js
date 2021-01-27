@@ -1,7 +1,6 @@
 import { Decimal } from 'decimal.js';
 import { BSFLAG_LONG, BSFLAG_SHORT } from './Constants'
 import moment from 'moment';
-import BN from 'bn.js';
 
 Decimal.set({ toExpNeg: -30, toExpPos: 30 });
 
@@ -83,19 +82,23 @@ export function toStringAsFixed(num, dec = 8) {
 }
 
 export function fromWei(num, decimal = 18) {
-  return div(num, new BN(10).pow(new BN(decimal)).toString());
+  return div(num, Math.pow(10, decimal)).valueOf();
 }
 
 export function toWei(num, decimal = 18) {
-  return mul(num, new BN(10).pow(new BN(decimal)).toString());
+  return mul(num, Math.pow(10, decimal)).valueOf();
 }
 
 export function fmtToFixed(num, dec = 2) {
   return Decimal(num).toFixed(dec);
 }
 
-export function abs(v1) {
-  return new BN(v1).abs().toString();
+export function toNumber(val) {
+  return Decimal(val).toNumber();
+}
+
+export function abs(v) {
+  return Decimal.abs(v).valueOf();
 }
 
 /**
@@ -104,7 +107,7 @@ export function abs(v1) {
  * @param {*} v2
  */
 export function sub(v1, v2) {
-  return new BN((v1 || '').toString()).sub(new BN((v2 || '').toString())).toString();
+  return Decimal.sub(v1, v2).valueOf();
 }
 /**
  * 加法运算
@@ -112,7 +115,7 @@ export function sub(v1, v2) {
  * @param {*} v2
  */
 export function plus(v1, v2) {
-  return new BN((v1 || '').toString()).add(new BN((v2 || '').toString())).toString();
+  return Decimal.add(v1, v2).valueOf();
 }
 /**
  * 乘法运算
@@ -120,7 +123,7 @@ export function plus(v1, v2) {
  * @param {*} v2
  */
 export function mul(v1, v2) {
-  return new BN((v1 || '').toString()).mul(new BN((v2 || '').toString())).toString();
+  return Decimal.mul(v1, v2).valueOf();
 }
 /**
  * 除法运算
@@ -128,37 +131,28 @@ export function mul(v1, v2) {
  * @param {*} v2
  */
 export function div(v1, v2) {
-  try {
-    return new BN((v1 || '').toString()).div(new BN((v2 || '').toString())).toString();
-  } catch (e) {
-    console.log(`div, v1: ${v1}, v2: ${v2}`);
-  }
+  return Decimal.div(v1, v2).valueOf();
 }
 
 // 等于
 export function EQ(val, compareVal) {
-  //return Decimal(val).eq(compareVal);
-  return new BN(val || '').eq(new BN(compareVal || ''));
+  return Decimal(val).eq(compareVal);
 }
 // 大于
 export function GT(val, compareVal) {
-  //return Decimal(val).gt(compareVal);
-  return new BN(val || '').gt(new BN(compareVal || ''));
+  return Decimal(val).gt(compareVal);
 }
 // 大于等于
 export function GE(val, compareVal) {
-  //return Decimal(val).gte(compareVal);
-  return new BN(val || '').gte(new BN(compareVal || ''));
+  return Decimal(val).gte(compareVal);
 }
 // 小于
 export function LT(val, compareVal) {
-  //return Decimal(val).lt(compareVal);
-  return new BN(val || '').lt(new BN(compareVal || ''));
+  return Decimal(val).lt(compareVal);
 }
 // 小于等于
 export function LE(val, compareVal) {
-  //return Decimal(val).lte(compareVal);
-  return new BN(val || '').lte(new BN(compareVal || ''));
+  return Decimal(val).lte(compareVal);
 }
 
 /**
