@@ -155,6 +155,10 @@ const PoolInfo = () => {
     }
   }, [active, library, account, poolList]);
 
+  const getAmountDecimal = (poolAddr) => {
+    return 2;
+  }
+
   const getPositionInfo = (poolAddr) => {
     var result = (positionInfoList || []).filter((item) => item.poolAddr == poolAddr);
     if (result.length > 0) {
@@ -340,7 +344,7 @@ const PoolInfo = () => {
                 <div className="line"></div>
                 <div className="title-item">
                   <label htmlFor="">{t('poolTotal')}</label>
-                  <div className="num">{getPositionInfo(item.poolAddr) ? Tools.fromWei(getPositionInfo(item.poolAddr).totalAmount, item.decimals) : '--' } { item.symbol }</div>
+                  <div className="num">{getPositionInfo(item.poolAddr) ? Tools.toStringAsFixed(Tools.fromWei(getPositionInfo(item.poolAddr).totalAmount, item.decimals), getAmountDecimal()) : '--' } { item.symbol }</div>
                 </div>
                 {/* <div className="title-item">
                   <label htmlFor="">{t('poolYearProfit')}</label>
@@ -348,7 +352,7 @@ const PoolInfo = () => {
                 </div> */}
                 <div className="title-item">
                   <label htmlFor="">{t('poolPledge')}</label>
-                  <div className="num">{userFundList.length > index ? Tools.fromWei(getPledgeAmount(userFundList[index]), item.decimals) : '--' } { item.symbol }</div>
+                  <div className="num">{userFundList.length > index ? Tools.toStringAsFixed(Tools.fromWei(getPledgeAmount(userFundList[index]), item.decimals), getAmountDecimal()) : '--' } { item.symbol }</div>
                 </div>
                 {/* <div className="title-item">
                   <label htmlFor="">{t('textProfitStop')}</label>
@@ -368,7 +372,7 @@ const PoolInfo = () => {
                 <ul className="info-columns">
                   <li>
                     <label htmlFor="">{t('poolCirculate')}</label>
-                    <span>{getPositionInfo(item.poolAddr) ? Tools.fromWei(Tools.div(getPositionInfo(item.poolAddr).totalAmount, 2), item.decimals) : '--' }</span>
+                    <span>{getPositionInfo(item.poolAddr) ? Tools.toStringAsFixed(Tools.fromWei(Tools.div(getPositionInfo(item.poolAddr).totalAmount, 2), item.decimals), getAmountDecimal()) : '--' }</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPosition')}</label>
@@ -387,7 +391,7 @@ const PoolInfo = () => {
                 <ul className="info-columns">
                   <li>
                     <label htmlFor="">{t('poolCirculate')}</label>
-                    <span>{getPositionInfo(item.poolAddr) ? Tools.fromWei(Tools.div(getPositionInfo(item.poolAddr).totalAmount, 2), item.decimals) : '--' }</span>
+                    <span>{getPositionInfo(item.poolAddr) ? Tools.toStringAsFixed(Tools.fromWei(Tools.div(getPositionInfo(item.poolAddr).totalAmount, 2), item.decimals), getAmountDecimal()) : '--' }</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPosition')}</label>
