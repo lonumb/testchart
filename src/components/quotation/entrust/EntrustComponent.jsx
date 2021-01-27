@@ -512,7 +512,7 @@ const EntrustComponent = () => {
                 <div className="table-column">{item.symbol.toUpperCase()}</div>
                 <div className={item.bsFlag == BSFLAG_LONG ? "table-column green" : "table-column red"}>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
                 <div className="table-column">{formatPrice(item.openPrice, item.symbol)}</div>
-                <div className="table-column">{formatPrice(item.openPrice, item.symbol)}</div>
+                <div className="table-column">{formatPrice(item.closePrice, item.symbol)}</div>
                 <div className="table-column">{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</div>
                 <div className="table-column">{item.lever} X</div>
                 {/* <div className="table-column" onClick={() => setVisible(true)}>
@@ -531,7 +531,7 @@ const EntrustComponent = () => {
                   {calcClosedOrderPL(item)} { item.openSymbol }
                 </div>
                 {/* <div className="table-column">状态</div> */}
-                <div className="table-column">{Tools.formatTime(item.openTime)}</div>
+                <div className="table-column">{Tools.formatTime(item.closeTime)}</div>
               </div>
             );
           })
