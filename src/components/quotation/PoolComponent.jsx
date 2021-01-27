@@ -95,7 +95,7 @@ const PoolComponent = () => {
           <div className="row">
             <span className="label0">{t('poolMany')}</span>
             <span className="label1">{t('poolCirculate')}:</span>
-            <span className="label2">{Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0)}</span>
+            <span className="label2">{Tools.numFmt(Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0), poolInfo.openDecimal)}</span>
             <span className="label3">({Tools.numFmt(100 - getLongFormatPositionRate(positionInfo), 2)}%)</span>
             <span className="label1">{t('poolPosition')}:</span>
             <span className="label2">{getFormatPosition(positionInfo.totalP)}</span>
@@ -104,7 +104,7 @@ const PoolComponent = () => {
           <div className="row">
             <span className="label0">{t('poolEmpty')}</span>
             <span className="label1">{t('poolCirculate')}:</span>
-            <span className="label2">{Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0)}</span>
+            <span className="label2">{Tools.numFmt(Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0), poolInfo.openDecimal)}</span>
             <span className="label3">({Tools.numFmt(100 - getShortFormatPositionRate(positionInfo), 2)}%)</span>
             <span className="label1">{t('poolPosition')}:</span>
             <span className="label2">{getFormatPosition(positionInfo.totalL)}</span>

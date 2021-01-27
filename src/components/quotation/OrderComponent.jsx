@@ -218,9 +218,15 @@ const OrderComponent = (props) => {
 
   const onLeverInputChanged = (lever) => {
     if (leverMax) return;
-    let fixedLever = Tools.numFmt(lever, 0);
+    let fixedLever = parseInt(lever);
+    if (isNaN(fixedLever)) {
+      fixedLever = 1;
+    }
     if (fixedLever > maxLever) {
       fixedLever = maxLever;            
+    }
+    if (fixedLever < 1) {
+      fixedLever = 1;            
     }
     setLever(fixedLever);
     if (fixedLever < maxLever) {
@@ -230,9 +236,10 @@ const OrderComponent = (props) => {
   }
 
   const onLeverRateClick = (rate) => {
-    //rate / 100.0
-    setLever(parseInt(maxLever * (rate / 100.0)));
-    setLevelRate(rate);
+    onLeverInputChanged(parseInt(maxLever * (rate / 100.0)));
+    if (rate == 0) {
+      setLevelRate(rate);
+    }
   }
 
   const onLevelMaxClick = (checked) => {
@@ -507,52 +514,54 @@ const OrderComponent = (props) => {
 
           {moreFlag && (
             <Fragment>
-              <div className="form-ele-desc">
-                <label htmlFor="">{t('textProfit')}</label>
-                {/* <span className="sd">
-                  <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setTakeProfitType(profitType === 1 ? 2 : 1)} />
-                  {profitType === 1 ? t('textPrice') : t('textRate')}
-                </span> */}
+              <div className="hide">
+                <div className="form-ele-desc">
+                  <label htmlFor="">{t('textProfit')}</label>
+                  {/* <span className="sd">
+                    <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setTakeProfitType(profitType === 1 ? 2 : 1)} />
+                    {profitType === 1 ? t('textPrice') : t('textRate')}
+                  </span> */}
+                </div>
+                <div className="form-ele-input">
+                  <label htmlFor="">{t('textProfitPrice')}</label>
+                  <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, productInfo.decimal))} />
+                  {profitType === 2 && <span className="unit">%</span>}
+                </div>
+                {profitType === 2 && (
+                  <ul className="form-list-c6">
+                    {profitRateList.map((item) => {
+                      return (
+                        <li className={profitRate === item ? 'active' : ''} onClick={() => setTakeProfitRate(item)} key={item}>
+                          {item}%
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+                <div className="form-ele-desc">
+                  <label htmlFor="">{t('textStop')}</label>
+                  {/* <span className="sd">
+                    <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setStopType(stopType === 1 ? 2 : 1)} />
+                    {profitType === 1 ? t('textPrice') : t('textRate')}
+                  </span> */}
+                </div>
+                <div className="form-ele-input">
+                  <label htmlFor="">{t('textStopPrice')}</label>
+                  <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, productInfo.decimal))} />
+                  {stopType === 2 && <span className="unit">%</span>}
+                </div>
+                {stopType === 2 && (
+                  <ul className="form-list-c6">
+                    {stopRateList.map((item) => {
+                      return (
+                        <li className={stopRate === item ? 'active' : ''} onClick={() => setStopRate(item)} key={item}>
+                          {item}%
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </div>
-              <div className="form-ele-input">
-                <label htmlFor="">{t('textProfitPrice')}</label>
-                <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, productInfo.decimal))} />
-                {profitType === 2 && <span className="unit">%</span>}
-              </div>
-              {profitType === 2 && (
-                <ul className="form-list-c6">
-                  {profitRateList.map((item) => {
-                    return (
-                      <li className={profitRate === item ? 'active' : ''} onClick={() => setTakeProfitRate(item)} key={item}>
-                        {item}%
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-              <div className="form-ele-desc">
-                <label htmlFor="">{t('textStop')}</label>
-                {/* <span className="sd">
-                  <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setStopType(stopType === 1 ? 2 : 1)} />
-                  {profitType === 1 ? t('textPrice') : t('textRate')}
-                </span> */}
-              </div>
-              <div className="form-ele-input">
-                <label htmlFor="">{t('textStopPrice')}</label>
-                <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, productInfo.decimal))} />
-                {stopType === 2 && <span className="unit">%</span>}
-              </div>
-              {stopType === 2 && (
-                <ul className="form-list-c6">
-                  {stopRateList.map((item) => {
-                    return (
-                      <li className={stopRate === item ? 'active' : ''} onClick={() => setStopRate(item)} key={item}>
-                        {item}%
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
               <div className="form-ele-desc">
                 <OwnTooltip title={<React.Fragment>{t('orderWaveHint')}</React.Fragment>} arrow placement="bottom">
                   <label htmlFor="" className="tip-text">

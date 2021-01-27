@@ -14,6 +14,8 @@ const RecordComponent = () => {
   const { t } = useTranslation();
   const { active, library, account, chainId } = useWeb3React();
   const { poolList } = useSelector((state) => state.contract);
+  const { productList } = useSelector((state) => state.trade);
+
   const [ refreshObj, setRefreshObj ] = useState({});
 
   const recordRef = useRef();
@@ -109,13 +111,21 @@ const RecordComponent = () => {
     };
   }, []);
 
+  const formatPrice = (price, symbol) => {
+    var productConfig = productList.find((item) => item.pair == symbol);
+    if (productConfig) {
+      return Tools.toStringAsFixed(fromWei(price), productConfig.decimal);
+    }
+    return fromWei(price);
+  }
+
   return (
     <div className="record" ref={recordRef}>
       <div className="title-box">{t('tradeDealTitle')}</div>
       <div className="list-title">
         <div className="column">{t('textTime')}</div>
         <div className="column">{t('textType')}</div>
-        <div className="column">{t('textPrice')}(USDT)</div>
+        <div className="column">{t('textPrice')}</div>
         <div className="column">{t('poolPosition')} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
       </div>
       <div className="list-wrap">
@@ -126,7 +136,7 @@ const RecordComponent = () => {
                 <div className="column">{Tools.formatTime(item.time || new Date().getTime(), 'HH:mm:ss')}</div>
                 <div className="column">{item._name == 'OpenMarketSwap' ? t('textBuild') 
                                 : item._name == 'CloseMarketSwap' ? t('textClose') : ''}</div>
-                <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{Tools.numFmt(Tools.fromWei(item.order.openPrice, item.decimals), 2)}</div>
+                <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{formatPrice(item.order.openPrice, item.order.symbol)}</div>
                 <div className="column">
                   {Tools.fromWei(item.order.tokenAmount, item.decimals)} {item.openSymbol} <Reply />
                 </div>

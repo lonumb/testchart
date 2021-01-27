@@ -272,6 +272,7 @@ class PoolProxyContract extends BaseContract {
                 let inputs = abi.inputs;
                 let res = abicoder.decodeLog(inputs, item.data, item.topics.slice(1, item.topics.length));
                 res._name = abi.name;
+                res._origin_name = abi.name;
                 res.orderID = res.orderID || res._orderID;
                 res.origin = item;
 
