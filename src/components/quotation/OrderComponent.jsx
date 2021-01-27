@@ -342,21 +342,21 @@ const OrderComponent = (props) => {
       let maxPrice = newPrice;
       if (bsflag == BSFLAG_LONG) {
         //校验止盈价
-        if (fixedTakeProfit && Tools.GE(maxPrice, fixedTakeProfit)) {
+        if (takeProfit && Tools.GE(maxPrice, fixedTakeProfit)) {
           return alert(t('takeProfitLTHint') + fromWei(maxPrice));
         }
         //校验止损价
-        if (fixedStopLoss && Tools.LE(maxPrice, fixedStopLoss)) {
+        if (stopLoss && Tools.LE(maxPrice, fixedStopLoss)) {
           return alert(t('takeLossGTHint') + fromWei(maxPrice));
         }
         maxPrice = toWei((fromWei(maxPrice) * (1 + slippage)).toString());
       } else {
         //校验止盈价
-        if (fixedTakeProfit && Tools.GE(fixedTakeProfit, maxPrice)) {
+        if (takeProfit && Tools.GE(fixedTakeProfit, maxPrice)) {
           return alert(t('takeProfitGTHint') + fromWei(maxPrice));
         }
         //校验止损价
-        if (fixedStopLoss && Tools.LE(fixedStopLoss, maxPrice)) {
+        if (stopLoss && Tools.LE(fixedStopLoss, maxPrice)) {
           return alert(t('stopLossLTHint') + fromWei(maxPrice));
         }
         maxPrice = toWei((fromWei(maxPrice) * (1 - slippage)).toString());
@@ -374,20 +374,20 @@ const OrderComponent = (props) => {
       var openPrice = toWei(limitPrice.toString());
       if (bsflag == BSFLAG_LONG) {
         //校验止盈价
-        if (fixedTakeProfit && Tools.GE(openPrice, fixedTakeProfit)) {
+        if (takeProfit && Tools.GE(openPrice, fixedTakeProfit)) {
           return alert(t('takeProfitLTHint') + takeProfit);
         }
         //校验止损价
-        if (fixedStopLoss && Tools.LE(openPrice, fixedStopLoss)) {
+        if (stopLoss && Tools.LE(openPrice, fixedStopLoss)) {
           return alert(t('takeLossGTHint') + stopLoss);
         }
       } else {
         //校验止盈价
-        if (fixedTakeProfit && Tools.GE(fixedTakeProfit, openPrice)) {
+        if (takeProfit && Tools.GE(fixedTakeProfit, openPrice)) {
           return alert(t('takeProfitGTHint') + takeProfit);
         }
         //校验止损价
-        if (fixedStopLoss && Tools.LE(fixedStopLoss, openPrice)) {
+        if (stopLoss && Tools.LE(fixedStopLoss, openPrice)) {
           return alert(t('stopLossLTHint') + stopLoss);
         }
       }

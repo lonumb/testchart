@@ -9,9 +9,9 @@ export const config = {
         quoteWS: 'ws://test.trade.idefiex.com:9002',
     },
     97: {
-        quoteFactoryContractAddress: '0xc43023d03b526674243cf6Da276E033723d175be',
-        poolFactoryContractAddress: '0xDD266400B7500e0FF1724fEC303E3739c524EA01',
-        poolProxyContractAddress: '0x22440E93b507e222bc0ae18389F469a8118B61cC',
+        quoteFactoryContractAddress: '0x1d87b2b9b22Ef60374acd5272d0Ff531173A958C',
+        poolFactoryContractAddress: '0x01C3a2B596163df45aE5A8F20E5Fdf708072766D',
+        poolProxyContractAddress: '0x3c4112607637B75397eA05c30781855e4bDe4Aa9',
         baseUrl: 'https://mvp.teemo.finance',
         quoteWS: 'wss://mvp.teemo.finance/ws',
     },

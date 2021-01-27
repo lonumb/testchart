@@ -119,6 +119,22 @@ class PoolProxyContract extends BaseContract {
       .call();
   }
 
+  async getLPAmount(poolAddr, tokenAmount) {
+    let contract = this.getContract();
+    if (!contract) return;
+    return contract.methods
+      .getLPAmount(poolAddr, tokenAmount)
+      .call();
+  }
+
+  async getTokenAmount(poolAddr, lpAmount) {
+    let contract = this.getContract();
+    if (!contract) return;
+    return contract.methods
+      .getTokenAmount(poolAddr, lpAmount)
+      .call();
+  }
+
   getBalanceByPoolInfo(poolInfo, address = this._userAddress) {
     if (!this._web3 && !poolInfo) return Promise.error('web3 == null || poolInfo == null');
     if (poolInfo.erc20Pool) {
@@ -182,7 +198,7 @@ class PoolProxyContract extends BaseContract {
   getLocalLastTrades() {
     var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
     let lastLogs = JSON.parse(lastLogsStr) || [];
-    return lastLogs;
+    return lastLogs.filter((item) => item.order.openPrice != 0);
   }
 
   async queryLastTrades(poolList, size = 30) {
@@ -233,7 +249,7 @@ class PoolProxyContract extends BaseContract {
     }
     global.localStorage.setItem(`lastLogs_${this._chainId}`, JSON.stringify(logs));
     //global.localStorage.setItem(`lastScanBlock_${contractAddress}`, blockNumber);
-    return logs;
+    return logs.filter((item) => item.order.openPrice != 0);
   }
 
   queryPoolEvents(poolList, fromBlock = 1, toBlock) {

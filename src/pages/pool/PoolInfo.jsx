@@ -241,7 +241,17 @@ const PoolInfo = () => {
   const tokenBalanceFormInputChanged = (poolInfo, index, value) => {
     let formatValue = Tools.numFmt(value, poolInfo.openDecimal);
     poolInfo._tokenBalanceInput = formatValue;
+    poolInfo._tokenToLpAmount = null;
+    async function getLPAmount() {
+      var lpAmount = await poolProxyContract.getLPAmount(poolInfo.poolAddr, Tools.toWei(formatValue || 0, poolInfo.decimals));
+      console.log(`tokenAmount: ${formatValue}, to lpAmount: ${lpAmount}`);
+      if (formatValue == poolInfo._tokenBalanceInput) {
+        poolInfo._tokenToLpAmount = lpAmount;
+        setRefreshObj({});
+      }
+    }
     setRefreshObj({});
+    getLPAmount();
   };
 
   const lptokenBalanceFormMaxClick = (poolInfo, index) => {
@@ -254,7 +264,17 @@ const PoolInfo = () => {
   const lptokenBalanceFormInputChanged = (poolInfo, index, value) => {
     let formatValue = Tools.numFmt(value, poolInfo.lpdecimals);
     poolInfo._lptokenBalanceInput = formatValue;
+    poolInfo._lpAmountToTokenAmount = null;
+    async function getTokenAmount() {
+      var tokenAmount = await poolProxyContract.getTokenAmount(poolInfo.poolAddr, Tools.toWei(formatValue || 0, poolInfo.lpdecimals));
+      console.log(`lpTokenAmount: ${formatValue}, to tokenAmount: ${tokenAmount}`);
+      if (formatValue == poolInfo._lptokenBalanceInput) {
+        poolInfo._lpAmountToTokenAmount = tokenAmount;
+        setRefreshObj({});
+      }
+    }
     setRefreshObj({});
+    getTokenAmount();
   };
 
   const isTokenApproved = (poolInfo, index) => {
@@ -426,7 +446,7 @@ const PoolInfo = () => {
                       </span> */}
                     </div>
                     <div className="form-ele-gain">
-                      {/* {t('poolGain')}:- - */}
+                      {t('poolGain')}: {item._tokenToLpAmount ? Tools.fromWei(item._tokenToLpAmount, item.decimals) : '--'}
                     </div>
 
                     {
@@ -452,7 +472,7 @@ const PoolInfo = () => {
                     </div>
                     <div className="form-ele-desc">{t('textAvailable')}: {lptokenBalanceList.length > index ? Tools.fromWei(lptokenBalanceList[index], item.decimals) : '--' } {item.symbol} LP Token</div>
                     <div className="form-ele-gain">
-                      {/* {t('poolGain')}:- - */}
+                      {t('poolGain')}: {item._lpAmountToTokenAmount ? Tools.fromWei(item._lpAmountToTokenAmount, item.lpdecimals) : '--'}
                     </div>
 
                     {

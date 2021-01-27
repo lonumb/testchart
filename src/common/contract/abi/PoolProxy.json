@@ -428,5 +428,53 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_teemoPoolAddr",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "getLPAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "lpAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_teemoPoolAddr",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_lpAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTokenAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]
