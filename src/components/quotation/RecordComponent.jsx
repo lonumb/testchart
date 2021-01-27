@@ -133,7 +133,7 @@ const RecordComponent = () => {
           {recordList.map((item, index) => {
             return (
               <div className="list-item" key={index}>
-                <div className="column">{Tools.formatTime(item.time || new Date().getTime(), 'HH:mm:ss')}</div>
+                <div className="column">{Tools.formatTime(item.timestamp, 'HH:mm:ss')}</div>
                 <div className="column">{item._name == 'OpenMarketSwap' ? t('textBuild') 
                                 : item._name == 'CloseMarketSwap' ? t('textClose') : ''}</div>
                 <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{formatPrice(item.order.openPrice, item.order.symbol)}</div>

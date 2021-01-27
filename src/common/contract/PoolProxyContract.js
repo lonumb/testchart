@@ -305,10 +305,10 @@ class PoolProxyContract extends BaseContract {
                 res.openSymbol = pool.symbol;
                 res.decimals = pool.decimals;
 
-                if (res.time) {
-                  res.time *= 1000;
+                if (res.timestamp) {
+                  res.timestamp *= 1000;
                 } else {
-                  res.time = new Date().getTime();
+                  res.timestamp = new Date().getTime();
                 }
 
                 //console.log(res);
