@@ -16,9 +16,9 @@ export const config = {
         quoteWS: 'wss://mvp.teemo.finance/ws',
     },
     1337 : {
-        quoteFactoryContractAddress: '0x414e1c61B2583b3d869EB7dfE6D140cc3a3612fD',
-        poolFactoryContractAddress: '0xcdF4e7C5520ac7c66E12908e0c3EC5296a64E577',
-        poolProxyContractAddress: '0xd5fa99671C71857a921de730B242052D5d084700',
+        quoteFactoryContractAddress: '0x98DbdAFBF3cD03F2D715f79148ee43e310Dbf52C',
+        poolFactoryContractAddress: '0x1f3556e55b3ebA9Eaa5b63a390204127Aa5F8856',
+        poolProxyContractAddress: '0x10399743b57cb5ceb6f1f63c4CB2166B7660801C',
         baseUrl: 'https://47.90.62.21',
         quoteWS: 'wss://mvp.teemo.finance/ws',
     },

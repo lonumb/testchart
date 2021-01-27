@@ -117,9 +117,9 @@ const UserAccount = () => {
   }
 
   const calcOrderPL = (order) => {
-    var pl = Tools.calcOrderPL(toWei(order.closePrice.toString()), order);
+    var pl = Tools.calcOrderPL(order.closePrice.toString(), order);
     if (pl) {
-      return Tools.fromWei(pl, order.decimals);
+      return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal);
     }
     return '--'
   }
@@ -254,7 +254,7 @@ const UserAccount = () => {
                   <TableCell component="th" scope="row">
                     {Tools.formatTime(item.openTime)}
                   </TableCell>
-                  <TableCell>{item.symbol}</TableCell>
+                  <TableCell>{item.symbol.toUpperCase()}</TableCell>
                   {/* <TableCell></TableCell> */}
                   <TableCell>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</TableCell>
                   <TableCell>{fromWei(item.openPrice)}</TableCell>
@@ -287,13 +287,13 @@ const UserAccount = () => {
               {orderList.filter((item) => (currency == '' || currency == item.openSymbol) && item.closePrice != 0).map((item) => (
                 <TableRow key={item.orderId}>
                   <TableCell component="th" scope="row">
-                    {Tools.formatTime(item.openTime)}
+                    {Tools.formatTime(item.closeTime)}
                   </TableCell>
-                  <TableCell>{item.symbol}</TableCell>
+                  <TableCell>{item.symbol.toUpperCase()}</TableCell>
                   <TableCell>{Tools.fromWei(item.closePrice, 18)}</TableCell>
                   <TableCell>{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</TableCell>
                   <TableCell>{item.lever} X</TableCell>
-                  <TableCell>calcOrderPL(item)</TableCell>
+                  <TableCell>{calcOrderPL(item)}</TableCell>
                   {/* <TableCell></TableCell> */}
                   {/* <TableCell></TableCell> */}
                 </TableRow>

@@ -195,7 +195,7 @@ const EntrustComponent = () => {
       pl = Tools.calcOrderPL(price, order);
     }
     if (pl) {
-      return Tools.fromWei(pl, order.decimals);
+      return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal);
     }
     return '--'
   }
@@ -523,7 +523,7 @@ const EntrustComponent = () => {
           </div>
           <div className="form-ele-input">
             <label htmlFor="">{t('textProfitPrice')}</label>
-            <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, 18))} />
+            <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, setTakeProfitStopLossOrder.poolInfo.openDecimal))} />
             {profitType === 2 && <span className="unit">%</span>}
           </div>
           {/* <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div> */}
@@ -547,7 +547,7 @@ const EntrustComponent = () => {
           </div>
           <div className="form-ele-input">
             <label htmlFor="">{t('textStopPrice')}</label>
-            <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, 18))} />
+            <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools(e.target.value, setTakeProfitStopLossOrder.poolInfo.openDecimal))} />
             {stopLossType === 2 && <span className="unit">%</span>}
           </div>
           {/* <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div> */}
