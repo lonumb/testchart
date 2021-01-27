@@ -547,7 +547,7 @@ const EntrustComponent = () => {
           </div>
           <div className="form-ele-input">
             <label htmlFor="">{t('textStopPrice')}</label>
-            <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools(e.target.value, setTakeProfitStopLossOrder.poolInfo.openDecimal))} />
+            <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, setTakeProfitStopLossOrder.poolInfo.openDecimal))} />
             {stopLossType === 2 && <span className="unit">%</span>}
           </div>
           {/* <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div> */}
