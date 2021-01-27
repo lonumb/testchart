@@ -48,9 +48,11 @@ const tradeReducer = (state = defaultState, action) => {
           low: parseFloat(params.L),
           open: parseFloat(params.O),
           preClose: parseFloat(params.PC),
+          prevClose: parseFloat(params.PC),
           symbol: params.S,
           time: parseInt(params.T) * 1000,
           datatype: params.datatype,
+          volume: parseFloat(params.num || 0),
         };
 
         quote['UDR'] = Tools.fmtToFixed(((params.C - (params.PC || params.O)) / params.PC * 100), 2);
