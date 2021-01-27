@@ -211,6 +211,14 @@ const EntrustComponent = () => {
     return '--'
   }
 
+  const calcClosedOrderPL = (order) => {
+    var pl = Tools.calcOrderPL(order.closePrice.toString(), order);
+    if (pl) {
+      return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal);
+    }
+    return '--'
+  }
+
   const calcForceClosePrice = (order) => {
     var price = Tools.calcForceClosePrice(order);
     if (price) {
@@ -489,6 +497,9 @@ const EntrustComponent = () => {
               <span>{t('textStopPrice')}</span>
             </OwnTooltip>
           </div>
+          <div className="table-column tip-text">
+              <span>{t('textProfitStop')}</span>
+          </div>
           {/* <div className="table-column">状态</div> */}
           <div className="table-column">{t('textTime')}</div>
         </div>
@@ -515,6 +526,9 @@ const EntrustComponent = () => {
                 </div>
                 <div className="table-column">
                   {item.lLimitPrice != 0 ? formatPrice(item.lLimitPrice, item.symbol) : t('entrustSPPriceTip')}
+                </div>
+                <div className="table-column">
+                  {calcClosedOrderPL(item)} { item.openSymbol }
                 </div>
                 {/* <div className="table-column">状态</div> */}
                 <div className="table-column">{Tools.formatTime(item.openTime)}</div>

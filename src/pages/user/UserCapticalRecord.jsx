@@ -295,7 +295,7 @@ const UserAccount = () => {
                   <TableCell>{Tools.fromWei(item.closePrice, 18)}</TableCell>
                   <TableCell>{Tools.fromWei(item.tokenAmount, item.poolInfo.decimals)} { item.openSymbol }</TableCell>
                   <TableCell>{item.lever} X</TableCell>
-                  <TableCell>{calcOrderPL(item)}</TableCell>
+                  <TableCell>{calcOrderPL(item)}  { item.openSymbol }</TableCell>
                   {/* <TableCell></TableCell> */}
                   {/* <TableCell></TableCell> */}
                 </TableRow>
