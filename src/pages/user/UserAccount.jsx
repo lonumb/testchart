@@ -12,7 +12,6 @@ import './userAccount.scss';
 import chainConfig from '../../components/wallet/Config'
 
 import { useWeb3React } from '@web3-react/core';
-import PoolContract from '../../common/contract/PoolContract';
 // import CommonContract from '../../common/contract/CommonContract';
 
 function createData(name, calories, fat, carbs, protein) {

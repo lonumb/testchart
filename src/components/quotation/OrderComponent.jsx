@@ -11,6 +11,7 @@ import * as Types from '../../store/types';
 import { actionPoolInfo } from '../../store/actions/ContractAction';
 import './order.scss';
 import PoolProxyContract from '../../common/contract/PoolProxyContract';
+import PoolFactoryContract from '../../common/contract/PoolFactoryContract';
 import ERC20Contract from '../../common/contract/ERC20Contract';
 import TeemoPoolContract from '../../common/contract/TeemoPoolContract';
 import QuoteFactoryContract from '../../common/contract/QuoteFactoryContract';
@@ -31,6 +32,7 @@ const profitRateList = [25, 50, 75, 100, 150, 200];
 const stopRateList = [30, 40, 50, 60, 70, 80];
 
 let quoteFactoryContract = null;
+let poolFactoryContract = null;
 let erc20Contract = null;
 let poolProxyContract = null;
 let fundContract = null;
@@ -58,7 +60,7 @@ const OrderComponent = (props) => {
   const [stopType, setStopType] = useState(1); // 止损类型
   const [stopLoss, setStopLoss] = useState(''); // 止损
   const [stopRate, setStopRate] = useState(''); // 止损比例
-  const [fee, setFee] = useState(0); // 手续费
+  const [fee, setFee] = useState(null); // 手续费
   const [gas, setGas] = useState(0); // gas
   const [lever, setLever] = useState(1); // 杠杆
   const [approving, setApproving] = useState(false);
@@ -103,6 +105,11 @@ const OrderComponent = (props) => {
       fundContract.getPoolTotalAmount(poolInfo).then((res) => {
         console.log('OrderComponent setPoolTotalAmount: ', res);
         setPoolTotalAmount(res);
+        return res;
+      }),
+      poolFactoryContract.getOpenFee().then((res) => {
+        console.log('OrderComponent setFee: ', res);
+        setFee(res);
         return res;
       }),
     ]);
@@ -181,6 +188,7 @@ const OrderComponent = (props) => {
       erc20Contract = new ERC20Contract(library, chainId, account);
       poolProxyContract = new PoolProxyContract(library, chainId, account);
       fundContract = new FundContract(library, chainId, account);
+      poolFactoryContract = new PoolFactoryContract(library, chainId, account);
 
       getDataFunc();
     } else {
@@ -580,15 +588,15 @@ const OrderComponent = (props) => {
           )}
         </div>
 
-        {/* <div className="form-ele-desc">
+        <div className="form-ele-desc">
           <OwnTooltip title={<React.Fragment>Teemo不收取交易手续费</React.Fragment>} arrow placement="bottom">
             <label htmlFor="" className="tip-text">
-              手续费
+              {t('orderFee')}
             </label>
           </OwnTooltip>
-          <span className="sd">{fee}</span>
+          <span className="sd">{fee ? Tools.toStringAsFixed(fromWei(fee), 2) : '--'}</span>
         </div>
-
+{/* 
         <div className="form-ele-desc">
           <OwnTooltip title={<React.Fragment>GAS Price: 3 GWEI</React.Fragment>} arrow placement="bottom">
             <label htmlFor="" className="tip-text">

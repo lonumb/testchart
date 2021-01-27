@@ -11,7 +11,7 @@ class QuoteFactoryContract extends BaseContract {
   getContract() {
     if (!this._web3) return;
     if (!this._contract) {
-      var contractAddress = getConfigByChainID(this._chainId).quoteContractAddress;
+      var contractAddress = getConfigByChainID(this._chainId).quoteFactoryContractAddress;
       let contract = new this._web3.eth.Contract(QuoteFactory, contractAddress, { from: this._userAddress });
       this._contract = contract;
       return contract;
