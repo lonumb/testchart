@@ -195,16 +195,16 @@ class PoolProxyContract extends BaseContract {
     });
   }
 
-  getLocalLastTrades() {
-    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
+  getLocalLastTrades(symbol) {
+    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}_${symbol}`);
     let lastLogs = JSON.parse(lastLogsStr) || [];
-    return lastLogs.filter((item) => item.order.openPrice != 0);
+    return lastLogs;
   }
 
-  async queryLastTrades(poolList, size = 30) {
+  async queryLastTrades(poolList, symbol = 'btc/usdt') {
     if (!this._web3 || poolList.length == 0) return this.getLocalLastTrades() || [];
-
-    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
+    const size = 30;
+    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}_${symbol}`);
     let lastLogs = JSON.parse(lastLogsStr) || [];
 
     let lastScanBlock = 0;
@@ -222,16 +222,7 @@ class PoolProxyContract extends BaseContract {
       console.log(e);
       return lastLogs;
     }
-    if (logs.length > size) {
-        logs = logs.slice(logs.length - size, logs.length);
-    }
-    if (logs.length < size) {
-        let index = lastLogs.length - 1;
-        while (logs.length < size && index >= 0) {
-            logs = [lastLogs[index]].concat(logs);
-            index--;
-        }
-    }
+  
     let promises = [];
     for (let log of logs) {
       let contract = this.getContract();
@@ -247,7 +238,20 @@ class PoolProxyContract extends BaseContract {
       console.log(e);
       return lastLogs;
     }
-    global.localStorage.setItem(`lastLogs_${this._chainId}`, JSON.stringify(logs));
+
+    logs = logs.filter((item) => item.order.symbol == symbol)
+
+    if (logs.length > size) {
+      logs = logs.slice(logs.length - size, logs.length);
+    }
+    if (logs.length < size) {
+        let index = lastLogs.length - 1;
+        while (logs.length < size && index >= 0) {
+            logs = [lastLogs[index]].concat(logs);
+            index--;
+        }
+    }
+    global.localStorage.setItem(`lastLogs_${this._chainId}_${symbol}`, JSON.stringify(logs));
     //global.localStorage.setItem(`lastScanBlock_${contractAddress}`, blockNumber);
     return logs.filter((item) => item.order.openPrice != 0);
   }
@@ -311,8 +315,9 @@ class PoolProxyContract extends BaseContract {
                   res.timestamp = new Date().getTime();
                 }
 
-                //console.log(res);
-                result.push(res);
+                if (res._name != 'OpenMarketSwap' || (res._name == 'OpenMarketSwap' && res.openPrice != 0)) {
+                  result.push(res);
+                }
             }
         });
         return result.filter((item) => item._name != 'OpenMarketSwap' || item.openPrice != 0);

@@ -291,6 +291,10 @@ const OrderComponent = (props) => {
       console.log('quote is null, return');
       return;
     }
+    if (!fee) {
+      console.log('fee is null, return');
+      return;
+    }
     let newPrice = toWei(quote.close.toString());
     let fixedTakeProfit = 0;
     let fixedStopLoss = 0;
@@ -367,7 +371,7 @@ const OrderComponent = (props) => {
         maxPrice = toWei((fromWei(maxPrice) * (1 - slippage)).toString());
       }
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-      teemoPoolContract.openMarketSwap(poolInfo, symbol, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss, maxPrice)
+      teemoPoolContract.openMarketSwap(poolInfo, fee, symbol, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss, maxPrice)
       .on('transactionHash', function (hash) {
       })
       .on('receipt', async (receipt) => {
@@ -397,7 +401,7 @@ const OrderComponent = (props) => {
         }
       }
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-      teemoPoolContract.openLimitSwap(poolInfo, symbol, newPrice, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
+      teemoPoolContract.openLimitSwap(poolInfo, fee, symbol, newPrice, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
       .on('transactionHash', function (hash) {
       })
       .on('receipt', async (receipt) => {
@@ -594,12 +598,13 @@ const OrderComponent = (props) => {
         </div>
 
         <div className="form-ele-desc">
-          <OwnTooltip title={<React.Fragment>Teemo不收取交易手续费</React.Fragment>} arrow placement="bottom">
-            <label htmlFor="" className="tip-text">
+          {/* <OwnTooltip title={<React.Fragment>Teemo不收取交易手续费</React.Fragment>} arrow placement="bottom">
+            
+          </OwnTooltip> */}
+          <label htmlFor="" className="tip-text">
               {t('orderFee')}
             </label>
-          </OwnTooltip>
-          <span className="sd">{fee ? Tools.toStringAsFixed(fromWei(fee), 2) : '--'}</span>
+          <span className="sd">{fee ? Tools.fmtDec(fromWei(fee), 6) : '--'}</span>
         </div>
 {/* 
         <div className="form-ele-desc">

@@ -1,6 +1,7 @@
 import TeemoPool from './abi/TeemoPool.json';
 import TeemoWPool from './abi/TeemoWPool.json';
 import BaseContract from './BaseContract'
+import { toBN } from 'web3-utils';
 
 class TeemoPoolContract extends BaseContract {
   constructor(...args) {
@@ -15,14 +16,14 @@ class TeemoPoolContract extends BaseContract {
   }
 
   // 市价建仓
-  openMarketSwap(poolInfo, symbol, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice, maxPrice) {
-    console.log('openMarketSwap: ', poolInfo.poolAddr, symbol, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice, maxPrice);
+  openMarketSwap(poolInfo, fee, symbol, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice, maxPrice) {
+    console.log('openMarketSwap: ', poolInfo.poolAddr, fee, symbol, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice, maxPrice);
     let contract = this.getContract(poolInfo);
     if (!contract) return;
     if (poolInfo.erc20Pool) {
       return contract.methods
         .openMarketSwap(symbol, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice, maxPrice)
-        .send({ from: this._userAddress })
+        .send({ from: this._userAddress, value: fee })
         .on('error', function (error) {})
         .on('transactionHash', function (hash) {
           console.log('openMarketSwap transactionHash: ', hash);
@@ -33,7 +34,7 @@ class TeemoPoolContract extends BaseContract {
     }
     return contract.methods
     .openMarketSwap(symbol, lever, bsFlag, pLimitPrice, lLimitPrice, maxPrice)
-    .send({ from: this._userAddress, value: tokenAmount })
+    .send({ from: this._userAddress, value: toBN(tokenAmount).add(toBN(fee)).toString() })
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {
       console.log('openMarketSwap transactionHash: ', hash);
@@ -44,14 +45,14 @@ class TeemoPoolContract extends BaseContract {
   }
 
   // 限价建仓
-  openLimitSwap(poolInfo, symbol, newPrice, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice) {
-    console.log('openLimitSwap: ', poolInfo.poolAddr, symbol, newPrice, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice);
+  openLimitSwap(poolInfo, fee, symbol, newPrice, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice) {
+    console.log('openLimitSwap: ', poolInfo.poolAddr, fee, symbol, newPrice, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice);
     let contract = this.getContract(poolInfo);
     if (!contract) return;
     if (poolInfo.erc20Pool) {
       return contract.methods
         .openLimitSwap(symbol, newPrice, limitPrice, tokenAmount, lever, bsFlag, pLimitPrice, lLimitPrice)
-        .send({ from: this._userAddress })
+        .send({ from: this._userAddress, value: fee })
         .on('error', function (error) {})
         .on('transactionHash', function (hash) {
           console.log('openLimitSwap transactionHash: ', hash);
@@ -62,7 +63,7 @@ class TeemoPoolContract extends BaseContract {
     }
     return contract.methods
     .openLimitSwap(symbol, newPrice, limitPrice, lever, bsFlag, pLimitPrice, lLimitPrice)
-    .send({ from: this._userAddress, value: tokenAmount })
+    .send({ from: this._userAddress, value: toBN(tokenAmount).add(toBN(fee)).toString() })
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {
       console.log('openLimitSwap transactionHash: ', hash);
