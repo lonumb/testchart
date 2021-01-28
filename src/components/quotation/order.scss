@@ -50,25 +50,48 @@
         text-align: right;
         padding: 0;
       }
-      .lang-list {
-        margin-top: 14px;
+      .tab-box{
         display: flex;
-        flex-direction: column;
-        background: #252b44;
-        border-radius: 4px;
+        height: 36px;
+        background: #ffffff;
+        border: 2px solid #000000;
+        border-radius: 5px;
+        justify-content: space-around;
+        div{
+          line-height: 36px;
+          padding-left: 7px;
+          box-sizing: border-box;
+        }
+        .icones{
+          padding-top: 7px;
+        }
+      }
+      .lists{
+        display: none;
+      }
+      .list{
+        position: absolute;
+        top: 40px;
+        width: 100%;
+        z-index: 12;
+        background: #ffffff;
+        border: 2px solid #000000;
+        border-top: none;
+        box-sizing: border-box;
         li {
-          height: 28px;
           display: flex;
           align-items: center;
-          cursor: pointer;
-          padding: 0 16px;
-          color: #f4f9ff;
-          &:hover {
-            background-color: #20253c;
-          }
+          justify-content: center;
+          color: rgba(8, 23, 36, 0.5);
+          position: relative;
+          height: 36px;
         }
         .active {
-          background-color: #20253c;
+          color: #081724;
+          &::after {
+            background-color: #ffffff;
+            border-color: #081724;
+          }
         }
       }
     }
