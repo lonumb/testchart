@@ -19,6 +19,11 @@ const User = (props) => {
             </NavLink>
           </li> */}
           <li className="menu-item">
+            <NavLink to="/user/integral">
+              <AccountBalanceWalletIcon /> {t('Teemo_test_maintitle')}
+            </NavLink>
+          </li>
+          <li className="menu-item">
             <NavLink to="/user/rw-record">
               <ListAltIcon /> {t('menuRecord')}
             </NavLink>
