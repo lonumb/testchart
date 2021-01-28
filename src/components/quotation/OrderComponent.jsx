@@ -466,12 +466,10 @@ const OrderComponent = (props) => {
         </div>
 
         <div className="form-ele-select">
-            <Select
-              value={openType} onChange={(e) => setOpenType(parseInt(e.target.value))}
-            >
-              <MenuItem value={OPEN_TYPE_MARKET}>{t('orderMarket')}</MenuItem>
-              <MenuItem value={OPEN_TYPE_LIMIT}>{t('orderLimit')}</MenuItem>
-            </Select>
+          <select name="" id="" value={openType} onChange={(e) => setOpenType(parseInt(e.target.value))}>
+            <option className="options" value={OPEN_TYPE_MARKET}>{t('orderMarket')}</option>
+            <option value={OPEN_TYPE_LIMIT}>{t('orderLimit')}</option>
+          </select>
         </div>
 
         <div className={openType === OPEN_TYPE_MARKET ? 'form-ele-disable' : 'form-ele-input'}>

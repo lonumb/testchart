@@ -41,6 +41,8 @@
     flex-direction: column;
     box-sizing: border-box;
     padding: 0 16px;
+    max-height: 200px;
+    overflow-y: auto;
     .table-head,
     .table-row {
       display: flex;
@@ -58,15 +60,16 @@
         }
         &:nth-child(1),
         &:nth-child(3),
+        &:nth-child(5),
         &:nth-child(7),
         &:nth-child(8),
-        &:nth-child(10),
+        &:nth-child(9),
         &:nth-child(11) {
           flex: 2;
         }
         &:nth-child(4),
         &:nth-child(6),
-        &:nth-child(9) {
+        &:nth-child(10) {
           flex: 3;
         }
       }
