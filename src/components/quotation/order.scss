@@ -50,6 +50,27 @@
         text-align: right;
         padding: 0;
       }
+      .lang-list {
+        margin-top: 14px;
+        display: flex;
+        flex-direction: column;
+        background: #252b44;
+        border-radius: 4px;
+        li {
+          height: 28px;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          padding: 0 16px;
+          color: #f4f9ff;
+          &:hover {
+            background-color: #20253c;
+          }
+        }
+        .active {
+          background-color: #20253c;
+        }
+      }
     }
 
     .form-ele-sl {
@@ -201,4 +222,7 @@
   .hide {
     display: none;
   }
+}
+.MuiSvgIcon-icon{
+  color: #FFFFFF;
 }
