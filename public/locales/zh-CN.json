@@ -238,5 +238,6 @@
   "Teemo_test_calculate_rule1": "每当用户建仓，即计0.1分；每当用户平仓，根据这笔单子的盈亏情况，若盈利，则根据盈利数量，计算积分，每盈利1BNB，计1分。\n若亏损，则不计分。",
   "Teemo_test_calculate_rule2": "每区块计分10分，根据当时质押在BNB流动性池中的资金占比，分配积分，积分将在解锁质押资金时计算期间获得的全部积分",
   "Teemo_test_calculate_rule3": "截止计算日期：",
-  "Copy_success": "复制成功"
+  "Copy_success": "复制成功",
+  "Verifying_hint": "确认中"
 }

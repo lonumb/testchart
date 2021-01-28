@@ -40,6 +40,8 @@ const EntrustComponent = () => {
   const [orderList, setOrderList] = useState([]);
   const [limitOrderList, setLimitOrderList] = useState([]);
   const [type, setType] = useState(1);
+  const [orderCloseProcessingMark, setOrderCloseProcessingMark] = useState({});
+  const [limitOrderRevokeProcessingMark, setLimitOrderRevokeProcessingMark] = useState({});
 
   //const [visible, setVisible] = useState(false);
   const [setTakeProfitStopLossOrder, setSetTakeProfitStopLossOrder] = useState(null);
@@ -63,6 +65,18 @@ const EntrustComponent = () => {
     return Promise.all([
       poolProxyContract.getAllOrder(poolList).then((res) => {
         console.log('EntrustComponent getAllOrder: ', res);
+        res.forEach((item) => {
+            //平仓单
+            if (item.openPrice != 0) {
+              if (item.closePrice == 0) {
+                if (window.localStorage.getItem(`orderCloseProcessing_${item.orderId}`)) {
+                  orderCloseProcessingMark[item.orderId] = true;
+                }
+              } else {
+                window.localStorage.removeItem(`orderCloseProcessing_${item.orderId}`);
+              }
+            }
+        });
         setOrderList(res || []);
       }),
       poolProxyContract.getAllLimitOrder(poolList).then((res) => {
@@ -135,11 +149,16 @@ const EntrustComponent = () => {
     if (!order || order.openPrice == 0) return;
     teemoPoolContract
     .closeMarketSwap(order.poolInfo, order)
+    .on('transactionHash', function (hash) {
+      localStorage.setItem(`orderCloseProcessing_${order.orderId}`, true);
+      orderCloseProcessingMark[order.orderId] = true;
+      setOrderCloseProcessingMark(orderCloseProcessingMark);
+    })
     .on('receipt', async (receipt) => {
       emitter.emit('refreshBalance');
       console.log('平仓成功');
-      setOrderList(orderList.filter((item) => item.orderId != order.orderId));
-      //await getData();
+      setRefreshDataObj({});
+      //setOrderList(orderList.filter((item) => item.orderId != order.orderId));
     });
   }
 
@@ -147,11 +166,16 @@ const EntrustComponent = () => {
   const onRevokeLimitOrderClick = (limitOrder) => {
     teemoPoolContract
     .cancelLimitSwap(limitOrder.poolInfo, limitOrder)
+    .on('transactionHash', function (hash) {
+      limitOrderRevokeProcessingMark[limitOrder.orderId] = true;
+      setLimitOrderRevokeProcessingMark(limitOrderRevokeProcessingMark);
+    })
     .on('receipt', async (receipt) => {
       emitter.emit('refreshBalance');
       console.log('撤销成功');
       setLimitOrderList(limitOrderList.filter((item) => item.orderId != limitOrder.orderId));
-      //await getData();
+      delete limitOrderRevokeProcessingMark[limitOrder.orderId];
+      setLimitOrderRevokeProcessingMark(limitOrderRevokeProcessingMark);
     });
   }
 
@@ -343,7 +367,10 @@ const EntrustComponent = () => {
                   {item.lLimitPrice != 0 ? formatPrice(item.lLimitPrice, item.symbol) : t('entrustSPPriceTip')} { item.openPrice == 0 ? (<div></div>) : (<Edit style={{ fontSize: '14px' }} />) }
                 </div>
                 <div className="table-column">
-                  <span className={item.openPrice == 0 ? 'disable-link' : 'link'} onClick={(e)=> onCloseOrderClick(item)}>{t('textClose')}</span>
+                  {
+                    orderCloseProcessingMark[item.orderId] ? <span>{t('Verifying_hint')}</span>
+                      : <span className={item.openPrice == 0 ? 'disable-link' : 'link'} onClick={(e)=> onCloseOrderClick(item)}>{t('textClose')}</span>
+                  }
                 </div>
               </div>
             );
@@ -401,7 +428,10 @@ const EntrustComponent = () => {
                   {item.lLimitPrice != 0 ? formatPrice(item.lLimitPrice, item.symbol) : t('entrustSPPriceTip')}
                 </div>
                 <div className="table-column">
-                  <span className="link" onClick={(e)=> onRevokeLimitOrderClick(item)}>{t('btnRevoke')}</span>
+                  {
+                    limitOrderRevokeProcessingMark[item.orderId] ? <span>{t('Verifying_hint')}</span> 
+                      : <span className="link" onClick={(e)=> onRevokeLimitOrderClick(item)}>{t('btnRevoke')}</span>
+                  }
                 </div>
               </div>
             );

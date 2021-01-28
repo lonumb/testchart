@@ -155,6 +155,14 @@ class PoolProxyContract extends BaseContract {
     }
   }
 
+  getOrder(teemoPoolAddr, orderID) {
+    let contract = this.getContract();
+    if (!contract) return;
+    return contract.methods
+      .getOrder(teemoPoolAddr, orderID)
+      .call();
+  }
+
   getAllOrder(poolList, status = 0) {
     var swapTradeContract = new SwapTradeContract(this._library, this._chainId, this._userAddress);
     if (!swapTradeContract) return [];
@@ -285,12 +293,15 @@ class PoolProxyContract extends BaseContract {
             //console.log(item);
             let abi = eventAbi[item.topics[0]];
             //console.log(abi);
-            if (abi && abi.name && (abi.name == 'OpenMarketSwap'
+            if (abi && abi.name) {
+              let inputs = abi.inputs;
+              let res = abicoder.decodeLog(inputs, item.data, item.topics.slice(1, item.topics.length));
+
+              if ((abi.name == 'OpenMarketSwap' && res.openPrice != 0)
               || abi.name == 'TradeLimitSwap'
               || abi.name == 'SetOrderPrice'
-              || abi.name == 'CloseMarketSwap')) {
-                let inputs = abi.inputs;
-                let res = abicoder.decodeLog(inputs, item.data, item.topics.slice(1, item.topics.length));
+              || (abi.name == 'CloseMarketSwap' && res.closePrice != 0)) {
+                
                 res._name = abi.name;
                 res._origin_name = abi.name;
                 res.orderID = res.orderID || res._orderID;
@@ -314,10 +325,8 @@ class PoolProxyContract extends BaseContract {
                 } else {
                   res.timestamp = new Date().getTime();
                 }
-
-                if (res._name != 'OpenMarketSwap' || (res._name == 'OpenMarketSwap' && res.openPrice != 0)) {
-                  result.push(res);
-                }
+                result.push(res);
+              }
             }
         });
         return result.filter((item) => item._name != 'OpenMarketSwap' || item.openPrice != 0);

@@ -75,7 +75,7 @@ class TeemoPoolContract extends BaseContract {
 
   //永续合约市价平仓
   closeMarketSwap(poolInfo, order) {
-    console.log('closeMarketSwap: ', order);
+    console.log('closeMarketSwap: ', order.orderId);
     let contract = this.getContract(poolInfo);
     if (!contract) return;
    

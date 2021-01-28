@@ -238,5 +238,6 @@
   "Teemo_test_calculate_rule1": "Every time a user opens a position, it counts as 0.1 point; every time a user closes a position, it counts according to the profit and loss of the order: if there are profits, the points will be calculated based on the number of profits (1 point is counted for every 1BNB profit); if there is a loss, no points will be counted.",
   "Teemo_test_calculate_rule2": "Each block is scored with 10 points. Points are allocated according to the proportion of funds pledged in the BNB liquidity pool at the time. Then the overall points will be calculated when the pledged funds are unlocked.",
   "Teemo_test_calculate_rule3": "Calculation deadline:",
-  "Copy_success": "Copied"
+  "Copy_success": "Copied",
+  "Verifying_hint": "Verifying"
 }
