@@ -40,7 +40,7 @@ const WalletConnectModal = () => {
       <Modal visible={visible} onClose={() => dispatch({ type: Types.WALLET_VISIBLE, payload: { visible: !visible } })} title={t('Choose_wallet')} maxWidth="md">
         <div className="wallet-connect">
           <ul>
-          <li
+            <li
               className={!!(connector === injected) ? 'active' : ''}
               onClick={() => {
                 if (!window.ethereum) {
@@ -52,19 +52,6 @@ const WalletConnectModal = () => {
             >
               {mm ? <a href="https://metamask.io/">Install MetaMask</a> : <span>MetaMask</span>}
               <img src="/imgs/wallet/metamask.png" />
-            </li>
-            <li
-              className={!!(connector === injected) ? 'active' : ''}
-              onClick={() => {
-                if (!window.ethereum) {
-                  setMm(true);
-                } else {
-                  changeWallet(injected);
-                }
-              }}
-            >
-              {mm ? <a href="https://mathwallet.org/">Install MathWallet</a> : <span>MathWallet</span>}
-              <img src="/imgs/wallet/mathWallet.png" />
             </li>
             <li className={!!(connector === walletconnect) ? 'active' : ''} onClick={() => changeWallet(walletconnect)}>
               <span>WalletConnet</span>
@@ -90,6 +77,32 @@ const WalletConnectModal = () => {
 
               <img src="/imgs/wallet/binance.png" />
             </li> }
+            <li
+              className={!!(connector === injected) ? 'active' : ''}
+              onClick={() => {
+                if (!window.ethereum) {
+                  setMm(true);
+                } else {
+                  changeWallet(injected);
+                }
+              }}
+            >
+              {mm ? <a href="https://mathwallet.org/">Install MathWallet</a> : <span>MathWallet</span>}
+              <img src="/imgs/wallet/mathWallet.png" />
+            </li>
+            <li
+              className={!!(connector === injected) ? 'active' : ''}
+              onClick={() => {
+                if (!window.ethereum) {
+                  setMm(true);
+                } else {
+                  changeWallet(injected);
+                }
+              }}
+            >
+              {mm ? <a href="https://docs.coin98.app/coin98-extension/beginners-guide">Install Coin98 Wallet</a> : <span>Coin98 Wallet</span>}
+              <img src="/imgs/wallet/coin98.png" />
+            </li>
           </ul>
         </div>
       </Modal>

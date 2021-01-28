@@ -139,7 +139,7 @@ const RecordComponent = () => {
                 <div className="column">{Tools.formatTime(item.timestamp, 'HH:mm:ss')}</div>
                 <div className="column">{item._name == 'OpenMarketSwap' ? t('textBuild') 
                                 : item._name == 'CloseMarketSwap' ? t('textClose') : ''}</div>
-                <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{formatPrice(item._name == 'CloseMarketSwap' ? item.order.closePrice : item.order.openPrice, item.order.symbol)}</div>
+                <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{formatPrice(item._name == 'CloseMarketSwap' ? item.closePrice : item.order.openPrice, item.order.symbol)}</div>
                 <div className="column">
                   {Tools.fromWei(item.order.tokenAmount, item.decimals)} {item.openSymbol} <Reply />
                 </div>

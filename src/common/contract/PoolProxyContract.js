@@ -297,6 +297,9 @@ class PoolProxyContract extends BaseContract {
               let inputs = abi.inputs;
               let res = abicoder.decodeLog(inputs, item.data, item.topics.slice(1, item.topics.length));
 
+              // if (abi.name == 'CloseMarketSwap' && res.closePrice != 0) {
+              //   console.log('ss');
+              // }
               if ((abi.name == 'OpenMarketSwap' && res.openPrice != 0)
               || abi.name == 'TradeLimitSwap'
               || abi.name == 'SetOrderPrice'
