@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
 import * as Types from '../../store/types';
 import { actionPoolInfo } from '../../store/actions/ContractAction';
+import { actionTransactionHashModal } from '../../store/actions/CommonAction';
+
 import './order.scss';
 import PoolProxyContract from '../../common/contract/PoolProxyContract';
 import PoolFactoryContract from '../../common/contract/PoolFactoryContract';
@@ -22,7 +24,6 @@ import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Consta
 import { emitter } from '../../utils/event';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import SureModal from '../modal/sureModal'
 // import { makeStyles } from '@material-ui/core/styles';
 // 建仓类型: 市价
 const OPEN_TYPE_MARKET = 2
@@ -376,6 +377,7 @@ const OrderComponent = (props) => {
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openMarketSwap(poolInfo, fee, symbol, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss, maxPrice)
       .on('transactionHash', function (hash) {
+        actionTransactionHashModal({ visible: true, hash})(dispatch);
       })
       .on('receipt', async (receipt) => {
         emitter.emit('refreshOrder');
@@ -406,6 +408,7 @@ const OrderComponent = (props) => {
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openLimitSwap(poolInfo, fee, symbol, newPrice, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
       .on('transactionHash', function (hash) {
+        actionTransactionHashModal({ visible: true, hash})(dispatch);
       })
       .on('receipt', async (receipt) => {
         emitter.emit('refreshOrder');

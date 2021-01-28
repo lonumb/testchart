@@ -13,6 +13,7 @@ import TeemoPoolContract from '../../common/contract/TeemoPoolContract';
 import * as Tools from '../../utils/Tools';
 import { fromWei, toBN, toWei } from 'web3-utils';
 import { MAX_UINT256_VALUE } from '../../utils/Constants'
+import { actionTransactionHashModal } from '../../store/actions/CommonAction';
 
 import './poolInfo.scss';
 
@@ -332,7 +333,7 @@ const PoolInfo = () => {
     var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
     teemoPoolContract.lpDeposit(poolInfo, Tools.toWei(poolInfo._tokenBalanceInput, poolInfo.decimals))
     .on('transactionHash', function (hash) {
-
+      actionTransactionHashModal({ visible: true, hash })(dispatch);
     })
     .on('receipt', async (receipt) => {
       console.log('充值成功');
@@ -345,7 +346,7 @@ const PoolInfo = () => {
     var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
     teemoPoolContract.lpWithdraw(poolInfo, Tools.toWei(poolInfo._lptokenBalanceInput, poolInfo.decimals))
     .on('transactionHash', function (hash) {
-
+      actionTransactionHashModal({ visible: true, hash })(dispatch);
     })
     .on('receipt', async (receipt) => {
       console.log('提现成功');

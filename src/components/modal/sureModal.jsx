@@ -4,23 +4,23 @@ import './sureModal.scss'
 import * as Types from '../../store/types';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionTransactionHashModal } from '../../store/actions/CommonAction';
+import { chainConfig, ensumeChainId } from '../../components/wallet/Config'
+import { useWeb3React } from '@web3-react/core';
 
 const SureModal = (props) => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
-    //const { visible, title} = props;
+    const dispatch = useDispatch();
+    const { chainId } = useWeb3React();
 
     const { visible, hash } = useSelector((state) => {
         return state.common.transaction;
     });
 
-    console.log(`visible: ${visible}`);
-
     const openExplorer = () => {
-        alert('openExplorer');
+        window.open(`${chainConfig[ensumeChainId(chainId)].explorerUrl}tx/${hash}`);
     };
+
     const onClose = () => {
-        //dispatch({ type: Types.TRANSACTION_HASH_VISIBLE, payload: { visible: false } });
         actionTransactionHashModal({ visible: false })(dispatch);
     };
 
