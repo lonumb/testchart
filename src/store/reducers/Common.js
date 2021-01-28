@@ -4,6 +4,7 @@ const defaultState = {
   withdraw: { visible: false, code: '' },
   recharge: { visible: false, code: '' },
   wallet: { visible: false },
+  transaction: { visible: false, hash: '' },
 };
 
 const common = (state = defaultState, action) => {
@@ -20,6 +21,10 @@ const common = (state = defaultState, action) => {
 
     case Types.WALLET_VISIBLE:
       nextState = { ...state, wallet: { ...state.wallet, visible: params.visible } };
+      break;
+
+    case Types.TRANSACTION_HASH_VISIBLE:
+      nextState = { ...state, transaction: { ...state.transaction, visible: params.visible, hash: params.hash } };
       break;
 
     default:

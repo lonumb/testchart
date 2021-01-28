@@ -22,6 +22,7 @@ import OwnPopover from '../popover/OwnPopover';
 import WithdrawModal from '../account/Withdraw';
 import RechargeModal from '../account/Recharge';
 import ConnectModal from '../wallet/Connect';
+import SureModal from '../modal/sureModal';
 import './header.scss';
 
 const HeaderComponent = () => {
@@ -223,6 +224,7 @@ const HeaderComponent = () => {
       <WithdrawModal></WithdrawModal>
       <RechargeModal></RechargeModal>
       <ConnectModal></ConnectModal>
+      <SureModal></SureModal>
     </div>
   );
 };

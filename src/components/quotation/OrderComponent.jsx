@@ -22,6 +22,7 @@ import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Consta
 import { emitter } from '../../utils/event';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import SureModal from '../modal/sureModal'
 // import { makeStyles } from '@material-ui/core/styles';
 // 建仓类型: 市价
 const OPEN_TYPE_MARKET = 2
