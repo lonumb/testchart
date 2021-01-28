@@ -31,3 +31,12 @@ export const actionWalletModal = (params) => {
     dispatch(createAction(Types.WALLET_VISIBLE)({ visible: params }));
   };
 };
+
+/** 交易hash modal控制
+ * @param {*} params
+ */
+export const actionTransactionHashModal = (params) => {
+  return (dispatch) => {
+    dispatch(createAction(Types.TRANSACTION_HASH_VISIBLE)({ visible: params.visible, hash: params.hash }));
+  };
+};

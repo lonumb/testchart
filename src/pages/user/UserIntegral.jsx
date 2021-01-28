@@ -41,7 +41,7 @@ const UserIntegral = ()=>{
                 <span className='userIntegral-bottom-four'>{t('Teemo_test_title1')}</span>
                 <span className='userIntegral-bottom-five'>{t('Teemo_test_calculate_rule1')}</span>
             </div>
-            {/* <SureModal/>    */}
+            <SureModal/>   
         </div>
     )
 }

@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
 import * as Types from '../../store/types';
 import { actionPoolInfo } from '../../store/actions/ContractAction';
+import { actionTransactionHashModal } from '../../store/actions/CommonAction';
+
 import './order.scss';
 import PoolProxyContract from '../../common/contract/PoolProxyContract';
 import PoolFactoryContract from '../../common/contract/PoolFactoryContract';
@@ -380,6 +382,7 @@ const OrderComponent = (props) => {
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openMarketSwap(poolInfo, fee, symbol, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss, maxPrice)
       .on('transactionHash', function (hash) {
+        actionTransactionHashModal({ visible: true, hash})(dispatch);
       })
       .on('receipt', async (receipt) => {
         emitter.emit('refreshOrder');
@@ -410,6 +413,7 @@ const OrderComponent = (props) => {
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openLimitSwap(poolInfo, fee, symbol, newPrice, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
       .on('transactionHash', function (hash) {
+        actionTransactionHashModal({ visible: true, hash})(dispatch);
       })
       .on('receipt', async (receipt) => {
         emitter.emit('refreshOrder');

@@ -7,6 +7,8 @@ import OwnDialogModal from '../../modal/OwnDialog';
 
 import './entrust.scss';
 import { actionWalletModal } from '../../../store/actions/CommonAction';
+import { actionTransactionHashModal } from '../../../store/actions/CommonAction';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
 import TeemoPoolContract from '../../../common/contract/TeemoPoolContract';
@@ -153,6 +155,7 @@ const EntrustComponent = () => {
       localStorage.setItem(`orderCloseProcessing_${order.orderId}`, true);
       orderCloseProcessingMark[order.orderId] = true;
       setOrderCloseProcessingMark(orderCloseProcessingMark);
+      actionTransactionHashModal({ visible: true, hash})(dispatch);
     })
     .on('receipt', async (receipt) => {
       emitter.emit('refreshBalance');
@@ -169,6 +172,7 @@ const EntrustComponent = () => {
     .on('transactionHash', function (hash) {
       limitOrderRevokeProcessingMark[limitOrder.orderId] = true;
       setLimitOrderRevokeProcessingMark(limitOrderRevokeProcessingMark);
+      actionTransactionHashModal({ visible: true, hash})(dispatch);
     })
     .on('receipt', async (receipt) => {
       emitter.emit('refreshBalance');
@@ -201,8 +205,11 @@ const EntrustComponent = () => {
     }
     teemoPoolContract
     .updateSwapByPrice(setTakeProfitStopLossOrder.poolInfo, setTakeProfitStopLossOrder, fixedTakeProfit, fixedStopLoss)
+    .on('transactionHash', function (hash) {
+      actionTransactionHashModal({ visible: true, hash})(dispatch);
+    })
     .on('receipt', async (receipt) => {
-      alert('修改成功');
+      //alert('修改成功');
       var targetOrder = orderList.filter((item) => item.orderId != setTakeProfitStopLossOrder.orderId);
       if (targetOrder) {
         targetOrder.pLimitPrice = fixedTakeProfit;
