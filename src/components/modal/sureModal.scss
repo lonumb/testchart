@@ -1,0 +1,33 @@
+
+    .sureModal{
+        width: 336px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        img{
+            width: 84px;
+        }
+        .submitted{
+            font-size: 20px;
+            margin-bottom: 21px;
+        }
+        .look{
+            font-size: 14px;
+            color: #0081FF;
+            margin-top: 16px;
+        }
+        .sureModalBtn{
+            width: 100%;
+            margin-top: 24px;
+            button{
+                width: 100%;
+                background: #0081FF;
+                color: #FFFFFF;
+                height: 48px;
+                border-radius: 3px;
+                text-align: center;
+                line-height: 48px;
+            }
+        }
+    }

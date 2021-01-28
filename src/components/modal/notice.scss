@@ -1,0 +1,81 @@
+
+.noticeBox{
+    .modal-title{
+        display: none;
+    }
+    .MuiPaper-root{
+        width: 675px;
+        padding: 0;
+    }
+    .MuiDialog-paperWidthSm{
+        max-width: 675px;   
+    }
+    .MuiDialog-paper{
+        overflow-y: visible;
+    }
+    .noticeModal{
+        width: 675px;
+        height: 329px;
+        display: flex;
+        padding: 0;
+        .noticeModal-img{
+            width: 209px;
+        }
+        .noticeModal{
+            width: 466px;
+            padding: 24px 38px;
+            display: flex;
+            flex-direction: column;
+            .notice-test{
+                font-size: 14px;
+                color: #FFFFFF;
+                margin-top: 24px;
+            }
+            span{
+                color: rgba(255, 255, 255,.6);
+                margin-top: 16px;
+            }
+            .notice-title{
+                color: #FFFFFF;
+                font-size:20px;
+                text-align: center;
+                margin: 0;
+            }
+            .notice-check{
+                font-size: 14px;
+                color: rgba(255, 255, 255,.8);
+                margin-top: 38px;
+                input{
+                    margin-right: 3px;
+                    vertical-align: middle;
+                }
+            }
+            .notice-button{
+                display: flex;
+                justify-content: space-between;
+                margin-top: 24px;
+                .notice-button-left,.notice-button-right{
+                    width: 184px;
+                    height: 48px;
+                    border: 1px solid #0081FF;
+                    text-align: center;
+                    font-size: 14px;
+                    line-height: 46px;
+                    border-radius: 3px;
+                }
+                .notice-button-left{
+                    background: #252B44;
+                    color: #0081FF;
+                }
+                .notice-button-right{
+                    background: #0081FF;
+                    color: #FFFFFF;
+                }
+            }
+        }
+    }
+}
+
+
+
+

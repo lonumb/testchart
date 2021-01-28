@@ -239,5 +239,11 @@
   "Teemo_test_calculate_rule2": "每区块计分10分，根据当时质押在BNB流动性池中的资金占比，分配积分，积分将在解锁质押资金时计算期间获得的全部积分",
   "Teemo_test_calculate_rule3": "截止计算日期：",
   "Copy_success": "复制成功",
-  "Verifying_hint": "确认中"
+  "Verifying_hint": "确认中",
+  "Notice_title": "公告",
+  "Notice_text1": "当前版本为测试版本，所有交易及提供流动性产生的盈亏都不会进行结算，测试期间，所有交易及提供流动性的地址，都将获得测试积分，可在正式发布后，兑换正式代币。",
+  "Notice_text2": "· 测试时间：2020.2.2 ~2020.3.3",
+  "Notice_text3": "我已知晓，不再显示",
+  "Notice_button1": "查看详情",
+  "Notice_button2": "我知道了"
 }

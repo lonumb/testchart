@@ -13,7 +13,7 @@ const UserAccount = AsyncImportComponent(() => import('../pages/user/UserAccount
 const UserSetting = AsyncImportComponent(() => import('../pages/user/UserSetting'));
 const UserCapticalRecord = AsyncImportComponent(() => import('../pages/user/UserCapticalRecord'));
 const NotFound = AsyncImportComponent(() => import('../pages/error/NotFound'));
-
+const UserIntegral = AsyncImportComponent(() => import('../pages/user/UserIntegral'));
 const AppRouter = () => {
   return (
     <Router>
@@ -28,6 +28,7 @@ const AppRouter = () => {
           <Route path="/user/center" exact component={UserAccount} />
           <Route path="/user/setting" exact component={UserSetting} />
           <Route path="/user/rw-record" exact component={UserCapticalRecord} />
+          <Route path="/user/integral" exact component={UserIntegral} />
         </User>
         <Route component={NotFound} />
       </Switch>
