@@ -155,6 +155,14 @@ class PoolProxyContract extends BaseContract {
     }
   }
 
+  getOrder(teemoPoolAddr, orderID) {
+    let contract = this.getContract();
+    if (!contract) return;
+    return contract.methods
+      .getOrder(teemoPoolAddr, orderID)
+      .call();
+  }
+
   getAllOrder(poolList, status = 0) {
     var swapTradeContract = new SwapTradeContract(this._library, this._chainId, this._userAddress);
     if (!swapTradeContract) return [];
@@ -195,16 +203,16 @@ class PoolProxyContract extends BaseContract {
     });
   }
 
-  getLocalLastTrades() {
-    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
+  getLocalLastTrades(symbol) {
+    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}_${symbol}`);
     let lastLogs = JSON.parse(lastLogsStr) || [];
-    return lastLogs.filter((item) => item.order.openPrice != 0);
+    return lastLogs;
   }
 
-  async queryLastTrades(poolList, size = 30) {
+  async queryLastTrades(poolList, symbol = 'btc/usdt') {
     if (!this._web3 || poolList.length == 0) return this.getLocalLastTrades() || [];
-
-    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
+    const size = 30;
+    var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}_${symbol}`);
     let lastLogs = JSON.parse(lastLogsStr) || [];
 
     let lastScanBlock = 0;
@@ -222,16 +230,7 @@ class PoolProxyContract extends BaseContract {
       console.log(e);
       return lastLogs;
     }
-    if (logs.length > size) {
-        logs = logs.slice(logs.length - size, logs.length);
-    }
-    if (logs.length < size) {
-        let index = lastLogs.length - 1;
-        while (logs.length < size && index >= 0) {
-            logs = [lastLogs[index]].concat(logs);
-            index--;
-        }
-    }
+  
     let promises = [];
     for (let log of logs) {
       let contract = this.getContract();
@@ -247,7 +246,20 @@ class PoolProxyContract extends BaseContract {
       console.log(e);
       return lastLogs;
     }
-    global.localStorage.setItem(`lastLogs_${this._chainId}`, JSON.stringify(logs));
+
+    logs = logs.filter((item) => item.order.symbol == symbol)
+
+    if (logs.length > size) {
+      logs = logs.slice(logs.length - size, logs.length);
+    }
+    if (logs.length < size) {
+        let index = lastLogs.length - 1;
+        while (logs.length < size && index >= 0) {
+            logs = [lastLogs[index]].concat(logs);
+            index--;
+        }
+    }
+    global.localStorage.setItem(`lastLogs_${this._chainId}_${symbol}`, JSON.stringify(logs));
     //global.localStorage.setItem(`lastScanBlock_${contractAddress}`, blockNumber);
     return logs.filter((item) => item.order.openPrice != 0);
   }
@@ -281,12 +293,15 @@ class PoolProxyContract extends BaseContract {
             //console.log(item);
             let abi = eventAbi[item.topics[0]];
             //console.log(abi);
-            if (abi && abi.name && (abi.name == 'OpenMarketSwap'
+            if (abi && abi.name) {
+              let inputs = abi.inputs;
+              let res = abicoder.decodeLog(inputs, item.data, item.topics.slice(1, item.topics.length));
+
+              if ((abi.name == 'OpenMarketSwap' && res.openPrice != 0)
               || abi.name == 'TradeLimitSwap'
               || abi.name == 'SetOrderPrice'
-              || abi.name == 'CloseMarketSwap')) {
-                let inputs = abi.inputs;
-                let res = abicoder.decodeLog(inputs, item.data, item.topics.slice(1, item.topics.length));
+              || (abi.name == 'CloseMarketSwap' && res.closePrice != 0)) {
+                
                 res._name = abi.name;
                 res._origin_name = abi.name;
                 res.orderID = res.orderID || res._orderID;
@@ -310,9 +325,8 @@ class PoolProxyContract extends BaseContract {
                 } else {
                   res.timestamp = new Date().getTime();
                 }
-
-                //console.log(res);
                 result.push(res);
+              }
             }
         });
         return result.filter((item) => item._name != 'OpenMarketSwap' || item.openPrice != 0);

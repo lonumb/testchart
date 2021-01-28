@@ -14,7 +14,7 @@ const RecordComponent = () => {
   const { t } = useTranslation();
   const { active, library, account, chainId } = useWeb3React();
   const { poolList } = useSelector((state) => state.contract);
-  const { productList } = useSelector((state) => state.trade);
+  const { productList, productInfo } = useSelector((state) => state.trade);
 
   const [ refreshObj, setRefreshObj ] = useState({});
 
@@ -31,10 +31,13 @@ const RecordComponent = () => {
     if (!isAvailable()) {
       return Promise.reject('not available');
     }
+    var pair = productInfo.pair;
     return Promise.all([
-      poolProxyContract.queryLastTrades(poolList).then(res => {
-        console.log('RecordComponent setRecordList: ', res);
-        setRecordList(res.reverse() || []);
+      poolProxyContract.queryLastTrades(poolList, pair).then(res => {
+        if (pair == productInfo.pair) {
+          console.log('RecordComponent setRecordList: ', res);
+          setRecordList(res.reverse() || []);
+        }
         return res;
       }).catch((e) => {
         console.log(`queryLastTrades err: `, e);
@@ -65,8 +68,8 @@ const RecordComponent = () => {
     if (active && account && poolList.length > 0) {
       poolProxyContract = new PoolProxyContract(library, chainId, account);
 
-      if (recordList.length == 0) {
-        var list = poolProxyContract.getLocalLastTrades();
+      if (recordList.length == 0 || recordList[0].order.symbol != productInfo.pair) {
+        var list = poolProxyContract.getLocalLastTrades(productInfo.pair);
         console.log('RecordComponent local setRecordList: ', list);
         setRecordList(list.reverse() || []);
       }
@@ -74,7 +77,7 @@ const RecordComponent = () => {
     } else {
       poolProxyContract = null;
     }
-  }, [active, library, account, poolList]);
+  }, [active, library, account, poolList, productInfo]);
 
   // useEffect(() => {
   //   // 设置记录列表
@@ -136,7 +139,7 @@ const RecordComponent = () => {
                 <div className="column">{Tools.formatTime(item.timestamp, 'HH:mm:ss')}</div>
                 <div className="column">{item._name == 'OpenMarketSwap' ? t('textBuild') 
                                 : item._name == 'CloseMarketSwap' ? t('textClose') : ''}</div>
-                <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{formatPrice(item.order.openPrice, item.order.symbol)}</div>
+                <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{formatPrice(item._name == 'CloseMarketSwap' ? item.order.closePrice : item.order.openPrice, item.order.symbol)}</div>
                 <div className="column">
                   {Tools.fromWei(item.order.tokenAmount, item.decimals)} {item.openSymbol} <Reply />
                 </div>
