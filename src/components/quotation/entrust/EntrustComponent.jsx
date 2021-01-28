@@ -209,7 +209,7 @@ const EntrustComponent = () => {
       actionTransactionHashModal({ visible: true, hash})(dispatch);
     })
     .on('receipt', async (receipt) => {
-      alert('修改成功');
+      //alert('修改成功');
       var targetOrder = orderList.filter((item) => item.orderId != setTakeProfitStopLossOrder.orderId);
       if (targetOrder) {
         targetOrder.pLimitPrice = fixedTakeProfit;
