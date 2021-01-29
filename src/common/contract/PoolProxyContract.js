@@ -4,6 +4,8 @@ import BaseContract from './BaseContract'
 import ERC20Contract from './ERC20Contract'
 import SwapTradeContract from './SwapTradeContract'
 import TeemoPool from './abi/TeemoPool.json';
+import { toBN, toWei } from 'web3-utils';
+
 const abicoder = require('web3-eth-abi');
 
 class PoolProxyContract extends BaseContract {
@@ -82,6 +84,7 @@ class PoolProxyContract extends BaseContract {
           data.allTeemoPoolAddr.forEach((element, index) => {
             var poolAddr = data.allTeemoPoolAddr[index];
             var totalAmount = data.allTotalAmount[index];
+            totalAmount = toBN(totalAmount).add(toWei('100000')).toString();
             var totalSupply = data.allTotalSupply[index];
             var totalTokenAmountIn = data.allTotalTokenAmountIn[index];
             var totalTokenAmountOut = data.allTotalTokenAmountOut[index];
@@ -116,7 +119,10 @@ class PoolProxyContract extends BaseContract {
     if (!contract) return;
     return contract.methods
       .getPositionInfo(poolAddr)
-      .call();
+      .call().then((res) => {
+        res.totalAmount = toBN(res.totalAmount).add(toWei('100000')).toString();
+        return res;
+      });
   }
 
   async getLPAmount(poolAddr, tokenAmount) {

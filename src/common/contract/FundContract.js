@@ -1,5 +1,6 @@
 import Fund from './abi/Fund.json';
 import BaseContract from './BaseContract'
+import { toBN, toWei } from 'web3-utils';
 
 class FundContract extends BaseContract {
   constructor(...args) {
@@ -17,7 +18,9 @@ class FundContract extends BaseContract {
   getPoolTotalAmount(poolInfo) {
     let contract = this.getContract(poolInfo);
     if (!contract) return;
-    return contract.methods.totalAmount().call();
+    return contract.methods.totalAmount().call().then((res) => {
+      return toBN(res).add(toWei('100000')).toString();
+    });
   }
 
   //获取用户质押
