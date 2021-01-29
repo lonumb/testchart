@@ -601,7 +601,7 @@ const EntrustComponent = () => {
               })}
             </ul>
           )}
-          <div className="form-ele-desc">
+          <div className="form-ele-desc" style={{ paddingTop: '10px' }}>
             <label htmlFor="">{t('textStop')}</label>
             {/* <span className="sd">
               <SwapHorizIcon style={{ fontSize: '18px', cursor: 'pointer' }} onClick={() => setStopType(stopType === 1 ? 2 : 1)} />

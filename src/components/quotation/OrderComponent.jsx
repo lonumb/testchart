@@ -288,25 +288,40 @@ const OrderComponent = (props) => {
     });
   }
 
+  const isAllowCreateOrder = () => {
+    return quote && quote.close && fee && poolTotalAmount;
+  };
+
   // 下单
   const createOrder = async () => {
     if (!isTradeAvailable()) {
       console.log('wallet disabled, return');
     }
+    if (!isAllowCreateOrder()) {
+      if (!quote || !quote.close) {
+        console.log('quote is null, return');
+        return;
+      }
+      if (!fee) {
+        console.log('fee is null, return');
+        return;
+      }
+      if (!poolTotalAmount) {
+        console.log('poolTotalAmount is null, return');
+        return;
+      }
+      try {
+        await getData();
+      } catch (e) {
+      }
+    }
+
     if (!bond || bond === '') {
       alert(t('Margin_hint'));
       return;
     }
     if (openType === OPEN_TYPE_LIMIT && (!limitPrice || limitPrice === '')) {
       alert(t('limitPricePlaceholder'));
-      return;
-    }
-    if (!quote || !quote.close) {
-      console.log('quote is null, return');
-      return;
-    }
-    if (!fee) {
-      console.log('fee is null, return');
       return;
     }
     let newPrice = toWei(quote.close.toString());
@@ -320,30 +335,30 @@ const OrderComponent = (props) => {
     let symbol = productInfo.pair;
     let fixedLever = parseInt(lever);
 
-    var res;
-    try {
-      res = await Promise.all([
-        fundContract.getPoolTotalAmount(poolInfo).then((res) => {
-          console.log('OrderComponent setPoolTotalAmount: ', res);
-          setPoolTotalAmount(res);
-          return res;
-        }),
-        // quoteFactoryContract.getNewPrice(symbol).then((res) => {
-        //   console.log('quote: ', res);
-        //   return res;
-        // }),
-        // poolProxyContract.getBalanceByPoolInfo(poolInfo, account).then((res) => {
-        //   console.log('OrderComponent setBasicAssetBalance: ', res);
-        //   setBasicAssetBalance(res);
-        //   return res;
-        // }),
-      ]);
-    } catch(e) {
-      console.log(e);
-      return;
-    }
+    // var res;
+    // try {
+    //   res = await Promise.all([
+    //     fundContract.getPoolTotalAmount(poolInfo).then((res) => {
+    //       console.log('OrderComponent setPoolTotalAmount: ', res);
+    //       setPoolTotalAmount(res);
+    //       return res;
+    //     }),
+    //     // quoteFactoryContract.getNewPrice(symbol).then((res) => {
+    //     //   console.log('quote: ', res);
+    //     //   return res;
+    //     // }),
+    //     // poolProxyContract.getBalanceByPoolInfo(poolInfo, account).then((res) => {
+    //     //   console.log('OrderComponent setBasicAssetBalance: ', res);
+    //     //   setBasicAssetBalance(res);
+    //     //   return res;
+    //     // }),
+    //   ]);
+    // } catch(e) {
+    //   console.log(e);
+    //   return;
+    // }
 
-    var poolTotalAmount = res[0];
+    // var poolTotalAmount = res[0];
     //var quote = res[1];
     //let newPrice = quote.newPrice;
 
@@ -392,6 +407,7 @@ const OrderComponent = (props) => {
       .on('receipt', async (receipt) => {
         emitter.emit('refreshOrder');
         console.log('市价建仓成功');
+
         await getData();
       });
     } else {
@@ -646,11 +662,11 @@ const OrderComponent = (props) => {
         </ul> */}
         {
           isTradeAvailable() ? (Tools.GT(allowance || 0, 0) ? (
-            <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => createOrder()}>
+            <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : 'bg-red'} ${isAllowCreateOrder() ? '' : 'btn-disable'}`} style={{ width: '100%' }} onClick={() => createOrder()}>
               {bsflag === 2 ? t('tradeOrderBuy') : t('tradeOrderSell')}
             </button>
           ) : (
-            <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : 'bg-red'}`} style={{ width: '100%' }} onClick={() => approveToPool()}>
+            <button className={`btn-default ${bsflag === BSFLAG_LONG ? 'bg-green' : 'bg-red'} ${approving ? 'btn-disable' : ''}`} style={{ width: '100%' }} onClick={() => approveToPool()}>
               { approving ? t('btnAuthing') : `${t('btnAuth')}${poolInfo.symbol}`}
             </button>
           )) : (<span></span>)

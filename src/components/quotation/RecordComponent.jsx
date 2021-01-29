@@ -141,7 +141,7 @@ const RecordComponent = () => {
                                 : item._name == 'CloseMarketSwap' ? t('textClose') : ''}</div>
                 <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{formatPrice(item._name == 'CloseMarketSwap' ? item.closePrice : item.order.openPrice, item.order.symbol)}</div>
                 <div className="column">
-                  {Tools.fromWei(item.order.tokenAmount, item.decimals)} {item.openSymbol} <Reply />
+                  {Tools.fromWei(Tools.mul(item.order.tokenAmount, item.order.lever), item.decimals)} {item.openSymbol} <Reply />
                 </div>
               </div>
             );

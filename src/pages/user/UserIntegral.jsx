@@ -4,7 +4,7 @@ import './UserIntegral.scss';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
 import BonusRecordContract from '../../common/contract/BonusRecordContract';
-import { toWei } from 'web3-utils';
+import { fromWei } from 'web3-utils';
 
 let bonusRecordContract;
 
@@ -60,12 +60,12 @@ const UserIntegral = ()=>{
                 <div className='TextHeader'>
                     <div className='TextHeaderLeft'>
                         <span className="text-one">{t('Teemo_test_title1')}</span>
-                        <span className="text-two">{ bonus.userLBonus ? toWei(bonus.userLBonus) : '--' }</span>
+                        <span className="text-two">{ bonus.userLBonus ? fromWei(bonus.userLBonus) : '--' }</span>
                         <span className="text-three">{t('Teemo_test_calculate_rule3')} 2021-02-06 </span>
                     </div>
                     <div className='TextHeaderRight'>
                         <span className="text-one">{t('Teemo_test_title2')}</span>
-                        <span className="text-two">{ bonus.userSBonus ? toWei(bonus.userSBonus) : '--' }</span>
+                        <span className="text-two">{ bonus.userSBonus ? fromWei(bonus.userSBonus) : '--' }</span>
                         <span className="text-three">{t('Teemo_test_calculate_rule3')} 2021-02-06 </span>
                     </div>
                 </div>
