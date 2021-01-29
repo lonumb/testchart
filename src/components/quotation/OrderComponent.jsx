@@ -22,8 +22,8 @@ import * as Tools from '../../utils/Tools';
 import { fromWei, toBN, toWei } from 'web3-utils';
 import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Constants'
 import { emitter } from '../../utils/event';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import TabType from './tabType'
+
 // import { makeStyles } from '@material-ui/core/styles';
 // 建仓类型: 市价
 const OPEN_TYPE_MARKET = 2
@@ -44,6 +44,11 @@ let fundContract = null;
 const OrderComponent = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const TabTypeList = [
+    {"name":t('orderLimit'),"key":'mark','value':OPEN_TYPE_MARKET},
+    {"name":t('orderMarket'),'key':'ss',"value":OPEN_TYPE_LIMIT}
+  ]
+  const [status, setStatus] = useState(0);
   const rechargeVisible = useSelector((state) => state.common.recharge.visible);
   const { poolList, poolInfo } = useSelector((state) => state.contract);
   const { productInfo } = useSelector((state) => state.trade);
@@ -139,7 +144,12 @@ const OrderComponent = (props) => {
       }
     }
   };
+  function switchStatus(index,value) {
+    setStatus(index);
 
+    setOpenType(parseInt(value))
+    console.log(openType)
+  }
   useEffect(() => {
     emitter.on('refreshBalance', async () => { 
       console.log('OrderComponent refreshBalance', active, account , poolInfo, poolInfo.poolAddr);
@@ -469,10 +479,11 @@ const OrderComponent = (props) => {
         </div>
 
         <div className="form-ele-select">
-          <select name="" id="" value={openType} onChange={(e) => setOpenType(parseInt(e.target.value))}>
+          {/* <select name="" id="" value={openType} onChange={(e) => setOpenType(parseInt(e.target.value))}>
             <option className="options" value={OPEN_TYPE_MARKET}>{t('orderMarket')}</option>
             <option value={OPEN_TYPE_LIMIT}>{t('orderLimit')}</option>
-          </select>
+          </select> */}
+          <TabType list={TabTypeList} index={status} onChange={(index,val)=>switchStatus(index,val)} />
         </div>
 
         <div className={openType === OPEN_TYPE_MARKET ? 'form-ele-disable' : 'form-ele-input'}>

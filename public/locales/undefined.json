@@ -1,0 +1,13 @@
+{
+  "navPool": "Liquidity pool",
+  "tradeDealTitle": "Lastest Trade",
+  "orderWaveHint": "Slippage caused by time gap between order submitting and executing is inevitable",
+  "orderWaveMake": "customization",
+  "entrustTabPosition": "current holding Position",
+  "textPosition": "carrying charge",
+  "entrustCalcClosePrice": "Est. forced liquidation price",
+  "entrustCalcProfitStop": "Unrealized P/L",
+  "poolPledge": "my staked",
+  "entrustCalcProfitStopDesc": "Realized P/L",
+  "maxLeverResizeHint": "Max leverage will be dynamically updated based on depth of funnding pool and opening positions"
+}
