@@ -19,7 +19,7 @@ class FundContract extends BaseContract {
     let contract = this.getContract(poolInfo);
     if (!contract) return;
     return contract.methods.totalAmount().call().then((res) => {
-      return toBN(res).add(toWei('100000')).toString();
+      return toBN(res).add(toBN(toWei('100000'))).toString();
     });
   }
 

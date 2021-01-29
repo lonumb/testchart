@@ -84,7 +84,7 @@ class PoolProxyContract extends BaseContract {
           data.allTeemoPoolAddr.forEach((element, index) => {
             var poolAddr = data.allTeemoPoolAddr[index];
             var totalAmount = data.allTotalAmount[index];
-            totalAmount = toBN(totalAmount).add(toWei('100000')).toString();
+            totalAmount = toBN(totalAmount).add(toBN(toWei('100000'))).toString();
             var totalSupply = data.allTotalSupply[index];
             var totalTokenAmountIn = data.allTotalTokenAmountIn[index];
             var totalTokenAmountOut = data.allTotalTokenAmountOut[index];
@@ -120,7 +120,7 @@ class PoolProxyContract extends BaseContract {
     return contract.methods
       .getPositionInfo(poolAddr)
       .call().then((res) => {
-        res.totalAmount = toBN(res.totalAmount).add(toWei('100000')).toString();
+        res.totalAmount = toBN(res.totalAmount).add(toBN(toWei('100000'))).toString();
         return res;
       });
   }
