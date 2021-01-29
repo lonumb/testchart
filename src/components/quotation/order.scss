@@ -50,15 +50,17 @@
         text-align: right;
         padding: 0;
       }
+      .tabs{
+        width: 100%;
+      }
       .tab-box{
+        width: 100%;
         display: flex;
-        height: 36px;
-        background: #ffffff;
-        border: 2px solid #000000;
-        border-radius: 5px;
-        justify-content: space-around;
+        height: 28px;
+        background: transparent;
+        justify-content: space-between;
+        align-items: center;
         div{
-          line-height: 36px;
           padding-left: 7px;
           box-sizing: border-box;
         }
@@ -71,26 +73,28 @@
       }
       .list{
         position: absolute;
-        top: 40px;
-        width: 100%;
+        top: 30px;
+        width: 110%;
+        left: -10px;
         z-index: 12;
-        background: #ffffff;
-        border: 2px solid #000000;
+        background: #20253C;
         border-top: none;
         box-sizing: border-box;
+        border-radius: 3px;
         li {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: rgba(8, 23, 36, 0.5);
+          color:#FFFFFF;
           position: relative;
           height: 36px;
         }
         .active {
-          color: #081724;
+          color: #FFFFFF;
+          background-color:#252B44;
           &::after {
-            background-color: #ffffff;
-            border-color: #081724;
+            background-color:#252B44;
+            border-color: #FFFFFF;
           }
         }
       }

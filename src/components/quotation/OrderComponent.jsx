@@ -45,8 +45,8 @@ const OrderComponent = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const TabTypeList = [
-    {"name":t('orderMarket'),"key":'mark'},
-    {"name":t('orderLimit'),'key':'ss'}
+    {"name":t('orderLimit'),"key":'mark','value':OPEN_TYPE_MARKET},
+    {"name":t('orderMarket'),'key':'ss',"value":OPEN_TYPE_LIMIT}
   ]
   const [status, setStatus] = useState(0);
   const rechargeVisible = useSelector((state) => state.common.recharge.visible);
@@ -144,7 +144,12 @@ const OrderComponent = (props) => {
       }
     }
   };
+  function switchStatus(index,value) {
+    setStatus(index);
 
+    setOpenType(parseInt(value))
+    console.log(openType)
+  }
   useEffect(() => {
     emitter.on('refreshBalance', async () => { 
       console.log('OrderComponent refreshBalance', active, account , poolInfo, poolInfo.poolAddr);
@@ -474,11 +479,11 @@ const OrderComponent = (props) => {
         </div>
 
         <div className="form-ele-select">
-          <select name="" id="" value={openType} onChange={(e) => setOpenType(parseInt(e.target.value))}>
+          {/* <select name="" id="" value={openType} onChange={(e) => setOpenType(parseInt(e.target.value))}>
             <option className="options" value={OPEN_TYPE_MARKET}>{t('orderMarket')}</option>
             <option value={OPEN_TYPE_LIMIT}>{t('orderLimit')}</option>
-          </select>
-          {/* <TabType list={TabTypeList} index={status}/> */}
+          </select> */}
+          <TabType list={TabTypeList} index={status} onChange={(index,val)=>switchStatus(index,val)} />
         </div>
 
         <div className={openType === OPEN_TYPE_MARKET ? 'form-ele-disable' : 'form-ele-input'}>
