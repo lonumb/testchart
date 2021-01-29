@@ -5,7 +5,7 @@ export const chainConfig = {
         rpcUrl: 'https://mainnet.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
         explorerName: 'Etherscan',
-        explorerUrl: 'https://etherscan.io/'
+        explorerUrl: 'https://etherscan.io'
     },
     3 : {
         mainSymbol: "ETH",
@@ -13,7 +13,7 @@ export const chainConfig = {
         rpcUrl: 'https://ropsten.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
         explorerName: 'Etherscan',
-        explorerUrl: 'https://ropsten.etherscan.io/'
+        explorerUrl: 'https://ropsten.etherscan.io'
     },
     4 : {
         mainSymbol: "ETH",
@@ -21,7 +21,7 @@ export const chainConfig = {
         rpcUrl: 'https://rinkeby.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
         explorerName: 'Etherscan',
-        explorerUrl: 'https://rinkeby.etherscan.io/'
+        explorerUrl: 'https://rinkeby.etherscan.io'
     },
     5 : {
         mainSymbol: "ETH",
@@ -29,7 +29,7 @@ export const chainConfig = {
         rpcUrl: 'https://goerli.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
         explorerName: 'Etherscan',
-        explorerUrl: 'https://goerli.etherscan.io/'
+        explorerUrl: 'https://goerli.etherscan.io'
     },
     42 : {
         mainSymbol: "ETH",
@@ -37,7 +37,7 @@ export const chainConfig = {
         rpcUrl: 'https://kovan.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
         explorerName: 'Etherscan',
-        explorerUrl: 'https://kovan.etherscan.io/'
+        explorerUrl: 'https://kovan.etherscan.io'
     },
     56 : {
         mainSymbol: "BNB",
@@ -45,15 +45,15 @@ export const chainConfig = {
         rpcUrl: 'https://bsc-dataseed1.binance.org/', 
         blockTime: 3000,
         explorerName: 'Bscscan',
-        explorerUrl: 'https://bscscan.com/'
+        explorerUrl: 'https://bscscan.com'
     },
     97 : {
         mainSymbol: "BNB",
         networkName: "BSC Test",
-        rpcUrl: 'https://testnet.bscscan.com/', 
+        rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/', 
         blockTime: 3000,
         explorerName: 'Bscscan',
-        explorerUrl: 'https://testnet.bscscan.com/'
+        explorerUrl: 'https://testnet.bscscan.com'
     },
     1337 : {
         mainSymbol: "ETH",
@@ -61,7 +61,7 @@ export const chainConfig = {
         rpcUrl: 'https://ropsten.infura.io/v3/34c59a94d8ef460086c55841531e0b67',
         blockTime: 15000,
         explorerName: 'Etherscan',
-        explorerUrl: 'https://ropsten.etherscan.io/'
+        explorerUrl: 'https://ropsten.etherscan.io'
     },
 };
 

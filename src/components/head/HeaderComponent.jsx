@@ -90,7 +90,7 @@ const HeaderComponent = () => {
         </li>
         <li className="item">
           <NavLink
-            to="/user/rw-record"
+            to="/user/integral"
             isActive={(match, location) => {
               return location.pathname ? location.pathname.indexOf('/user') !== -1 : false;
             }}
@@ -192,7 +192,7 @@ const HeaderComponent = () => {
                 <li>
                   <a href={`${chainConfig[ensumeChainId(chainId)].explorerUrl}/address/${account}`} target="_blank" rel="noopener noreferrer">
                     <StorageIcon />
-                    {t('menuAddressDetail')}
+                    {t('menuAddressDetail', { name: chainConfig[ensumeChainId(chainId)].explorerName})}
                   </a>
                 </li>
               </ul>

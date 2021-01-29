@@ -123,7 +123,7 @@
   "menuAccount": "Overview",
   "menuRecord": "History",
   "menuSetting": "Setting",
-  "menuAddressDetail": "Open in Etherscan",
+  "menuAddressDetail": "Open in {{name}}",
   "menuPersonSetting": "Preferences",
   "menuTradeRecord": "Trading History",
   "menuWalletDetail": "Wallet Details",

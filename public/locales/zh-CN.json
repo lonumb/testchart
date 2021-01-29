@@ -123,7 +123,7 @@
   "menuAccount": "总览",
   "menuRecord": "历史记录",
   "menuSetting": "设置",
-  "menuAddressDetail": "在Etherscan中查看",
+  "menuAddressDetail": "在{{name}}中查看",
   "menuPersonSetting": "个人设置",
   "menuTradeRecord": "交易记录",
   "menuWalletDetail": "钱包详情",
