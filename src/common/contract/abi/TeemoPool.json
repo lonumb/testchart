@@ -22,7 +22,9 @@
       }
     ],
     "name": "Approval",
-    "type": "event"
+    "type": "event",
+    "hash": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+    "shortHash": "0x8c5be1e5"
   },
   {
     "anonymous": false,
@@ -35,7 +37,9 @@
       }
     ],
     "name": "CancelLimitSwap",
-    "type": "event"
+    "type": "event",
+    "hash": "0xde92ebff3e22b9f7cb899264130ad9f45c1b3c0dd3cd3b222814e343fafa22b9",
+    "shortHash": "0xde92ebff"
   },
   {
     "anonymous": false,
@@ -73,12 +77,20 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "plAmount",
         "type": "uint256"
       }
     ],
     "name": "CloseLimitSwap",
-    "type": "event"
+    "type": "event",
+    "hash": "0xa41676bbfdb8936cb52b39a77750b2cb77c958179070871b4c2c7961661d048f",
+    "shortHash": "0xa41676bb"
   },
   {
     "anonymous": false,
@@ -116,6 +128,12 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "plAmount",
         "type": "uint256"
       },
@@ -127,7 +145,9 @@
       }
     ],
     "name": "CloseMarketSwap",
-    "type": "event"
+    "type": "event",
+    "hash": "0x7d64bc21fe86404e6138c66e57c9ea9a4b38b128061ee6313470a3f34279c190",
+    "shortHash": "0x7d64bc21"
   },
   {
     "anonymous": false,
@@ -140,7 +160,9 @@
       }
     ],
     "name": "FailedCloseLimitSwap",
-    "type": "event"
+    "type": "event",
+    "hash": "0x6e29a260a8215ad988d22e2cdebba1d4e5215885b2449ee6318cedf160d09454",
+    "shortHash": "0x6e29a260"
   },
   {
     "anonymous": false,
@@ -153,7 +175,9 @@
       }
     ],
     "name": "FailedTradeLimitSwap",
-    "type": "event"
+    "type": "event",
+    "hash": "0x202ececce4ec8527e534b19e88bed7d30e89196abc6815c8f7f71aae3ff11a44",
+    "shortHash": "0x202ececc"
   },
   {
     "anonymous": false,
@@ -178,7 +202,9 @@
       }
     ],
     "name": "LPDeposit",
-    "type": "event"
+    "type": "event",
+    "hash": "0x991d73f5e17d46d419b8d00ea1ba02099a33278bef6ba16f591c3869fc665842",
+    "shortHash": "0x991d73f5"
   },
   {
     "anonymous": false,
@@ -197,7 +223,9 @@
       }
     ],
     "name": "LPWithdraw",
-    "type": "event"
+    "type": "event",
+    "hash": "0xec6b5f6209de8a40ef6115a103a7312d2e22f043a81da1965a5038c95753742e",
+    "shortHash": "0xec6b5f62"
   },
   {
     "anonymous": false,
@@ -213,10 +241,24 @@
         "internalType": "uint256",
         "name": "openPrice",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenAmount",
+        "type": "uint256"
       }
     ],
     "name": "OpenLimitSwap",
-    "type": "event"
+    "type": "event",
+    "hash": "0xeae46f182658347d1b88eec7b2d83f5fea66e85aaa291d3960dd5409f0c5825f",
+    "shortHash": "0xeae46f18"
   },
   {
     "anonymous": false,
@@ -242,12 +284,26 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "timestamp",
         "type": "uint256"
       }
     ],
     "name": "OpenMarketSwap",
-    "type": "event"
+    "type": "event",
+    "hash": "0xac67ce90c4fc449ad9f07eff46bafa11abb977e7625f3df64d28cfd8ec645268",
+    "shortHash": "0xac67ce90"
   },
   {
     "anonymous": false,
@@ -266,7 +322,9 @@
       }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
+    "type": "event",
+    "hash": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+    "shortHash": "0x8be0079c"
   },
   {
     "anonymous": false,
@@ -297,7 +355,9 @@
       }
     ],
     "name": "SetOrderPrice",
-    "type": "event"
+    "type": "event",
+    "hash": "0x55a50a99ca7dd172c95c27cb04321c31b384ac91623b6ad9556984572265ec14",
+    "shortHash": "0x55a50a99"
   },
   {
     "anonymous": false,
@@ -322,7 +382,9 @@
       }
     ],
     "name": "StartMine",
-    "type": "event"
+    "type": "event",
+    "hash": "0xab5f5548654b65d796f84aaee73cdd7fea9a28bf7a29fb80cb4451425797b4e6",
+    "shortHash": "0xab5f5548"
   },
   {
     "anonymous": false,
@@ -347,7 +409,9 @@
       }
     ],
     "name": "StopMine",
-    "type": "event"
+    "type": "event",
+    "hash": "0xc10b273d1e1478889bf14cfc20976c0178f47d6164f92d53745fe0c67988201f",
+    "shortHash": "0xc10b273d"
   },
   {
     "anonymous": false,
@@ -367,6 +431,12 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "openPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "tokenAmount",
         "type": "uint256"
       },
@@ -378,7 +448,9 @@
       }
     ],
     "name": "TradeLimitSwap",
-    "type": "event"
+    "type": "event",
+    "hash": "0xdcdd449871b15cde8bda815cafcbb075687c2a4e931b7c25cd0002581fd69580",
+    "shortHash": "0xdcdd4498"
   },
   {
     "anonymous": false,
@@ -403,7 +475,9 @@
       }
     ],
     "name": "Transfer",
-    "type": "event"
+    "type": "event",
+    "hash": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+    "shortHash": "0xddf252ad"
   },
   {
     "anonymous": false,
@@ -422,7 +496,9 @@
       }
     ],
     "name": "UpdateSwap",
-    "type": "event"
+    "type": "event",
+    "hash": "0x634910b514717fe132500771fb9e0ca49e263609b88f4cc5aa1c6507b4e0bede",
+    "shortHash": "0x634910b5"
   },
   {
     "inputs": [
@@ -446,7 +522,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xdd62ed3e90e97b3d417db9c0c7522647811bafca5afc6694f143588d255fdfb4",
+    "shortHash": "0xdd62ed3e"
   },
   {
     "inputs": [
@@ -470,7 +548,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x095ea7b334ae44009aa867bfb386f5c3b4b443ac6f0ee573fa91c4608fbadfba",
+    "shortHash": "0x095ea7b3"
   },
   {
     "inputs": [
@@ -489,7 +569,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x70a08231b98ef4ca268c9cc3f6b4590e4bfec28280db06bb5d45e689f2a360be",
+    "shortHash": "0x70a08231"
   },
   {
     "inputs": [],
@@ -502,7 +584,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x313ce567add4d438edf58b94ff345d7d38c45b17dfc0f947988d7819dca364f9",
+    "shortHash": "0x313ce567"
   },
   {
     "inputs": [
@@ -526,7 +610,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xa457c2d77307f80ff2f3ac810ec99eb18ae2cffee13b29c90c9324546e374be5",
+    "shortHash": "0xa457c2d7"
   },
   {
     "inputs": [
@@ -550,7 +636,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x39509351d3325647dde3fdd3c8b249adfe89ef4f16d76d83768e6df7a5cd81d6",
+    "shortHash": "0x39509351"
   },
   {
     "inputs": [],
@@ -563,7 +651,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x8268b8dd3fca3e1839ff10cac4eadf32fa63eaa3354baf789608e7e61a418284",
+    "shortHash": "0x8268b8dd"
   },
   {
     "inputs": [],
@@ -576,7 +666,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x06fdde0383f15d582d1a74511486c9ddf862a882fb7904b3d9fe9b8b8e58a796",
+    "shortHash": "0x06fdde03"
   },
   {
     "inputs": [],
@@ -589,7 +681,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x8da5cb5b36e7f68c1d2e56001220cdbdd3ba2616072f718acfda4a06441a807d",
+    "shortHash": "0x8da5cb5b"
   },
   {
     "inputs": [],
@@ -602,7 +696,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xb06b9fbebbd10607accea41335e790f41af7469a4f952b6c42922e0669b9244e",
+    "shortHash": "0xb06b9fbe"
   },
   {
     "inputs": [],
@@ -615,14 +711,18 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xafcfb11a7b26dc3ad94574560a9ca5a27c93fd4c08699cc1cd4980542a00c48f",
+    "shortHash": "0xafcfb11a"
   },
   {
     "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x715018a616b5f2044428f6fadb7deef4ce9ca76ef60ea57978964ad137bbe7ae",
+    "shortHash": "0x715018a6"
   },
   {
     "inputs": [],
@@ -635,7 +735,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x95d89b41e2f5f391a79ec54e9d87c79d6e777c63e32c28da95b4e9e4a79250ec",
+    "shortHash": "0x95d89b41"
   },
   {
     "inputs": [],
@@ -648,7 +750,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x5fbe4d1d7775304be2d6cd4f474f4b30ced1011b4e03edf68caffa6382407c87",
+    "shortHash": "0x5fbe4d1d"
   },
   {
     "inputs": [],
@@ -661,7 +765,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x18160ddd7f15c72528c2f94fd8dfe3c8d5aa26e2c50c7d81f4bc7bee8d4b7932",
+    "shortHash": "0x18160ddd"
   },
   {
     "inputs": [
@@ -685,7 +791,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xa9059cbb2ab09eb219583f4a59a5d0623ade346d962bcd4e46b11da047c9049b",
+    "shortHash": "0xa9059cbb"
   },
   {
     "inputs": [
@@ -714,7 +822,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x23b872dd7302113369cda2901243429419bec145408fa8b352b3dd92b66c680b",
+    "shortHash": "0x23b872dd"
   },
   {
     "inputs": [
@@ -727,7 +837,9 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xf2fde38b092330466c661fc723d5289b90272a3e580e3187d1d7ef788506c557",
+    "shortHash": "0xf2fde38b"
   },
   {
     "inputs": [
@@ -755,7 +867,9 @@
     "name": "initialize",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xf8c8765ee2e07faacf411acb42c2679d11a62bbb592c00db577834d7e7793b05",
+    "shortHash": "0xf8c8765e"
   },
   {
     "inputs": [
@@ -774,7 +888,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xc554ebcbf5c6d3b14016734b3136539851d9740345f94830042a6df67fb24906",
+    "shortHash": "0xc554ebcb"
   },
   {
     "inputs": [],
@@ -787,7 +903,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x58aafa3dac45e4b5563accc8f81d86151038d776bb7a52efa8b30b274a3e8269",
+    "shortHash": "0x58aafa3d"
   },
   {
     "inputs": [
@@ -798,14 +916,16 @@
       },
       {
         "internalType": "bool",
-        "name": "mine",
+        "name": "_mine",
         "type": "bool"
       }
     ],
     "name": "lpDeposit",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x6e04679f735f47478bfa442a025b7bef2c153973c9b3d06af803c47d1731f63d",
+    "shortHash": "0x6e04679f"
   },
   {
     "inputs": [
@@ -818,7 +938,9 @@
     "name": "startMine",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x9ff242963b7a258fbe3d0731c609258343a6d4ea869cf6f43c2d6a01eb338a6c",
+    "shortHash": "0x9ff24296"
   },
   {
     "inputs": [
@@ -831,7 +953,9 @@
     "name": "lpWithdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x09a5d5bf8de5dcd60c8e77af3f61439cafb63a2547e43d7c6d043c7208f4c7fd",
+    "shortHash": "0x09a5d5bf"
   },
   {
     "inputs": [
@@ -844,7 +968,9 @@
     "name": "stopMine",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x9aa9e7d2f180fe9929fc68343a71cc62c99a53f3e1189142850b663ea4559a48",
+    "shortHash": "0x9aa9e7d2"
   },
   {
     "inputs": [
@@ -892,7 +1018,9 @@
     "name": "openLimitSwap",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x5a917ca2e8c6d9f43e7b8d10dfda44f87a6851388c6c4909bfdf00822fc591d0",
+    "shortHash": "0x5a917ca2"
   },
   {
     "inputs": [
@@ -905,7 +1033,9 @@
     "name": "cancelLimitSwap",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xcee87f5fdd9c85d5e6050276f6592aad5fa771e1dbde231a6c4bbbc61003d19a",
+    "shortHash": "0xcee87f5f"
   },
   {
     "inputs": [
@@ -923,7 +1053,9 @@
     "name": "tradeLimitSwaps",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xfee3ee0ea69ea03374ee4870b58882c09b733621115e5168950bf352093536af",
+    "shortHash": "0xfee3ee0e"
   },
   {
     "inputs": [
@@ -941,7 +1073,9 @@
     "name": "tradeLimitSwap",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x3d3f2517f1cfde9cc1b8b0d13f263f09182a3f2c11a632c3cfc3917bd3ef8563",
+    "shortHash": "0x3d3f2517"
   },
   {
     "inputs": [
@@ -984,7 +1118,9 @@
     "name": "openMarketSwap",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x5dc96a45514f1aba0873c109292e87f63efadd647306da576943272638760d80",
+    "shortHash": "0x5dc96a45"
   },
   {
     "inputs": [
@@ -997,7 +1133,9 @@
     "name": "closeMarketSwap",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x69cd5595caab5bab7f16b95155a0624ecd9b83aeed86fd5d59458350e07a5139",
+    "shortHash": "0x69cd5595"
   },
   {
     "inputs": [
@@ -1015,7 +1153,9 @@
     "name": "closeLimitSwaps",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xb7b6e866bb865ebe8ff57e6012f33df536ba2caadcc5bf04d14f13119c783a65",
+    "shortHash": "0xb7b6e866"
   },
   {
     "inputs": [
@@ -1033,7 +1173,9 @@
     "name": "closeLimitSwap",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x22dbfdcad4a94b9f25cde2e7cfc783da6445c65c3b2c812cb41633bd7be3db31",
+    "shortHash": "0x22dbfdca"
   },
   {
     "inputs": [
@@ -1056,7 +1198,9 @@
     "name": "updateSwapByPrice",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xdc58bd7224019f24f03aaa4fbecc43a5fc798a329cb89063febfd85d5319451b",
+    "shortHash": "0xdc58bd72"
   },
   {
     "inputs": [
@@ -1079,7 +1223,9 @@
     "name": "updateSwapByRate",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x85006ba2aed89239c0b0a1b1e9a4d3f8ce76786b855fc6d9d568b14bf213f61e",
+    "shortHash": "0x85006ba2"
   },
   {
     "inputs": [
@@ -1092,7 +1238,9 @@
     "name": "setOpenPrice",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x6f8d2d842da0f9d53c0cbe84d76d8925053236856de7b2130092462afdfa80bd",
+    "shortHash": "0x6f8d2d84"
   },
   {
     "inputs": [
@@ -1110,7 +1258,9 @@
     "name": "closeMarketByOwner",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x252f6adfbd967830f6c5daad3490dfef3a080b3db34867a7433add79a90d3925",
+    "shortHash": "0x252f6adf"
   },
   {
     "inputs": [
@@ -1128,15 +1278,12 @@
     "name": "updateTicker",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x0282ad67ba4ffefb0a16cffb8c3547b21d03f89c84517ec19ca7feeb2f52dd08",
+    "shortHash": "0x0282ad67"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "_tokenAddr",
-        "type": "address"
-      },
       {
         "internalType": "address",
         "name": "_to",
@@ -1151,6 +1298,8 @@
     "name": "emergencyWithdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x95ccea67c6b3947a1199a2d59861d3c401104f061a98b7f3b8ecdb391803d402",
+    "shortHash": "0x95ccea67"
   }
 ]

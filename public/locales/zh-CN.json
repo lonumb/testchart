@@ -248,5 +248,6 @@
   "Notice_button2": "我知道了",
   "Whitelist_check_title": "白名单校验",
   "Whitelist_check_hint": "请输入您的TelegramID,例:@XXXX",
-  "Whitelist_check_button": "校验"
+  "Whitelist_check_button": "校验",
+  "Help_big_title": "帮助"
 }

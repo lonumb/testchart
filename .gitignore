@@ -26,3 +26,4 @@ yarn-error.log*
 .env.production_bak
 teemo-exchange/
 .idea/
+copy-abi.sh

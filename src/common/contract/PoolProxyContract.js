@@ -4,7 +4,7 @@ import BaseContract from './BaseContract'
 import ERC20Contract from './ERC20Contract'
 import SwapTradeContract from './SwapTradeContract'
 import TeemoPool from './abi/TeemoPool.json';
-import { toBN, toWei } from 'web3-utils';
+import { fromWei, toBN, toWei } from 'web3-utils';
 
 const abicoder = require('web3-eth-abi');
 
@@ -315,7 +315,6 @@ class PoolProxyContract extends BaseContract {
 
                 if (res._name == 'SetOrderPrice') {
                   res._name = 'OpenMarketSwap';
-                  res.openPrice = res._price;
                 }
                 if (res._name == 'TradeLimitSwap') {
                   res._name = 'OpenMarketSwap';

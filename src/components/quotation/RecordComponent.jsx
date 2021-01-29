@@ -7,6 +7,7 @@ import PoolProxyContract from '../../common/contract/PoolProxyContract';
 import * as Tools from '../../utils/Tools';
 import { fromWei, toBN, toWei } from 'web3-utils';
 import './record.scss';
+import { BSFLAG_LONG } from '../../utils/Constants'
 
 let poolProxyContract = null;
 
@@ -57,13 +58,6 @@ const RecordComponent = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (chainId) {
-  //     var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}`);
-  //     let lastLogs = JSON.parse(lastLogsStr) || [];
-  //   }
-  // }, [chainId]);
-
   useEffect(async () => {
     if (active && account && poolList.length > 0) {
       poolProxyContract = new PoolProxyContract(library, chainId, account);
@@ -78,11 +72,6 @@ const RecordComponent = () => {
       poolProxyContract = null;
     }
   }, [active, library, account, poolList, productInfo]);
-
-  // useEffect(() => {
-  //   // 设置记录列表
-  //   setRecordList(new Array(50).fill({ a: 'aaa' }));
-  // }, []);
 
   useEffect(() => {
     // 设置列表高度
@@ -102,11 +91,6 @@ const RecordComponent = () => {
     if (!timer) {
       timer = setInterval(async () => {
         setRefreshObj({});
-        // try {
-        //   await getData();
-        // } catch (e) {
-        //   console.log(e);
-        // }
       }, 10000);
     }
     return () => {
@@ -139,7 +123,7 @@ const RecordComponent = () => {
                 <div className="column">{Tools.formatTime(item.timestamp, 'HH:mm:ss')}</div>
                 <div className="column">{item._name == 'OpenMarketSwap' ? t('textBuild') 
                                 : item._name == 'CloseMarketSwap' ? t('textClose') : ''}</div>
-                <div className={`column ${index % 3 === 0 ? 'red' : 'green'}`}>{formatPrice(item._name == 'CloseMarketSwap' ? item.closePrice : item.order.openPrice, item.order.symbol)}</div>
+                <div className={`column ${item.order.bsFlag == BSFLAG_LONG ? 'green' : 'red'}`}>{formatPrice(item._name == 'CloseMarketSwap' ? item.closePrice : item.order.openPrice, item.order.symbol)}</div>
                 <div className="column">
                   {Tools.fromWei(Tools.mul(item.order.tokenAmount, item.order.lever), item.decimals)} {item.openSymbol} <Reply />
                 </div>

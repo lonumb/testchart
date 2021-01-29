@@ -99,6 +99,9 @@ const HeaderComponent = () => {
           </NavLink>
         </li>
         {/* <li className="item">
+          <NavLink to="#" target="_blank">{t('Help_big_title')}</NavLink>
+        </li> */}
+        {/* <li className="item">
           <a href="">{t('navPublic')}</a>
         </li>
         <li className="item">

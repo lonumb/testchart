@@ -16,7 +16,9 @@
       }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
+    "type": "event",
+    "hash": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+    "shortHash": "0x8be0079c"
   },
   {
     "inputs": [
@@ -45,7 +47,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xa1894b50536f5b40a1cacc2c648a1bb6edc04a1e0e102c48e7cadf32be32c455",
+    "shortHash": "0xa1894b50"
   },
   {
     "inputs": [],
@@ -58,14 +62,33 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x8da5cb5b36e7f68c1d2e56001220cdbdd3ba2616072f718acfda4a06441a807d",
+    "shortHash": "0x8da5cb5b"
+  },
+  {
+    "inputs": [],
+    "name": "poolAddr",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "hash": "0x6046cd99790a834be5c6361e5148a0877981af8acf83e7e226e261dc29fd1ca9",
+    "shortHash": "0x6046cd99"
   },
   {
     "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x715018a616b5f2044428f6fadb7deef4ce9ca76ef60ea57978964ad137bbe7ae",
+    "shortHash": "0x715018a6"
   },
   {
     "inputs": [],
@@ -78,7 +101,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x5fbe4d1d7775304be2d6cd4f474f4b30ced1011b4e03edf68caffa6382407c87",
+    "shortHash": "0x5fbe4d1d"
   },
   {
     "inputs": [],
@@ -91,7 +116,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x1a39d8ef8f010224f0924e1ceb5569dbd69db18377348bd62a618d80d81d056e",
+    "shortHash": "0x1a39d8ef"
   },
   {
     "inputs": [],
@@ -104,7 +131,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x18160ddd7f15c72528c2f94fd8dfe3c8d5aa26e2c50c7d81f4bc7bee8d4b7932",
+    "shortHash": "0x18160ddd"
   },
   {
     "inputs": [],
@@ -117,7 +146,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x3053f5218a2cf8ccd4bd785d1e27ed717e582c9afa7e4cc0e900833b943b0497",
+    "shortHash": "0x3053f521"
   },
   {
     "inputs": [],
@@ -130,7 +161,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xacc491c2017322d416c47453c69892333fa4242212f78d1e8e47f187d34007fe",
+    "shortHash": "0xacc491c2"
   },
   {
     "inputs": [],
@@ -143,7 +176,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x184f0c82889b3d05890281ab8f295533713382a9d48964f4e8f9306b36fa0432",
+    "shortHash": "0x184f0c82"
   },
   {
     "inputs": [],
@@ -156,7 +191,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x3246d2c5a2b616d4f202928fbe8682577872dd6a444b0d36f268b2183db74ad2",
+    "shortHash": "0x3246d2c5"
   },
   {
     "inputs": [
@@ -169,10 +206,17 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xf2fde38b092330466c661fc723d5289b90272a3e580e3187d1d7ef788506c557",
+    "shortHash": "0xf2fde38b"
   },
   {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "_poolAddr",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "_tokenAddr",
@@ -182,7 +226,9 @@
     "name": "initialize",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x485cc955cd05f29985ce37d87ac35dcf2fdbc60b9106f66a532e31a2f1d5743b",
+    "shortHash": "0x485cc955"
   },
   {
     "inputs": [
@@ -206,7 +252,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x47e7ef24b3022e382e65b1298581281f0ae273ac4f76464efcf5b06769264f2f",
+    "shortHash": "0x47e7ef24"
   },
   {
     "inputs": [
@@ -230,7 +278,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xf3fef3a3f44f9c277339b67d54f015748bd8d6b77a985b0ab6e71126b018c34a",
+    "shortHash": "0xf3fef3a3"
   },
   {
     "inputs": [
@@ -249,7 +299,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x6ff1c9bce7d6e4ac52b2581f7cc4e82effd6ea2f591d8ffc5867394d61c3c0f7",
+    "shortHash": "0x6ff1c9bc"
   },
   {
     "inputs": [
@@ -267,6 +319,8 @@
     "name": "tradePL",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xde9ff4c22ca575572ad62d92d320cc6fe3797cfc0b2da2c9fbd9d65486816e20",
+    "shortHash": "0xde9ff4c2"
   }
 ]

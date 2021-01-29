@@ -21,7 +21,9 @@
       }
     ],
     "name": "AddPrice",
-    "type": "event"
+    "type": "event",
+    "hash": "0x23239e357550227dee169e4dc7ea1e83fee2e773c179541e55254b1bd8c89c83",
+    "shortHash": "0x23239e35"
   },
   {
     "anonymous": false,
@@ -34,7 +36,9 @@
       }
     ],
     "name": "AddQuote",
-    "type": "event"
+    "type": "event",
+    "hash": "0x8d8c05992df8d984daec5ec2f26c66798cff86409636b8e53d3b9ecd165b12af",
+    "shortHash": "0x8d8c0599"
   },
   {
     "anonymous": false,
@@ -53,7 +57,9 @@
       }
     ],
     "name": "DelPrice",
-    "type": "event"
+    "type": "event",
+    "hash": "0xbd5fbdde228050934cb50cbee0dd68a95f2a21c04959d430e30c3be3b236730d",
+    "shortHash": "0xbd5fbdde"
   },
   {
     "anonymous": false,
@@ -72,7 +78,9 @@
       }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
+    "type": "event",
+    "hash": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+    "shortHash": "0x8be0079c"
   },
   {
     "inputs": [],
@@ -85,7 +93,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x8da5cb5b36e7f68c1d2e56001220cdbdd3ba2616072f718acfda4a06441a807d",
+    "shortHash": "0x8da5cb5b"
   },
   {
     "inputs": [
@@ -104,14 +114,18 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x77c313901b2fa0f888ae6291ab243a4aebcd6873a2b9b1bd83b68d98242038a8",
+    "shortHash": "0x77c31390"
   },
   {
     "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x715018a616b5f2044428f6fadb7deef4ce9ca76ef60ea57978964ad137bbe7ae",
+    "shortHash": "0x715018a6"
   },
   {
     "inputs": [
@@ -124,7 +138,9 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xf2fde38b092330466c661fc723d5289b90272a3e580e3187d1d7ef788506c557",
+    "shortHash": "0xf2fde38b"
   },
   {
     "inputs": [
@@ -143,7 +159,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xd053dd6e97868fbeac08f8d5f1a0effda5ab3f3bcee76d7a1b54a55f663fcdf8",
+    "shortHash": "0xd053dd6e"
   },
   {
     "inputs": [
@@ -167,7 +185,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x3c50bcd72f87a98af58e6e98eece06fd4ebf4276f754049b23b4fd2b10c333de",
+    "shortHash": "0x3c50bcd7"
   },
   {
     "inputs": [
@@ -185,7 +205,9 @@
     "name": "delPrice",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x849562bdf5ddae422e572ab3278edb6b15a95cfb3fc068544ab9fb71c86e4669",
+    "shortHash": "0x849562bd"
   },
   {
     "inputs": [
@@ -198,7 +220,9 @@
     "name": "addQuoter",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xa7da74f8a62152005ca014168d96166dddfc1d0e6dcd9bf147effbef24eda6e1",
+    "shortHash": "0xa7da74f8"
   },
   {
     "inputs": [
@@ -211,7 +235,9 @@
     "name": "delQuoter",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x2fb5c988c09fb1b4ebd4e50c60b223baeacaf26823e656d3fed81584d3de9442",
+    "shortHash": "0x2fb5c988"
   },
   {
     "inputs": [
@@ -224,7 +250,9 @@
     "name": "setValidBlocks",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xeadb2bddd4a4a64fffd19b746ffbd516aef495e980d05025d909612c52b080c3",
+    "shortHash": "0xeadb2bdd"
   },
   {
     "inputs": [],
@@ -237,7 +265,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xb4ff96bf49f08b08b7e9da81ab3bfed6bde33a86d1b9fd0ac29af8ff1631be13",
+    "shortHash": "0xb4ff96bf"
   },
   {
     "inputs": [
@@ -251,7 +281,7 @@
     "outputs": [
       {
         "internalType": "bool",
-        "name": "status",
+        "name": "validStatus",
         "type": "bool"
       },
       {
@@ -261,7 +291,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x9a2fd0916d2f3e3c339aaf9054aee71c37a9d355ce82569f64c5db9d10106522",
+    "shortHash": "0x9a2fd091"
   },
   {
     "inputs": [
@@ -290,7 +322,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xe8084a870c21034322b4bd510c9fbe369eb956cecdf434f0c9dee5ad2361eda9",
+    "shortHash": "0xe8084a87"
   },
   {
     "inputs": [
@@ -324,7 +358,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xd4a06b87cac7e7ad1b88bb1614ba8f68aa6b2b14fdd248230ceafd83eee450c8",
+    "shortHash": "0xd4a06b87"
   },
   {
     "inputs": [
@@ -343,7 +379,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xd502db971d94203075f6ea4d8e359f5fc9723f72f630a6c24f0b442a1abc6873",
+    "shortHash": "0xd502db97"
   },
   {
     "inputs": [],
@@ -356,7 +394,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xfc0fc6db6a06a49aabe4f018ad856316a0e8c287409594549e5492a2dcf3793a",
+    "shortHash": "0xfc0fc6db"
   },
   {
     "inputs": [
@@ -375,7 +415,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x6418413cade9288c538abd47661be3c49413b51c507a692603a6a604ff13444b",
+    "shortHash": "0x6418413c"
   },
   {
     "inputs": [],
@@ -388,6 +430,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x07039ff965ae33d5b87b9a2b66d0de204e09cb59bf2f5dcd357630e62ba0b102",
+    "shortHash": "0x07039ff9"
   }
 ]

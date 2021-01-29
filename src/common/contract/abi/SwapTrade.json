@@ -16,7 +16,9 @@
       }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
+    "type": "event",
+    "hash": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+    "shortHash": "0x8be0079c"
   },
   {
     "inputs": [
@@ -90,7 +92,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x95e71c507fcfb66988dc951897a0daf02e68d60617b27e77f08e03ea51dad8ef",
+    "shortHash": "0x95e71c50"
   },
   {
     "inputs": [
@@ -114,7 +118,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x7593ce72495c3d468c149737cfbcf89c0bcaac4fc941f9b2ed3d5fd90fcc6805",
+    "shortHash": "0x7593ce72"
   },
   {
     "inputs": [
@@ -183,7 +189,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x39cbd01f6b4f47c42c0d94bc3762738ebc6dfd60638824aa446c3ae0d7ec27d0",
+    "shortHash": "0x39cbd01f"
   },
   {
     "inputs": [
@@ -207,7 +215,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x84433e6ef211eb1a0695fcd89b702f06870383f51fcb5df454de791c3ce0c6b9",
+    "shortHash": "0x84433e6e"
   },
   {
     "inputs": [],
@@ -220,7 +230,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x8da5cb5b36e7f68c1d2e56001220cdbdd3ba2616072f718acfda4a06441a807d",
+    "shortHash": "0x8da5cb5b"
   },
   {
     "inputs": [],
@@ -233,7 +245,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x6046cd99790a834be5c6361e5148a0877981af8acf83e7e226e261dc29fd1ca9",
+    "shortHash": "0x6046cd99"
   },
   {
     "inputs": [],
@@ -246,14 +260,18 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xafcfb11a7b26dc3ad94574560a9ca5a27c93fd4c08699cc1cd4980542a00c48f",
+    "shortHash": "0xafcfb11a"
   },
   {
     "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x715018a616b5f2044428f6fadb7deef4ce9ca76ef60ea57978964ad137bbe7ae",
+    "shortHash": "0x715018a6"
   },
   {
     "inputs": [],
@@ -266,7 +284,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x5fbe4d1d7775304be2d6cd4f474f4b30ced1011b4e03edf68caffa6382407c87",
+    "shortHash": "0x5fbe4d1d"
   },
   {
     "inputs": [
@@ -279,7 +299,9 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xf2fde38b092330466c661fc723d5289b90272a3e580e3187d1d7ef788506c557",
+    "shortHash": "0xf2fde38b"
   },
   {
     "inputs": [
@@ -297,7 +319,9 @@
     "name": "initialize",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x485cc955cd05f29985ce37d87ac35dcf2fdbc60b9106f66a532e31a2f1d5743b",
+    "shortHash": "0x485cc955"
   },
   {
     "inputs": [
@@ -316,7 +340,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xe1c873e3212c550e888111b16705ba05b3778428f880cf391af19ea22a790062",
+    "shortHash": "0xe1c873e3"
   },
   {
     "inputs": [
@@ -335,7 +361,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x55e5d8dcda480c459a5f6d570397274344ab876a316897f4d9551881f7ca8a93",
+    "shortHash": "0x55e5d8dc"
   },
   {
     "inputs": [
@@ -421,7 +449,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x86239ca7a3a5646d1fa74543653426318d39b6c9dac3ef6a9af1e798272d5845",
+    "shortHash": "0x86239ca7"
   },
   {
     "inputs": [
@@ -512,7 +542,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0x27428feb9050189be0acdea63aa184c741ee57154d828e09fcf450ed861362bd",
+    "shortHash": "0x27428feb"
   },
   {
     "inputs": [
@@ -576,7 +608,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xdbe49a39f30db3a07e46295cef734ed263098eaea65c7000b04b917cf4163c6b",
+    "shortHash": "0xdbe49a39"
   },
   {
     "inputs": [
@@ -600,7 +634,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0xfd0ceefbbc4978ceeded30967eaee2a492b97d7d460160497b4b9a0c4ffb97b6",
+    "shortHash": "0xfd0ceefb"
   },
   {
     "inputs": [
@@ -649,7 +685,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x3d3f2517f1cfde9cc1b8b0d13f263f09182a3f2c11a632c3cfc3917bd3ef8563",
+    "shortHash": "0x3d3f2517"
   },
   {
     "inputs": [
@@ -708,7 +746,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x908219c6d3ac8e0a3380253bcbec22786cc7108cc49877f96e428f46217e4fc2",
+    "shortHash": "0x908219c6"
   },
   {
     "inputs": [
@@ -757,7 +797,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x1e2a565bbe40681e695d6f4350490151566d2fc5cad2dd45675ddaa066e8b427",
+    "shortHash": "0x1e2a565b"
   },
   {
     "inputs": [
@@ -821,7 +863,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x22dbfdcad4a94b9f25cde2e7cfc783da6445c65c3b2c812cb41633bd7be3db31",
+    "shortHash": "0x22dbfdca"
   },
   {
     "inputs": [
@@ -860,7 +904,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x26b3e7928f1bf138ed0645e14793e1056918e6d98f6f0a232d6ce4df642f5dce",
+    "shortHash": "0x26b3e792"
   },
   {
     "inputs": [
@@ -899,7 +945,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x34772557eeca333eeecadb386f53d5def00cc64e869048328ba8427769fd15aa",
+    "shortHash": "0x34772557"
   },
   {
     "inputs": [
@@ -938,7 +986,9 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "hash": "0x509efd64478b420daa33a523cf33b85cb29d77f55dd459e993da67ae02163f99",
+    "shortHash": "0x509efd64"
   },
   {
     "inputs": [
@@ -967,7 +1017,9 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xe8084a870c21034322b4bd510c9fbe369eb956cecdf434f0c9dee5ad2361eda9",
+    "shortHash": "0xe8084a87"
   },
   {
     "inputs": [
@@ -996,6 +1048,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "hash": "0xd4a06b87cac7e7ad1b88bb1614ba8f68aa6b2b14fdd248230ceafd83eee450c8",
+    "shortHash": "0xd4a06b87"
   }
 ]
