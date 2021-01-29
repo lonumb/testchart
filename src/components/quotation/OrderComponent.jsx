@@ -45,8 +45,8 @@ const OrderComponent = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const TabTypeList = [
-    {"name":t('orderLimit'),"key":'mark','value':OPEN_TYPE_MARKET},
-    {"name":t('orderMarket'),'key':'ss',"value":OPEN_TYPE_LIMIT}
+    { "name": t('orderMarket'), 'key': 'market', "value": OPEN_TYPE_MARKET },
+    { "name": t('orderLimit'), "key": 'limit', 'value': OPEN_TYPE_LIMIT },
   ]
   const [status, setStatus] = useState(0);
   const rechargeVisible = useSelector((state) => state.common.recharge.visible);

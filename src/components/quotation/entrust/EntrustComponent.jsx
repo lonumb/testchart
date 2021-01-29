@@ -203,19 +203,20 @@ const EntrustComponent = () => {
       setSetTakeProfitStopLossOrder(null);
       return;
     }
+    var order = setTakeProfitStopLossOrder;
     teemoPoolContract
     .updateSwapByPrice(setTakeProfitStopLossOrder.poolInfo, setTakeProfitStopLossOrder, fixedTakeProfit, fixedStopLoss)
     .on('transactionHash', function (hash) {
+      setSetTakeProfitStopLossOrder(null);
       actionTransactionHashModal({ visible: true, hash})(dispatch);
     })
     .on('receipt', async (receipt) => {
       //alert('修改成功');
-      var targetOrder = orderList.filter((item) => item.orderId != setTakeProfitStopLossOrder.orderId);
+      var targetOrder = orderList.filter((item) => item.orderId != order.orderId);
       if (targetOrder) {
         targetOrder.pLimitPrice = fixedTakeProfit;
         targetOrder.lLimitPrice = fixedStopLoss;
       }
-      setSetTakeProfitStopLossOrder(null);
       await getData();
     });
   }
