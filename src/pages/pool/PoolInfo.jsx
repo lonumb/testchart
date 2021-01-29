@@ -107,26 +107,32 @@ const PoolInfo = () => {
       Promise.all(userFundPromises).then((res) => {
         console.log('userFundList: ', res);
         setUserFundList(res || []);
+        return res;
       }),
       Promise.all(tokenBalancePromises).then((res) => {
         console.log('tokenBalanceList: ', res);
         setTokenBalanceList(res || []);
+        return res;
       }),
       Promise.all(lptokenBalancePromises).then((res) => {
         console.log('lptokenBalanceList: ', res);
         setLptokenBalanceList(res || []);
+        return res;
       }),
       Promise.all(tokenAllowancePromises).then((res) => {
         console.log('tokenAllowanceList: ', res);
         setTokenAllowanceList(res || []);
+        return res;
       }),
       Promise.all(lptokenAllowancePromises).then((res) => {
         console.log('lptokenAllowanceList: ', res);
         setLptokenAllowanceList(res || []);
+        return res;
       }),
       poolProxyContract.getAllPositionInfo().then((res) => {
         console.log('positionInfoList: ', res);
         setPositionInfoList(res || []);
+        return res;
       }),
     ]);
   }

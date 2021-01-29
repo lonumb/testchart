@@ -245,5 +245,8 @@
   "Notice_text2": "· 测试时间：2020.2.2 ~2020.3.3",
   "Notice_text3": "我已知晓，不再显示",
   "Notice_button1": "查看详情",
-  "Notice_button2": "我知道了"
+  "Notice_button2": "我知道了",
+  "Whitelist_check_title": "白名单校验",
+  "Whitelist_check_hint": "请输入您的TelegramID,例:@XXXX",
+  "Whitelist_check_button": "校验"
 }
