@@ -17,7 +17,7 @@ const SureModal = (props) => {
     });
 
     const openExplorer = () => {
-        window.open(`${chainConfig[ensumeChainId(chainId)].explorerUrl}tx/${hash}`);
+        window.open(`${chainConfig[ensumeChainId(chainId)].explorerUrl}/tx/${hash}`);
     };
 
     const onClose = () => {

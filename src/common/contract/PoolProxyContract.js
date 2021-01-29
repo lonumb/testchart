@@ -13,7 +13,6 @@ class PoolProxyContract extends BaseContract {
     super(...args);
   }
 
-  // 获取合约对象
   getContract() {
     if (!this._web3) return;
     if (!this._contract) {
@@ -114,6 +113,7 @@ class PoolProxyContract extends BaseContract {
       });
   }
 
+  //获取某个池子的头寸信息
   async getPositionInfo(poolAddr) {
     let contract = this.getContract();
     if (!contract) return;
@@ -141,6 +141,7 @@ class PoolProxyContract extends BaseContract {
       .call();
   }
 
+  //获取用户池子对应token的余额
   getBalanceByPoolInfo(poolInfo, address = this._userAddress) {
     if (!this._web3 && !poolInfo) return Promise.error('web3 == null || poolInfo == null');
     if (poolInfo.erc20Pool) {
@@ -151,6 +152,7 @@ class PoolProxyContract extends BaseContract {
     }
   }
 
+  //获取池子的token余额
   getPoolBalanceByPoolInfo(poolInfo) {
     if (!this._web3 && !poolInfo) return Promise.error('web3 == null || poolInfo == null');
     if (poolInfo.erc20Pool) {
@@ -181,9 +183,6 @@ class PoolProxyContract extends BaseContract {
     return Promise.all(promises).then((res) => {
       var list = [];
       for (let array of res) {
-        // for (let item of array) {
-        //   list.push(item);
-        // }
         list = list.concat(array);
       }
       return list;
@@ -200,15 +199,13 @@ class PoolProxyContract extends BaseContract {
     return Promise.all(promises).then((res) => {
       var list = [];
       for (let array of res) {
-        // for (let item of array) {
-        //   list.push(item);
-        // }
         list = list.concat(array);
       }
       return list;
     });
   }
 
+  //获取缓存的指定交易对最新成交信息
   getLocalLastTrades(symbol) {
     var lastLogsStr = global.localStorage.getItem(`lastLogs_${this._chainId}_${symbol}`);
     let lastLogs = JSON.parse(lastLogsStr) || [];

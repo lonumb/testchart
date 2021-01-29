@@ -87,16 +87,3 @@ export const ensumeChainId = (chainId) => {
 export const isSupportedChainId = (chainId) => {
     return supportedChainIds.indexOf(chainId) != -1;
 }
-
-export default {
-    defaultChainId,
-    defaultChainConfig: chainConfig[defaultChainId],
-    supportedChainIds,
-    rpcUrls: url,
-    getChainConfig : (chainId) => {
-        return Object.assign({}, chainConfig[chainId])
-    },
-    getEnsumeChainConfig : (chainId) => {
-        return Object.assign({}, chainConfig[ensumeChainId(chainId)])
-    },
-}

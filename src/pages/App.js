@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
 import PoolProxyContract from '../common/contract/PoolProxyContract';
 import { actionPoolList } from '../store/actions/ContractAction';
-import chainConfig from '../components/wallet/Config'
 
 function App() {
   const { library, account, chainId } = useWeb3React();

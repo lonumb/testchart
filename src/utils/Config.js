@@ -1,4 +1,4 @@
-import chainConfig, { ensumeChainId } from '../components/wallet/Config'
+import { chainConfig, ensumeChainId } from '../components/wallet/Config'
 
 export const config = {
     3 : {
@@ -49,11 +49,11 @@ export const products = [
 ];
 
 export const getConfigByChainID = (chainId) => {
-    return Object.assign({}, config[chainId], chainConfig.getChainConfig(chainId));
+    return Object.assign({}, config[chainId], chainConfig[chainId]);
 };
 
 export const getEnsumeConfigByChainID = (chainId) => {
-    return Object.assign({}, config[ensumeChainId(chainId)], chainConfig.getChainConfig(ensumeChainId(chainId)));
+    return Object.assign({}, config[ensumeChainId(chainId)], chainConfig[ensumeChainId(chainId)]);
 };
 
 export default config;

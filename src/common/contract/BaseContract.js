@@ -1,15 +1,11 @@
 import Web3 from 'web3';
-import { chainConfig, defaultChainId, supportedChainIds } from '../../components/wallet/Config'
+import { ensumeChainId, supportedChainIds } from '../../components/wallet/Config'
 
 class BaseContract {
   constructor(library, chainId, userAddress) {
     this._library = library;
     this._web3 = library && library.provider ? new Web3(library.provider) : null;
-    if (this.isSupportedChainId(chainId)) {
-      this._chainId = chainId;
-    } else {
-      this._chainId = defaultChainId;
-    }
+    this._chainId = ensumeChainId(chainId);
     this._userAddress = userAddress;
   }
 
@@ -18,7 +14,7 @@ class BaseContract {
   }
 
   isSupportedChainId(chainId) {
-    return supportedChainIds.indexOf(chainId) != -1;
+    return supportedChainIds.indexOf(chainId) !== -1;
   }
 }
 

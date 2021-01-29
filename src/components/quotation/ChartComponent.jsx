@@ -78,7 +78,7 @@ const periodMap = {
   15: { title: '15分钟', key: 'periodMin15', value: '15', api: 2 },
   30: { title: '30分钟', key: 'periodMin30', value: '30', api: 2 },
   60: { title: '1小时', key: 'periodHour1', value: '60', api: 2 },
-  240: { title: '4小时', key: 'periodHour4', value: '240', api: 2 },
+  240: { title: '4小时', key: 'periodHour2', value: '240', api: 2 },
   '1D': { title: '1天', key: 'periodDay', value: '1', api: 3 },
   '1W': { title: '周线', key: 'periodWeek', value: '7', api: 3 },
   '1M': { title: '月线', key: 'periodMonth', value: '30', api: 3 },
@@ -201,7 +201,7 @@ const ChartComponent = () => {
                 {t('periodHour1')}
               </li>
               <li className={`item ${period === '240' ? 'active' : ''}`} onClick={() => switchPeriod('240')}>
-                {t('periodHour4')}
+                {t('periodHour2')}
               </li>
             </ul>
           </OwnPopover>

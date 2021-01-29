@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as Types from '../../store/types';
 import { actionRechargeModal, actionWithdrawModal } from '../../store/actions/CommonAction';
 import './userAccount.scss';
-import chainConfig from '../../components/wallet/Config'
 
 import { useWeb3React } from '@web3-react/core';
 // import CommonContract from '../../common/contract/CommonContract';

@@ -21,13 +21,6 @@ class PoolFactoryContract extends BaseContract {
     }
   }
 
-  // 查询余额
-  getBalanceOf() {
-    let contract = this.getContract();
-    if (!contract) return;
-    return contract.methods.balanceOf(this._userAddress).call();
-  }
-
   getOpenFee() {
     let contract = this.getContract();
     if (!contract) return;
