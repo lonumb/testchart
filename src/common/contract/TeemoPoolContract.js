@@ -147,7 +147,7 @@ class TeemoPoolContract extends BaseContract {
 
   // LP充值
   lpDeposit(poolInfo, tokenAmount, mine = false) {
-    console.log('lpDeposit: ', poolInfo, tokenAmount, mine);
+    console.log('lpDeposit: ', poolInfo.poolAddr, tokenAmount, mine);
     let contract = this.getContract(poolInfo);
     if (!contract) return;
 
@@ -177,7 +177,7 @@ class TeemoPoolContract extends BaseContract {
 
   // LP提现
   lpWithdraw(poolInfo, lpAmount) {
-    console.log('lpWithdraw: ', poolInfo, lpAmount);
+    console.log('lpWithdraw: ', poolInfo.poolAddr, lpAmount);
     let contract = this.getContract(poolInfo);
     if (!contract) return;
 
@@ -190,6 +190,24 @@ class TeemoPoolContract extends BaseContract {
     })
     .on('receipt', (receipt) => {
       console.log('lpWithdraw receipt: ', receipt);
+    });
+  }
+
+  //停止挖矿
+  stopMine(poolInfo, lpAmount, withdraw) {
+    console.log('stopMine: ', poolInfo.poolAddr, lpAmount, withdraw);
+    let contract = this.getContract(poolInfo);
+    if (!contract) return;
+
+    return contract.methods
+    .stopMine(lpAmount, withdraw)
+    .send({ from: this._userAddress })
+    .on('error', function (error) {})
+    .on('transactionHash', function (hash) {
+      console.log('stopMine transactionHash: ', hash);
+    })
+    .on('receipt', (receipt) => {
+      console.log('stopMine receipt: ', receipt);
     });
   }
 }

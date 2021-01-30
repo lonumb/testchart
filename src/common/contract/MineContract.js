@@ -14,7 +14,7 @@ class MineContract extends BaseContract {
   }
 
   getUserInfo(poolInfo) {
-    let contract = this.getContract(poolInfo);
+    let contract = this.getContract(poolInfo.mineAddr);
     if (!contract) return;
     return contract.methods.userInfo(this._userAddress).call();
   }

@@ -504,5 +504,98 @@
     "type": "function",
     "hash": "0x115ece4c704292a90310967dfbdf5b7b8fc7d63edcdb0b6afff2f964978ddc08",
     "shortHash": "0x115ece4c"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_poolddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_userAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "status",
+        "type": "uint8"
+      }
+    ],
+    "name": "getAllOrder",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "orderIds",
+        "type": "bytes32[]"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "userAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lever",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "bsFlag",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "openPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "openTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "pLimitPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lLimitPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "closePrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "closeTime",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct SwapTradeLibrary.SwapOrder[]",
+        "name": "orders",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "hash": "0xafe22139348a132f56b850c8e3c734a95d0c5a0cc4faa2839005b3bccc97ebf7",
+    "shortHash": "0xafe22139"
   }
 ]

@@ -100,7 +100,14 @@ const PoolInfo = () => {
       //totalAmountPromises.push(fundContract.getPoolTotalAmount(poolInfo));
       userFundPromises.push(fundContract.getUserFundInfo(poolInfo));
       tokenBalancePromises.push(poolProxyContract.getBalanceByPoolInfo(poolInfo));
-      lptokenBalancePromises.push(erc20Contract.getBalanceOf(account, poolInfo.lptokenAddr));
+      if (isMine) {
+        lptokenBalancePromises.push(new MineContract(library, chainId, account).getUserInfo(poolInfo).then((res) => {
+          return res.amount;
+        }));
+      } else {
+        lptokenBalancePromises.push(erc20Contract.getBalanceOf(account, poolInfo.lptokenAddr));
+      }
+
       tokenAllowancePromises.push(poolInfo.erc20Pool ? erc20Contract.getAllowance(account, poolInfo.tokenAddr, poolInfo.poolAddr) : Promise.resolve(MAX_UINT256_VALUE));
       lptokenAllowancePromises.push(erc20Contract.getAllowance(account, poolInfo.lptokenAddr, poolInfo.poolAddr));
     }
@@ -348,7 +355,7 @@ const PoolInfo = () => {
     if (!isAvailable() || !poolInfo._tokenBalanceInput) return;
 
     var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-    teemoPoolContract.lpDeposit(poolInfo, Tools.toWei(poolInfo._tokenBalanceInput, poolInfo.decimals))
+    teemoPoolContract.lpDeposit(poolInfo, Tools.toWei(poolInfo._tokenBalanceInput, poolInfo.decimals), isMine)
     .on('transactionHash', function (hash) {
       actionTransactionHashModal({ visible: true, hash })(dispatch);
     })
@@ -367,6 +374,19 @@ const PoolInfo = () => {
     })
     .on('receipt', async (receipt) => {
       console.log('提现成功');
+      await getData();
+    });
+  };
+
+  const stopMine = (poolInfo, index) => {
+    if (!isAvailable() || !poolInfo._lptokenBalanceInput) return;
+    var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
+    teemoPoolContract.stopMine(poolInfo, Tools.toWei(poolInfo._lptokenBalanceInput, poolInfo.decimals), isMine)
+    .on('transactionHash', function (hash) {
+      actionTransactionHashModal({ visible: true, hash })(dispatch);
+    })
+    .on('receipt', async (receipt) => {
+      console.log('停止挖矿成功');
       await getData();
     });
   };
@@ -494,9 +514,13 @@ const PoolInfo = () => {
                     </div>
 
                     {
-                      tokenAllowanceList.length < index ? (<div></div>) 
+                      isMine && (<button className="btn-primary" onClick={e=> stopMine(item, index)}>{t('btnUnlock')}</button>)
+                    }
+                    {
+                      !isMine && (tokenAllowanceList.length < index ? (<div></div>) 
                       : isLptokenApproved(item, index) ? (<button className="btn-primary" onClick={e=> withdraw(item, index)}>{t('btnUnlock')}</button>) 
                       : (<button className="btn-default" onClick={e=> lptokenApprove(item, index)}>{lptokenApprovingObj[item.lptokenAddr] == true ? t('btnAuthing') : t('btnAuth')}</button>)
+                      )
                     }
                     
                   </div>

@@ -948,14 +948,19 @@
         "internalType": "uint256",
         "name": "_lpAmount",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_withdraw",
+        "type": "bool"
       }
     ],
     "name": "stopMine",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function",
-    "hash": "0x9aa9e7d2f180fe9929fc68343a71cc62c99a53f3e1189142850b663ea4559a48",
-    "shortHash": "0x9aa9e7d2"
+    "hash": "0xc8c197c94b47e133dcd976ee2b3de7745c24f7e3b0d6c72e126c936090865599",
+    "shortHash": "0xc8c197c9"
   },
   {
     "inputs": [
