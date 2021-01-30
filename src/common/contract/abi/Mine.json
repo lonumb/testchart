@@ -1,0 +1,352 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event",
+    "hash": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+    "shortHash": "0x8be0079c"
+  },
+  {
+    "inputs": [],
+    "name": "accTeemoPerShare",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0x180f0757854806c9a34593da5c64a873cba569aec09163b8d21fc20db72c3882",
+    "shortHash": "0x180f0757"
+  },
+  {
+    "inputs": [],
+    "name": "emergency",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0xcaa6fea486da381bcf4a11666c30b57212576a7fd6b6057ff24487d2b367d577",
+    "shortHash": "0xcaa6fea4"
+  },
+  {
+    "inputs": [],
+    "name": "lastRewardBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0xa9f8d181e9a2e01a033334c79573beace16ca93be0eb651d756f339df4c8485d",
+    "shortHash": "0xa9f8d181"
+  },
+  {
+    "inputs": [],
+    "name": "minerToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0x4904240baf410134292981087ce045bd70a97bd619ccf2b1422fceecc10dfa3e",
+    "shortHash": "0x4904240b"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0x8da5cb5b36e7f68c1d2e56001220cdbdd3ba2616072f718acfda4a06441a807d",
+    "shortHash": "0x8da5cb5b"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "hash": "0x715018a616b5f2044428f6fadb7deef4ce9ca76ef60ea57978964ad137bbe7ae",
+    "shortHash": "0x715018a6"
+  },
+  {
+    "inputs": [],
+    "name": "startBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0x48cd4cb1f54ab0b90362e73c5beb912a5cf401f098fd6202fd80334cdae1c619",
+    "shortHash": "0x48cd4cb1"
+  },
+  {
+    "inputs": [],
+    "name": "teemoPerBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0x912a9c283648521de1658523ee76e6daf2806eaba709f37f39c3268c12b9cbf4",
+    "shortHash": "0x912a9c28"
+  },
+  {
+    "inputs": [],
+    "name": "totalDeposited",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0xff50abdc1ceedaaaa807b7a01b121ea5d75ee3c4410d5acd1b6a45e47db254dd",
+    "shortHash": "0xff50abdc"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "hash": "0xf2fde38b092330466c661fc723d5289b90272a3e580e3187d1d7ef788506c557",
+    "shortHash": "0xf2fde38b"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "userInfo",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "rewardDebt",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0x1959a0023e291dec73ec0ff032b1ee381e31f58d82fa65f54257fc49da80d28f",
+    "shortHash": "0x1959a002"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_minerToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_teemoPerBlock",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_startBlock",
+        "type": "uint256"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "hash": "0x7a1ac61e7b8496015017d4f8e3a8ab24d101f70482c42a4af0aef13db05c5fa4",
+    "shortHash": "0x7a1ac61e"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "pendingTeemo",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true,
+    "hash": "0x5c7e86f6cf59bf075d684388941721d78c68461dfbf60d24207f64afdbf51be9",
+    "shortHash": "0x5c7e86f6"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "deposit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "teemoMint",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "pending",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "hash": "0x47e7ef24b3022e382e65b1298581281f0ae273ac4f76464efcf5b06769264f2f",
+    "shortHash": "0x47e7ef24"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "teemoMint",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "pending",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "hash": "0xf3fef3a3f44f9c277339b67d54f015748bd8d6b77a985b0ab6e71126b018c34a",
+    "shortHash": "0xf3fef3a3"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_rate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_withUpdate",
+        "type": "bool"
+      }
+    ],
+    "name": "set",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "teemoMint",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "hash": "0x62f46d56cac59aab0df650c3414715cbff49a2ffe106754b339e3bb2c1465e95",
+    "shortHash": "0x62f46d56"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "emergencyWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "hash": "0x6ff1c9bce7d6e4ac52b2581f7cc4e82effd6ea2f591d8ffc5867394d61c3c0f7",
+    "shortHash": "0x6ff1c9bc"
+  }
+]

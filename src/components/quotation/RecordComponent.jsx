@@ -8,6 +8,7 @@ import * as Tools from '../../utils/Tools';
 import { fromWei, toBN, toWei } from 'web3-utils';
 import './record.scss';
 import { BSFLAG_LONG } from '../../utils/Constants'
+import * as HttpUtil from '../../utils/HttpUtil'
 
 let poolProxyContract = null;
 
@@ -23,28 +24,28 @@ const RecordComponent = () => {
   const [recordList, setRecordList] = useState([]);
   const [listHeight, setListHeight] = useState(0);
 
-  function isAvailable() {
-    return active && account && poolList;
-  }
+  // function isAvailable() {
+  //   return active && account && poolList;
+  // }
 
-  async function getData() {
-    console.log('RecordComponent getData available: ', isAvailable());
-    if (!isAvailable()) {
-      return Promise.reject('not available');
-    }
-    var pair = productInfo.pair;
-    return Promise.all([
-      poolProxyContract.queryLastTrades(poolList, pair).then(res => {
-        if (pair == productInfo.pair) {
-          console.log('RecordComponent setRecordList: ', res);
-          setRecordList(res.reverse() || []);
-        }
-        return res;
-      }).catch((e) => {
-        console.log(`queryLastTrades err: `, e);
-      }),
-    ]);
-  }
+  // async function getData() {
+  //   console.log('RecordComponent getData available: ', isAvailable());
+  //   if (!isAvailable()) {
+  //     return Promise.reject('not available');
+  //   }
+  //   var pair = productInfo.pair;
+  //   return Promise.all([
+  //     poolProxyContract.queryLastTrades(poolList, pair).then(res => {
+  //       if (pair == productInfo.pair) {
+  //         console.log('RecordComponent setRecordList: ', res);
+  //         setRecordList(res.reverse() || []);
+  //       }
+  //       return res;
+  //     }).catch((e) => {
+  //       console.log(`queryLastTrades err: `, e);
+  //     }),
+  //   ]);
+  // }
 
   const getDataFunc = async () => {
     var retryCount = 0;
@@ -59,24 +60,29 @@ const RecordComponent = () => {
   };
 
   useEffect(async () => {
-    if (active && account && poolList.length > 0) {
-      poolProxyContract = new PoolProxyContract(library, chainId, account);
-
-      if (recordList.length == 0 || recordList[0].order.symbol != productInfo.pair) {
-        var list = poolProxyContract.getLocalLastTrades(productInfo.pair);
-        console.log('RecordComponent local setRecordList: ', list);
-        setRecordList(list.reverse() || []);
-      }
-      getDataFunc();
-    } else {
-      poolProxyContract = null;
-    }
+    getDataFunc();
   }, [active, library, account, poolList, productInfo]);
 
   useEffect(() => {
     // 设置列表高度
     setListHeight(recordRef.current.clientHeight - 56);
   }, []);
+
+  async function getData() {
+    var pair = 'btc/usdt';
+    if (productInfo) {
+      pair = productInfo.pair;
+    }
+    return HttpUtil.URLENCODED_GET('/api/order/queryopeorders.do', {chainId, symbol: pair}).then(res => {
+        if (pair == productInfo.pair) {
+          console.log('RecordComponent setRecordList: ', res);
+          setRecordList(res.datas || []);
+        }
+        return res;
+      }).catch((e) => {
+        console.log(`queryLastTrades err: `, e);
+      });
+  }
 
   useEffect(async () => {
     try {
@@ -101,9 +107,9 @@ const RecordComponent = () => {
   const formatPrice = (price, symbol) => {
     var productConfig = productList.find((item) => item.pair == symbol);
     if (productConfig) {
-      return Tools.toStringAsFixed(fromWei(price), productConfig.decimal);
+      return Tools.toStringAsFixed(price, productConfig.decimal);
     }
-    return fromWei(price);
+    return Tools.toStringAsFixed(price, 2);
   }
 
   return (
@@ -120,12 +126,12 @@ const RecordComponent = () => {
           {recordList.map((item, index) => {
             return (
               <div className="list-item" key={index}>
-                <div className="column">{Tools.formatTime(item.timestamp, 'HH:mm:ss')}</div>
-                <div className="column">{item._name == 'OpenMarketSwap' ? t('textBuild') 
-                                : item._name == 'CloseMarketSwap' ? t('textClose') : ''}</div>
-                <div className={`column ${item.order.bsFlag == BSFLAG_LONG ? 'green' : 'red'}`}>{formatPrice(item._name == 'CloseMarketSwap' ? item.closePrice : item.order.openPrice, item.order.symbol)}</div>
+                <div className="column">{Tools.formatTime(item.f_time * 1000, 'HH:mm:ss')}</div>
+                <div className="column">{item.f_status == 1 || item.f_status == 2 ? t('textBuild') 
+                                : item.f_status == 4 || item.f_status == 5 || item.f_status == 6 || item.f_status == 7 ? t('textClose') : ''}</div>
+                <div className={`column ${item.f_bs_flag == BSFLAG_LONG ? 'green' : 'red'}`}>{formatPrice(item.f_price, item.f_symbol)}</div>
                 <div className="column">
-                  {Tools.fromWei(Tools.mul(item.order.tokenAmount, item.order.lever), item.decimals)} {item.openSymbol} <Reply />
+                  {item.f_token_amount * item.f_lever} {item.f_token_symbol} <Reply />
                 </div>
               </div>
             );

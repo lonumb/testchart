@@ -72,7 +72,9 @@ export function URLENCODED_POST(url, params) {
   for (const key in params) {
     if (params.hasOwnProperty(key)) {
       const element = params[key];
-      paramsTemp[key] = element.toString();
+      if (element) {
+        paramsTemp[key] = element.toString();
+      }
     }
   }
   paramsTemp = { p: window.JSON.stringify(paramsTemp) };
@@ -85,6 +87,9 @@ export function URLENCODED_POST(url, params) {
  * @param {*} params
  */
 export function URLENCODED_GET(url, params) {
+  if (!params) {
+    params = {};
+  }
   var chainId = ensumeChainId(params.chainId);
   params.chainId = chainId;
   var baseUrl = getConfigByChainID(chainId).baseUrl;

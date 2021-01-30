@@ -19,6 +19,8 @@ import { BSFLAG_LONG, BSFLAG_SHORT } from '../../../utils/Constants'
 import { fromWei, toBN, toWei } from 'web3-utils';
 import * as Tools from '../../../utils/Tools';
 import { emitter } from '../../../utils/event';
+import * as HttpUtil from '../../../utils/HttpUtil'
+import { ensumeChainId } from '../../wallet/Config'
 
 // 止盈比例列表
 const profitRateList = [25, 50, 75, 100, 150, 200];
@@ -41,6 +43,8 @@ const EntrustComponent = () => {
   //const [recordList] = useState(new Array(7).fill({ a: 'aaa' }));
   const [orderList, setOrderList] = useState([]);
   const [limitOrderList, setLimitOrderList] = useState([]);
+  const [wtHistoryOrderList, setWtHistoryOrderList] = useState([]);
+  const [closedOrderList, setClosedOrderList] = useState([]);
   const [type, setType] = useState(1);
   const [orderCloseProcessingMark, setOrderCloseProcessingMark] = useState({});
   const [limitOrderRevokeProcessingMark, setLimitOrderRevokeProcessingMark] = useState({});
@@ -84,6 +88,10 @@ const EntrustComponent = () => {
       poolProxyContract.getAllLimitOrder(poolList).then((res) => {
         console.log('EntrustComponent getAllLimitOrder: ', res);
         setLimitOrderList(res || []);
+      }),
+      HttpUtil.URLENCODED_GET('/api/order/querywtorders.do', {chainId, addr: account}).then((res) => {
+        console.log('querywtorders: ', res.datas || []);
+        setWtHistoryOrderList(res.datas || []);
       }),
     ]);
   }
@@ -259,8 +267,8 @@ const EntrustComponent = () => {
     return '--'
   }
 
-  const formatLimitOrderStatus = (order) => {
-    switch (order.status) {
+  const formatLimitOrderStatus = (status) => {
+    switch (status) {
       case "1": {
         return t('listStatusRevoke');
       }
@@ -280,6 +288,30 @@ const EntrustComponent = () => {
       return Tools.toStringAsFixed(fromWei(price), productConfig.decimal);
     }
     return fromWei(price);
+  }
+
+  // const formatPriceByPair = (price, symbol) => {
+  //   var productConfig = productList.find((item) => item.pair == symbol);
+  //   if (productConfig) {
+  //     return Tools.toStringAsFixed(price, productConfig.decimal);
+  //   }
+  //   return Tools.toStringAsFixed(price, 2);
+  // }
+
+  const getPoolOpenDecimalByPoolAddr = (poolAddr) => {
+    var pool = poolList.find((item) => item.poolAddr == poolAddr);
+    if (pool) {
+      return pool.openDecimal;
+    }
+    return 2;
+  }
+
+  const getPoolSymbolByPoolAddr = (poolAddr) => {
+    var pool = poolList.find((item) => item.poolAddr == poolAddr);
+    if (pool) {
+      return pool.symbol;
+    }
+    return '';
   }
 
   return (
@@ -477,14 +509,14 @@ const EntrustComponent = () => {
         )}
         {/* 历史委托 body */}
         {active && type === 3 && (
-          limitOrderList.filter((item) => item.status == 1 || item.status == 3).map((item, index) => {
+          wtHistoryOrderList.map((item, index) => {
             return (
               <div className="table-row" key={`en${index}`}>
-                <div className="table-column">{item.symbol.toUpperCase()}</div>
-                <div className={item.bsFlag == BSFLAG_LONG ? "table-column green" : "table-column red"}>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
-                <div className="table-column">{formatPrice(item.openPrice, item.symbol)}</div>
-                <div className="table-column">{Tools.fromWei(item.tokenAmount, poolInfo.decimals)} { poolInfo.symbol }</div>
-                <div className="table-column">{item.lever} X</div>
+                <div className="table-column">{item.f_symbol.toUpperCase()}</div>
+                <div className={item.f_bs_flag == BSFLAG_LONG ? "table-column green" : "table-column red"}>{item.bsFlag == BSFLAG_LONG ? t('tradeOrderBuy') : t('tradeOrderSell')}</div>
+                <div className="table-column">{formatPrice(toWei(item.f_new_price), item.f_symbol)}</div>
+                <div className="table-column">{Tools.toStringAsFixed(item.f_token_amount, getPoolOpenDecimalByPoolAddr(item.f_pool_addr))} { getPoolSymbolByPoolAddr(item.f_pool_addr) }</div>
+                <div className="table-column">{item.f_lever} X</div>
                 {/* <div className="table-column" onClick={() => setVisible(true)}>
                   {item.pLimitPrice != 0 ? fromWei(item.pLimitPrice) : t('entrustSPPriceTip')} <Edit style={{ fontSize: '14px' }} />
                 </div>
@@ -492,17 +524,17 @@ const EntrustComponent = () => {
                   {item.lLimitPrice != 0 ? fromWei(item.lLimitPrice) : t('entrustSPPriceTip')}  <Edit style={{ fontSize: '14px' }} />
                 </div> */}
                 <div className="table-column">
-                  {item.pLimitPrice != 0 ? formatPrice(item.pLimitPrice, item.symbol) : t('entrustSPPriceTip')}
+                  {item.f_sp_price != 0 ? formatPrice(toWei(item.f_sp_price), item.f_symbol) : t('entrustSPPriceTip')}
                 </div>
                 <div className="table-column">
-                  {item.lLimitPrice != 0 ? formatPrice(item.lLimitPrice, item.symbol) : t('entrustSPPriceTip')}
+                  {item.f_sl_price != 0 ? formatPrice(toWei(item.f_sl_price), item.f_symbol) : t('entrustSPPriceTip')}
                 </div>
-                <div className="table-column">{formatLimitOrderStatus(item)}</div>
-                <div className="table-column">{Tools.formatTime(item.openTime)}</div>
+                <div className="table-column">{formatLimitOrderStatus(item.f_status)}</div>
+                <div className="table-column">{Tools.formatTime(item.f_open_time)}</div>
               </div>
             );
           })
-        )}
+        )} 
 
         {/* 已平仓 head */}
         {active && type === 4 && (

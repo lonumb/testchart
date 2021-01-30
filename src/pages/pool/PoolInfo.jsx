@@ -10,6 +10,7 @@ import PoolProxyContract from '../../common/contract/PoolProxyContract';
 import FundContract from '../../common/contract/FundContract';
 import ERC20Contract from '../../common/contract/ERC20Contract';
 import TeemoPoolContract from '../../common/contract/TeemoPoolContract';
+import MineContract from '../../common/contract/MineContract';
 import * as Tools from '../../utils/Tools';
 import { fromWei, toBN, toWei } from 'web3-utils';
 import { MAX_UINT256_VALUE } from '../../utils/Constants'
@@ -55,6 +56,10 @@ const AccordionDetails = withStyles((theme) => ({
 let poolProxyContract = null;
 let fundContract = null;
 let erc20Contract = null;
+let mineContract = null;
+
+const isMine = true;//是否挖矿
+
 const PoolInfo = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -154,11 +159,13 @@ const PoolInfo = () => {
       poolProxyContract = new PoolProxyContract(library, chainId, account);    
       fundContract = new FundContract(library, chainId, account);
       erc20Contract = new ERC20Contract(library, chainId, account);
+      mineContract = new MineContract(library, chainId, account);
       getDataFunc();
     } else {
       poolProxyContract = null;
       fundContract = null;
       erc20Contract = null;
+      mineContract = null;
     }
   }, [active, library, account, poolList]);
 
@@ -240,8 +247,9 @@ const PoolInfo = () => {
 
   const tokenBalanceFormMaxClick = (poolInfo, index) => {
     if (tokenBalanceList.length > index) {
-      poolInfo._tokenBalanceInput = Tools.fromWei(tokenBalanceList[index], poolInfo.decimals);
-      setRefreshObj({});
+      // poolInfo._tokenBalanceInput = Tools.fromWei(tokenBalanceList[index], poolInfo.decimals);
+      // setRefreshObj({});
+      tokenBalanceFormInputChanged(poolInfo, index, Tools.fromWei(tokenBalanceList[index], poolInfo.decimals));
     }
   };
 
@@ -249,22 +257,24 @@ const PoolInfo = () => {
     let formatValue = Tools.numFmt(value, poolInfo.openDecimal);
     poolInfo._tokenBalanceInput = formatValue;
     poolInfo._tokenToLpAmount = null;
-    async function getLPAmount() {
-      var lpAmount = await poolProxyContract.getLPAmount(poolInfo.poolAddr, Tools.toWei(formatValue || 0, poolInfo.decimals));
-      console.log(`tokenAmount: ${formatValue}, to lpAmount: ${lpAmount}`);
-      if (formatValue == poolInfo._tokenBalanceInput) {
-        poolInfo._tokenToLpAmount = lpAmount;
-        setRefreshObj({});
-      }
-    }
+    // async function getLPAmount() {
+    //   var lpAmount = await poolProxyContract.getLPAmount(poolInfo.poolAddr, Tools.toWei(formatValue || 0, poolInfo.decimals));
+    //   console.log(`tokenAmount: ${formatValue}, to lpAmount: ${lpAmount}`);
+    //   if (formatValue == poolInfo._tokenBalanceInput) {
+    //     poolInfo._tokenToLpAmount = lpAmount;
+    //     setRefreshObj({});
+    //   }
+    // }
+    // getLPAmount();
+    poolInfo._tokenToLpAmount = Tools.toWei(formatValue || 0, poolInfo.decimals);
     setRefreshObj({});
-    getLPAmount();
   };
 
   const lptokenBalanceFormMaxClick = (poolInfo, index) => {
     if (lptokenBalanceList.length > index) {
-      poolInfo._lptokenBalanceInput = Tools.fromWei(lptokenBalanceList[index], poolInfo.lpdecimals);
-      setRefreshObj({});
+      // poolInfo._lptokenBalanceInput = Tools.fromWei(lptokenBalanceList[index], poolInfo.lpdecimals);
+      // setRefreshObj({});
+      lptokenBalanceFormInputChanged(poolInfo, index, Tools.fromWei(lptokenBalanceList[index], poolInfo.lpdecimals));
     }
   };
 
@@ -272,16 +282,17 @@ const PoolInfo = () => {
     let formatValue = Tools.numFmt(value, poolInfo.lpdecimals);
     poolInfo._lptokenBalanceInput = formatValue;
     poolInfo._lpAmountToTokenAmount = null;
-    async function getTokenAmount() {
-      var tokenAmount = await poolProxyContract.getTokenAmount(poolInfo.poolAddr, Tools.toWei(formatValue || 0, poolInfo.lpdecimals));
-      console.log(`lpTokenAmount: ${formatValue}, to tokenAmount: ${tokenAmount}`);
-      if (formatValue == poolInfo._lptokenBalanceInput) {
-        poolInfo._lpAmountToTokenAmount = tokenAmount;
-        setRefreshObj({});
-      }
-    }
+    // async function getTokenAmount() {
+    //   var tokenAmount = await poolProxyContract.getTokenAmount(poolInfo.poolAddr, Tools.toWei(formatValue || 0, poolInfo.lpdecimals));
+    //   console.log(`lpTokenAmount: ${formatValue}, to tokenAmount: ${tokenAmount}`);
+    //   if (formatValue == poolInfo._lptokenBalanceInput) {
+    //     poolInfo._lpAmountToTokenAmount = tokenAmount;
+    //     setRefreshObj({});
+    //   }
+    // }
+    // getTokenAmount();
+    poolInfo._lpAmountToTokenAmount = Tools.toWei(formatValue || 0, poolInfo.lpdecimals);
     setRefreshObj({});
-    getTokenAmount();
   };
 
   const isTokenApproved = (poolInfo, index) => {
