@@ -22,7 +22,7 @@ export const config = {
         poolFactoryContractAddress: '0x1f3556e55b3ebA9Eaa5b63a390204127Aa5F8856',
         poolProxyContractAddress: '0x10399743b57cb5ceb6f1f63c4CB2166B7660801C',
         bonusRecordContractAddress: '0x2f43E1d5D90c116E100aa4158B2B5214343b9a9F',
-        baseUrl: 'https://47.90.62.21',
+        baseUrl: 'https://mvp.teemo.finance',
         quoteWS: 'wss://mvp.teemo.finance/ws',
     },
 };

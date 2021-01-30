@@ -21,6 +21,7 @@ import './poolInfo.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import * as Types from '../../store/types';
 import { PanToolSharp } from '@material-ui/icons';
+import * as HttpUtil from '../../utils/HttpUtil';
 
 const Accordion = withStyles({
   root: {
@@ -77,8 +78,8 @@ const PoolInfo = () => {
   const [ lptokenAllowanceList, setLptokenAllowanceList ] = useState([]);
   const [ tokenApprovingObj, setTokenApprovingObj ] = useState({});
   const [ lptokenApprovingObj, setLpTokenApprovingObj ] = useState({});
-
   const [ positionInfoList, setPositionInfoList ] = useState([]);
+  const [ poolFundList, setPoolFundList ] = useState([]);
   const [ refreshObj, setRefreshObj ] = useState({});
   
   function isAvailable() {
@@ -96,6 +97,7 @@ const PoolInfo = () => {
     var lptokenBalancePromises = [];   
     var tokenAllowancePromises = []; 
     var lptokenAllowancePromises = []; 
+    var poolFundPromises = []; 
     for (let poolInfo of poolList) {
       //totalAmountPromises.push(fundContract.getPoolTotalAmount(poolInfo));
       userFundPromises.push(fundContract.getUserFundInfo(poolInfo));
@@ -110,6 +112,7 @@ const PoolInfo = () => {
 
       tokenAllowancePromises.push(poolInfo.erc20Pool ? erc20Contract.getAllowance(account, poolInfo.tokenAddr, poolInfo.poolAddr) : Promise.resolve(MAX_UINT256_VALUE));
       lptokenAllowancePromises.push(erc20Contract.getAllowance(account, poolInfo.lptokenAddr, poolInfo.poolAddr));
+      poolFundPromises.push(HttpUtil.URLENCODED_GET('/api/order/querypoolfund.do', {chainId, addr: poolInfo.poolAddr }));
     }
     return Promise.all([
       // Promise.all(totalAmountPromises).then((res) => {
@@ -139,6 +142,11 @@ const PoolInfo = () => {
       Promise.all(lptokenAllowancePromises).then((res) => {
         console.log('lptokenAllowanceList: ', res);
         setLptokenAllowanceList(res || []);
+        return res;
+      }),
+      Promise.all(poolFundPromises).then((res) => {
+        console.log('poolFundList: ', res);
+        setPoolFundList(res || []);
         return res;
       }),
       poolProxyContract.getAllPositionInfo().then((res) => {
@@ -180,73 +188,118 @@ const PoolInfo = () => {
     return 2;
   }
 
-  const getPositionInfo = (poolAddr) => {
-    var result = (positionInfoList || []).filter((item) => item.poolAddr == poolAddr);
-    if (result.length > 0) {
-      return result[0];
-    }
-    return null;
+  // const getPositionInfo = (poolAddr) => {
+  //   var result = (positionInfoList || []).filter((item) => item.poolAddr == poolAddr);
+  //   if (result.length > 0) {
+  //     return result[0];
+  //   }
+  //   return null;
+  // };
+
+  // const getLongFormatPosition = (poolInfo) => {
+  //   var positionInfo = getPositionInfo(poolInfo.poolAddr);
+  //   if (!positionInfo) {
+  //     return '0';
+  //   }
+  //   var result = Tools.fromWei(positionInfo.totalL || '0', (poolInfo ? poolInfo.decimals : 0));
+  //   if (result < 0) {
+  //     result = 0;
+  //   }
+  //   return Tools.toStringAsFixed(result, poolInfo.openDecimal);
+  // }
+
+  // const getShortFormatPosition = (poolInfo) => {
+  //   var positionInfo = getPositionInfo(poolInfo.poolAddr);
+  //   if (!positionInfo) {
+  //     return '0';
+  //   }
+  //   var result = Tools.fromWei(positionInfo.totalL || '0', (poolInfo ? poolInfo.decimals : 0));
+  //   if (result < 0) {
+  //     result = 0;
+  //   }
+  //   return Tools.toStringAsFixed(result, poolInfo.openDecimal);
+  // }
+
+  // const getLongFormatPositionRate = (poolInfo) => {
+  //   var positionInfo = getPositionInfo(poolInfo.poolAddr);
+  //   if (!positionInfo) {
+  //     return '0';
+  //   }
+  //   var totalP = getLongFormatPosition(poolInfo);
+  //   var total = Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0);
+  //   return Tools.numFmt(totalP / total, 2);
+  // }
+
+  // const getShortFormatPositionRate = (poolInfo) => {
+  //   var positionInfo = getPositionInfo(poolInfo.poolAddr);
+  //   if (!positionInfo) {
+  //     return '0';
+  //   }
+  //   var totalL = getShortFormatPosition(poolInfo);
+  //   var total = Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0);
+  //   return Tools.numFmt(totalL / total, 2);
+  // }
+
+  // const getTotalPl = (poolInfo) => {
+  //   var p = getLongFormatPosition(poolInfo);
+  //   var l = getShortFormatPosition(poolInfo);
+  //   if (l == 0) {
+  //     return 0;
+  //   }
+  //   try {
+  //     return Tools.fromWei(Tools.div(p + l, 2), (poolInfo ? poolInfo.decimals : 0));
+  //   } catch (e) {
+  //     console.log('p ', p);
+  //     console.log('l ', l);
+  //     console.log(e);
+  //   }
+  //   return '';
+  // }
+
+  const getPoolFundByPoolAddr = (poolAddr) => {
+    var poolFund = poolFundList.find((item) => item.f_pool_addr == poolAddr.toLowerCase());
+    console.log(poolAddr, poolFund);
+    return poolFund;
   };
 
-  const getLongFormatPosition = (poolInfo) => {
-    var positionInfo = getPositionInfo(poolInfo.poolAddr);
-    if (!positionInfo) {
-      return '0';
+  const getLongFormatPosition = (poolFund) => {
+    var amount = poolFund.f_long_plamount;
+    if (amount < 0) {
+      amount = 0;
     }
-    var result = Tools.fromWei(positionInfo.totalL || '0', (poolInfo ? poolInfo.decimals : 0));
-    if (result < 0) {
-      result = 0;
-    }
-    return Tools.toStringAsFixed(result, poolInfo.openDecimal);
-  }
+    return Tools.numFmt(amount, 2);
+  };
 
-  const getShortFormatPosition = (poolInfo) => {
-    var positionInfo = getPositionInfo(poolInfo.poolAddr);
-    if (!positionInfo) {
-      return '0';
+  const getShortFormatPosition = (poolFund) => {
+    var amount = poolFund.f_short_plamount;
+    if (amount < 0) {
+      amount = 0;
     }
-    var result = Tools.fromWei(positionInfo.totalL || '0', (poolInfo ? poolInfo.decimals : 0));
-    if (result < 0) {
-      result = 0;
-    }
-    return Tools.toStringAsFixed(result, poolInfo.openDecimal);
-  }
+    return Tools.numFmt(amount, 2);
+  };
 
-  const getLongFormatPositionRate = (poolInfo) => {
-    var positionInfo = getPositionInfo(poolInfo.poolAddr);
-    if (!positionInfo) {
-      return '0';
+  const getLongFormatPositionRate = (poolFund) => {
+    if (!poolFund || !poolFund.f_pool_addr) return '0';
+    var amount = poolFund.f_long_plamount;
+    if (amount < 0) {
+      amount = 0;
     }
-    var totalP = getLongFormatPosition(poolInfo);
-    var total = Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0);
-    return Tools.numFmt(totalP / total, 2);
-  }
+    return Tools.numFmt(amount / poolFund.f_token_amount_long, 2);
+  };
 
-  const getShortFormatPositionRate = (poolInfo) => {
-    var positionInfo = getPositionInfo(poolInfo.poolAddr);
-    if (!positionInfo) {
-      return '0';
+  const getShortFormatPositionRate = (poolFund) => {
+    if (!poolFund || !poolFund.f_pool_addr) return '0';
+    var amount = poolFund.f_short_plamount;
+    if (amount < 0) {
+      amount = 0;
     }
-    var totalL = getShortFormatPosition(poolInfo);
-    var total = Tools.fromWei(Tools.div(positionInfo.totalAmount || 0, 2), poolInfo ? poolInfo.decimals : 0);
-    return Tools.numFmt(totalL / total, 2);
-  }
+    return Tools.numFmt(amount / poolFund.f_token_amount_short, 2);
+  };
 
-  const getTotalPl = (poolInfo) => {
-    var p = getLongFormatPosition(poolInfo);
-    var l = getShortFormatPosition(poolInfo);
-    if (l == 0) {
-      return 0;
-    }
-    try {
-      return Tools.fromWei(Tools.div(p + l, 2), (poolInfo ? poolInfo.decimals : 0));
-    } catch (e) {
-      console.log('p ', p);
-      console.log('l ', l);
-      console.log(e);
-    }
-    return '';
-  }
+  const getFormatTotalPl = (poolFund) => {
+    if (!poolFund || !poolFund.f_pool_addr) return '0';
+    return Tools.numFmt(poolFund.f_long_plamount + poolFund.f_short_plamount, 2);
+  };
 
   const getPledgeAmount = (userFund) => {
     return Tools.sub(userFund.tokenAmountIn, userFund.tokenAmountOut);
@@ -402,7 +455,7 @@ const PoolInfo = () => {
                 <div className="line"></div>
                 <div className="title-item">
                   <label htmlFor="">{t('poolTotal')}</label>
-                  <div className="num">{getPositionInfo(item.poolAddr) ? Tools.toStringAsFixed(Tools.fromWei(getPositionInfo(item.poolAddr).totalAmount, item.decimals), getAmountDecimal()) : '--' } { item.symbol }</div>
+                  <div className="num">{getPoolFundByPoolAddr(item.poolAddr) ? Tools.toStringAsFixed(getPoolFundByPoolAddr(item.poolAddr).f_token_amount, getAmountDecimal()) : '--' } { item.symbol }</div>
                 </div>
                 {/* <div className="title-item">
                   <label htmlFor="">{t('poolYearProfit')}</label>
@@ -430,42 +483,42 @@ const PoolInfo = () => {
                 <ul className="info-columns">
                   <li>
                     <label htmlFor="">{t('poolCirculate')}</label>
-                    <span>{getPositionInfo(item.poolAddr) ? Tools.toStringAsFixed(Tools.fromWei(Tools.div(getPositionInfo(item.poolAddr).totalAmount, 2), item.decimals), getAmountDecimal()) : '--' }</span>
+                    <span>{getPoolFundByPoolAddr(item.poolAddr) ? Tools.toStringAsFixed(getPoolFundByPoolAddr(item.poolAddr).f_token_amount_long, getAmountDecimal()) : '--' }</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPosition')}</label>
-                    <span>{getLongFormatPosition(item)}</span>
+                    <span>{getPoolFundByPoolAddr(item.poolAddr) ? getLongFormatPosition(getPoolFundByPoolAddr(item.poolAddr)) : '--' }</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPositionRate')}</label>
-                    <span>{getLongFormatPositionRate(item)}%</span>
+                    <span>{getLongFormatPositionRate(getPoolFundByPoolAddr(item.poolAddr))}%</span>
                   </li>
                 </ul>
                 <div className="progress-box">
                   <div className="progress-one"></div>
-                  <div className="progress-red" style={{ width: `${getLongFormatPositionRate(item)}%` }}></div>
+                  <div className="progress-red" style={{ width: `${getLongFormatPositionRate(getPoolFundByPoolAddr(item.poolAddr))}%` }}></div>
                 </div>
                 <span className="title">{t('poolEmpty')}</span>
                 <ul className="info-columns">
                   <li>
                     <label htmlFor="">{t('poolCirculate')}</label>
-                    <span>{getPositionInfo(item.poolAddr) ? Tools.toStringAsFixed(Tools.fromWei(Tools.div(getPositionInfo(item.poolAddr).totalAmount, 2), item.decimals), getAmountDecimal()) : '--' }</span>
+                    <span>{getPoolFundByPoolAddr(item.poolAddr) ? Tools.toStringAsFixed(getPoolFundByPoolAddr(item.poolAddr).f_token_amount_short, getAmountDecimal()) : '--' }</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPosition')}</label>
-                    <span>{getShortFormatPosition(item)}</span>
+                    <span>{getPoolFundByPoolAddr(item.poolAddr) ? getShortFormatPosition(getPoolFundByPoolAddr(item.poolAddr)) : '--' }</span>
                   </li>
                   <li>
                     <label htmlFor="">{t('poolPositionRate')}</label>
-                    <span>{getShortFormatPositionRate(item)}%</span>
+                    <span>{getShortFormatPositionRate(getPoolFundByPoolAddr(item.poolAddr))}%</span>
                   </li>
                 </ul>
                 <div className="progress-box">
                   <div className="progress-one"></div>
-                  <div className="progress-green" style={{ width: `${getShortFormatPositionRate(item)}%` }}></div>
+                  <div className="progress-green" style={{ width: `${getShortFormatPositionRate(getPoolFundByPoolAddr(item.poolAddr))}%` }}></div>
                 </div>
                 <div className="loss-profit">
-                  {t('poolFloatProfitStop')}： <span className="red">{getTotalPl(item)}</span>
+                  {t('poolFloatProfitStop')}： <span className="red">{getFormatTotalPl(getPoolFundByPoolAddr(item.poolAddr))}</span>
                 </div>
                 <div className="form-wrap">
                   <div className="form-box">

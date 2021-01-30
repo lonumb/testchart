@@ -110,7 +110,9 @@ export function URLENCODED_GET(url, params) {
   for (const key in params) {
     if (params.hasOwnProperty(key)) {
       const element = params[key];
-      paramsTemp[key] = element.toString();
+      if (element) {
+        paramsTemp[key] = element.toString();
+      }
     }
   }
   paramsTemp = { p: window.JSON.stringify(params) };
