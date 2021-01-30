@@ -279,26 +279,28 @@ const PoolInfo = () => {
   };
 
   const getLongFormatPositionRate = (poolFund) => {
-    if (!poolFund || !poolFund.f_pool_addr) return '0';
+    if (!poolFund || !poolFund.f_pool_addr || poolFund.f_token_amount_long == 0) return '0';
     var amount = poolFund.f_long_plamount;
     if (amount < 0) {
       amount = 0;
     }
-    return Tools.numFmt(amount / poolFund.f_token_amount_long, 2);
+    var result = amount / poolFund.f_token_amount_long;
+    return Tools.numFmt(result * 100, 2);
   };
 
   const getShortFormatPositionRate = (poolFund) => {
-    if (!poolFund || !poolFund.f_pool_addr) return '0';
+    if (!poolFund || !poolFund.f_pool_addr || poolFund.f_token_amount_short == 0) return '0';
     var amount = poolFund.f_short_plamount;
     if (amount < 0) {
       amount = 0;
     }
-    return Tools.numFmt(amount / poolFund.f_token_amount_short, 2);
+    var result = amount / poolFund.f_token_amount_short;
+    return Tools.numFmt(result * 100, 2);
   };
 
   const getFormatTotalPl = (poolFund) => {
     if (!poolFund || !poolFund.f_pool_addr) return '0';
-    return Tools.numFmt(poolFund.f_long_plamount + poolFund.f_short_plamount, 2);
+    return Tools.fmtDec(parseFloat(poolFund.f_long_plamount) + parseFloat(poolFund.f_short_plamount), 18);
   };
 
   const getPledgeAmount = (userFund) => {

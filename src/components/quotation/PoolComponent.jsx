@@ -17,6 +17,9 @@ const PoolComponent = () => {
   const [ positionInfo, setPositionInfo ] = useState({});
   const [ poolFund, setPoolFund ] = useState({});
   const [ refreshObj, setRefreshObj ] = useState({});
+  const { quote } = useSelector((state) => {
+    return state.trade;
+  });
 
   // function isAvailable() {
   //   return active && account && poolInfo && poolInfo.poolAddr;
@@ -89,7 +92,7 @@ const PoolComponent = () => {
       addr = poolInfo.poolAddr;
     }
     const fund = await HttpUtil.URLENCODED_GET('/api/order/querypoolfund.do', {chainId, addr });
-    console.log('PoolComponment setPoolFund: ', fund);
+    //console.log('PoolComponment setPoolFund: ', fund);
     setPoolFund(fund);
   };
 
@@ -105,35 +108,47 @@ const PoolComponent = () => {
     }
   }, [refreshObj]);
 
-  useEffect(() => {
-    let timer = undefined;
-    if (!timer) {
-      timer = setInterval(async () => {
-        setRefreshObj({});
-      }, 3000);
+  useEffect(async () => {
+    try {
+      await getData();
+    } catch (e) {
+      console.log(e);
     }
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  }, [quote]);
+
+  // useEffect(() => {
+  //   let timer = undefined;
+  //   if (!timer) {
+  //     timer = setInterval(async () => {
+  //       setRefreshObj({});
+  //     }, 1000);
+  //   }
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
 
   const getLongFormatPositionRate = () => {
-    if (!poolFund || !poolFund.f_pool_addr) return '0';
+    if (!poolFund || !poolFund.f_pool_addr || poolFund.f_token_amount_long == 0) return '0';
     var amount = poolFund.f_long_plamount;
     if (amount < 0) {
       amount = 0;
     }
-    return Tools.numFmt(amount / poolFund.f_token_amount_long, 2);
+    var result = amount / poolFund.f_token_amount_long;
+    if (result > 1) {
+      console.log('getLongFormatPositionRate > 1, ', result, poolFund)
+    }
+    return Tools.numFmt(result * 100, 2);
   };
 
   const getShortFormatPositionRate = () => {
-    if (!poolFund || !poolFund.f_pool_addr) return '0';
+    if (!poolFund || !poolFund.f_pool_addr || poolFund.f_token_amount_short == 0) return '0';
     var amount = poolFund.f_short_plamount;
     if (amount < 0) {
       amount = 0;
     }
     var result = amount / poolFund.f_token_amount_short;
-    return Tools.numFmt(result, 2);
+    return Tools.numFmt(result * 100, 2);
   };
 
   return (

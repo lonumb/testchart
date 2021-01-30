@@ -290,6 +290,14 @@ const EntrustComponent = () => {
     return fromWei(price);
   }
 
+  const formatNormalPrice = (price, symbol) => {
+    var productConfig = productList.find((item) => item.pair == symbol);
+    if (productConfig) {
+      return Tools.numFmt(price, productConfig.decimal);
+    }
+    return price;
+  }
+
   // const formatPriceByPair = (price, symbol) => {
   //   var productConfig = productList.find((item) => item.pair == symbol);
   //   if (productConfig) {
@@ -618,7 +626,7 @@ const EntrustComponent = () => {
           </div>
           <div className="form-ele-input">
             <label htmlFor="">{t('textProfitPrice')}</label>
-            <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(Tools.numFmt(e.target.value, setTakeProfitStopLossOrder.poolInfo.openDecimal))} />
+            <input type="text" placeholder={t('textProfitPriceTip')} value={takeProfit} onChange={(e) => setTakeProfit(formatNormalPrice(e.target.value, setTakeProfitStopLossOrder.symbol))} />
             {profitType === 2 && <span className="unit">%</span>}
           </div>
           {/* <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div> */}
@@ -642,7 +650,7 @@ const EntrustComponent = () => {
           </div>
           <div className="form-ele-input">
             <label htmlFor="">{t('textStopPrice')}</label>
-            <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(Tools.numFmt(e.target.value, setTakeProfitStopLossOrder.poolInfo.openDecimal))} />
+            <input type="text" placeholder={t('textStopPriceTip')} value={stopLoss} onChange={(e) => setStopLoss(formatNormalPrice(e.target.value, setTakeProfitStopLossOrder.symbol))} />
             {stopLossType === 2 && <span className="unit">%</span>}
           </div>
           {/* <div className="form-error">*当前设置的价格将导致修改后订单立即市价成交，请注意</div> */}
