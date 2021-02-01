@@ -119,7 +119,7 @@ const UserAccount = () => {
   const calcOrderPL = (order) => {
     var pl = Tools.calcOrderPL(order.closePrice.toString(), order);
     if (pl) {
-      return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal);
+      return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), 6);
     }
     return '--'
   }

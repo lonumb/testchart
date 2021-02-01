@@ -246,7 +246,7 @@ const EntrustComponent = () => {
       //   console.log(`pl: ${Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal)}, close: ${price}, order: ${JSON.stringify(order)}, order2: ${JSON.stringify(order, 0, 2)}`);
       // }
       //console.log(Tools.fromWei(pl, order.decimals));
-      return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal);
+      return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), 6);
     }
     return '--'
   }
@@ -254,7 +254,7 @@ const EntrustComponent = () => {
   const calcClosedOrderPL = (order) => {
     var pl = Tools.calcOrderPL(order.closePrice.toString(), order);
     if (pl) {
-      return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), order.poolInfo.openDecimal);
+      return Tools.toStringAsFixed(Tools.fromWei(pl, order.decimals), 6);
     }
     return '--'
   }
