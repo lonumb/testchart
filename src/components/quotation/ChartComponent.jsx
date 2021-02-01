@@ -53,7 +53,7 @@ let chartOption = {
     'symbol_info', // 商品信息
     'property_pages', //禁用所有属性页
     'header_resolutions', // 周期
-    'edit_buttons_in_legend', // 指标设置、删除等操作
+    //'edit_buttons_in_legend', // 指标设置、删除等操作
     'border_around_the_chart', // 移除边距
     'header_widget', // 头部工具栏
     'legend_context_menu', // 商品名称点击显示功能菜单

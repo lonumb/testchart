@@ -98,20 +98,30 @@ const OrderComponent = (props) => {
     if (!isAvailable()) {
       return Promise.error('not available');
     }
+    var pool = poolInfo;
     return Promise.all([
       // 是否授权
-      (poolInfo.erc20Pool ? erc20Contract.getAllowance(account, poolInfo.tokenAddr, poolInfo.poolAddr) : Promise.resolve(MAX_UINT256_VALUE)).then((res) => {
+      (poolInfo.erc20Pool ? erc20Contract.getAllowance(account, pool.tokenAddr, pool.poolAddr) : Promise.resolve(MAX_UINT256_VALUE)).then((res) => {
+        if (pool.poolAddr != poolInfo.poolAddr) {
+          return;
+        }
         console.log('OrderComponent setAllowance: ', res);
         setAllowance(res || 0);
         return res;
       }),
       // 查询余额
-      poolProxyContract.getBalanceByPoolInfo(poolInfo, account).then((res) => {
+      poolProxyContract.getBalanceByPoolInfo(pool, account).then((res) => {
+        if (pool.poolAddr != poolInfo.poolAddr) {
+          return;
+        }
         console.log('OrderComponent setBasicAssetBalance: ', res);
         setBasicAssetBalance(res);
         return res;
       }),
-      fundContract.getPoolTotalAmount(poolInfo).then((res) => {
+      fundContract.getPoolTotalAmount(pool).then((res) => {
+        if (pool.poolAddr != poolInfo.poolAddr) {
+          return;
+        }
         console.log('OrderComponent setPoolTotalAmount: ', res);
         setPoolTotalAmount(res);
         return res;
@@ -555,9 +565,9 @@ const OrderComponent = (props) => {
         </div>
 
         <div className="form-ele-more">
-          <div className="more-title">
+          <div className="more-title"  onClick={() => setMoreFlag(!moreFlag)}>
             <label htmlFor="">{t('orderSenior')}</label>
-            <span onClick={() => setMoreFlag(!moreFlag)}>
+            <span>
               <DoubleArrowRoundedIcon className={moreFlag ? 'svgup' : 'svgdown'} />
             </span>
           </div>

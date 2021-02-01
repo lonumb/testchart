@@ -1,3 +1,5 @@
+import { getURLParams } from '../../utils/Tools'
+
 export const chainConfig = {
     1 : {
         mainSymbol: "ETH",
@@ -65,8 +67,18 @@ export const chainConfig = {
     },
 };
 
-export const defaultChainId = process.env.REACT_APP_DEFAULT_CHAIN_ID
 export const supportedChainIds = (process.env.REACT_APP_SUPPORT_CHAIN_IDS || '').split(',').filter((item) => parseInt(item) != NaN && chainConfig[item] != undefined).map((item) => parseInt(item));
+
+export const isSupportedChainId = (chainId) => {
+    return supportedChainIds.indexOf(chainId) != -1;
+}
+
+let chainId = parseInt(getURLParams('defaultChainId'));
+if (!isSupportedChainId(chainId)) {
+    chainId = process.env.REACT_APP_DEFAULT_CHAIN_ID;
+}
+
+export const defaultChainId = chainId;
 
 if (chainConfig[defaultChainId] == undefined) {
     throw new Error(`Not support chainId: ${defaultChainId}`)
@@ -84,6 +96,4 @@ export const ensumeChainId = (chainId) => {
     return isSupportedChainId(chainId) ? chainId : defaultChainId;
 }
 
-export const isSupportedChainId = (chainId) => {
-    return supportedChainIds.indexOf(chainId) != -1;
-}
+console.log(`defaultChainId: `, defaultChainId);

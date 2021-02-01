@@ -298,9 +298,17 @@ const PoolInfo = () => {
     return Tools.numFmt(result * 100, 2);
   };
 
-  const getFormatTotalPl = (poolFund) => {
+  const getTotalPl = (poolFund) => {
     if (!poolFund || !poolFund.f_pool_addr) return '0';
-    return Tools.fmtDec(parseFloat(poolFund.f_long_plamount) + parseFloat(poolFund.f_short_plamount), 18);
+    var total = parseFloat(poolFund.f_long_plamount) + parseFloat(poolFund.f_short_plamount);
+    if (isNaN(total)) {
+      total = 0;
+    }
+    return total;
+  };
+
+  const getFormatTotalPl = (poolFund) => {
+    return Tools.fmtDec(getTotalPl(poolFund), 18);
   };
 
   const getPledgeAmount = (userFund) => {
@@ -520,7 +528,7 @@ const PoolInfo = () => {
                   <div className="progress-green" style={{ width: `${getShortFormatPositionRate(getPoolFundByPoolAddr(item.poolAddr))}%` }}></div>
                 </div>
                 <div className="loss-profit">
-                  {t('poolFloatProfitStop')}： <span className="red">{getFormatTotalPl(getPoolFundByPoolAddr(item.poolAddr))}</span>
+                  {t('poolFloatProfitStop')}： <span className={getTotalPl(getPoolFundByPoolAddr(item.poolAddr)) >= 0 ? 'green' : 'red'}>{getFormatTotalPl(getPoolFundByPoolAddr(item.poolAddr))}</span>
                 </div>
                 <div className="form-wrap">
                   <div className="form-box">
@@ -533,13 +541,13 @@ const PoolInfo = () => {
                       </span>
                     </div>
                     <div className="form-ele-desc">
-                      {t('textAvailable')}: {tokenBalanceList.length > index ? Tools.fromWei(tokenBalanceList[index], item.decimals) : '--' }
+                      {t('textAvailable')}: {tokenBalanceList.length > index ? Tools.fromWei(tokenBalanceList[index], item.decimals) : '--' } {item.symbol}
                       {/* <span className="link-btn" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible, code: 'BTC' } })}>
                         {t('textRecharge')}
                       </span> */}
                     </div>
                     <div className="form-ele-gain">
-                      {t('poolGain')}: {item._tokenToLpAmount ? Tools.fromWei(item._tokenToLpAmount, item.decimals) : '--'}
+                      {t('poolGain')}: {item._tokenToLpAmount ? Tools.fromWei(item._tokenToLpAmount, item.decimals) : '--'} {item.symbol} LP Token
                     </div>
 
                     {
@@ -565,7 +573,7 @@ const PoolInfo = () => {
                     </div>
                     <div className="form-ele-desc">{t('textAvailable')}: {lptokenBalanceList.length > index ? Tools.fromWei(lptokenBalanceList[index], item.decimals) : '--' } {item.symbol} LP Token</div>
                     <div className="form-ele-gain">
-                      {t('poolGain')}: {item._lpAmountToTokenAmount ? Tools.fromWei(item._lpAmountToTokenAmount, item.lpdecimals) : '--'}
+                      {t('poolGain')}: {item._lpAmountToTokenAmount ? Tools.fromWei(item._lpAmountToTokenAmount, item.lpdecimals) : '--'} {item.symbol}
                     </div>
 
                     {
