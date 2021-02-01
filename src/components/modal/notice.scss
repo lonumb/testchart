@@ -1,4 +1,4 @@
-
+.MuiDialog-root.noticeBox{
     .modal-title{
         display: none;
     }
@@ -17,12 +17,13 @@
         height: 329px;
         display: flex;
         padding: 0;
+        background: #252B44;
         .noticeModal-img{
             width: 209px;
         }
         .noticeModal{
             width: 466px;
-            padding: 24px 38px;
+            padding: 0 38px;
             display: flex;
             flex-direction: column;
             .notice-test{
@@ -38,7 +39,7 @@
                 color: #FFFFFF;
                 font-size:20px;
                 text-align: center;
-                margin: 0;
+                margin-top: 24px;
             }
             .notice-check{
                 font-size: 14px;
@@ -73,7 +74,6 @@
             }
         }
     }
-
-
+}
 
 

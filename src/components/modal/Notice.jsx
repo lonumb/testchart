@@ -1,13 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import OwnBase from './OwnBase';
+import Dialog from '@material-ui/core/Dialog';
 import './notice.scss'
 const Notice = (props) => {
     const { t } = useTranslation();
 
     const { visible, title} = props;
   return (
-      <div className="noticeBox">
-            <OwnBase onClose={props.onClose} visible={visible} title={title}>
+      <div>
+            <Dialog onClose={props.onClose} visible={true} title={title} open={visible} className="noticeBox">
                 <div className="noticeModal" visible={true}>
                     <div className="noticeModal-img">
                         <img src="/imgs/img_notice.png" alt=""/>
@@ -27,7 +28,7 @@ const Notice = (props) => {
                         </div>
                     </div>
                 </div>
-            </OwnBase>
+            </Dialog>
       </div>
 
   )
