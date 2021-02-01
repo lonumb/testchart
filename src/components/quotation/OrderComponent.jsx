@@ -565,9 +565,9 @@ const OrderComponent = (props) => {
         </div>
 
         <div className="form-ele-more">
-          <div className="more-title">
+          <div className="more-title"  onClick={() => setMoreFlag(!moreFlag)}>
             <label htmlFor="">{t('orderSenior')}</label>
-            <span onClick={() => setMoreFlag(!moreFlag)}>
+            <span>
               <DoubleArrowRoundedIcon className={moreFlag ? 'svgup' : 'svgdown'} />
             </span>
           </div>
