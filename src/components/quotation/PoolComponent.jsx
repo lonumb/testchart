@@ -135,11 +135,9 @@ const PoolComponent = () => {
     if (amount < 0) {
       amount = 0;
     }
-    var result = amount / poolFund.f_token_amount_long;
-    if (result > 1) {
-      console.log('getLongFormatPositionRate > 1, ', result, poolFund)
-    }
-    return Tools.numFmt(result * 100, 2);
+    var result = Tools.div(amount, poolFund.f_token_amount_long);
+    result = Tools.mul(result, 100);
+    return Tools.numFmt(result, 2);
   };
 
   const getShortFormatPositionRate = () => {
@@ -148,8 +146,9 @@ const PoolComponent = () => {
     if (amount < 0) {
       amount = 0;
     }
-    var result = amount / poolFund.f_token_amount_short;
-    return Tools.numFmt(result * 100, 2);
+    var result = Tools.div(amount, poolFund.f_token_amount_short);
+    result = Tools.mul(result, 100);
+    return Tools.numFmt(result, 2);
   };
 
   return (

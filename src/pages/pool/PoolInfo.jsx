@@ -284,8 +284,9 @@ const PoolInfo = () => {
     if (amount < 0) {
       amount = 0;
     }
-    var result = amount / poolFund.f_token_amount_long;
-    return Tools.numFmt(result * 100, 2);
+    var result = Tools.div(amount, poolFund.f_token_amount_long);
+    result = Tools.mul(result, 100);
+    return Tools.numFmt(result, 2);
   };
 
   const getShortFormatPositionRate = (poolFund) => {
@@ -294,8 +295,9 @@ const PoolInfo = () => {
     if (amount < 0) {
       amount = 0;
     }
-    var result = amount / poolFund.f_token_amount_short;
-    return Tools.numFmt(result * 100, 2);
+    var result = Tools.div(amount, poolFund.f_token_amount_short);
+    result = Tools.mul(result, 100);
+    return Tools.numFmt(result, 2);
   };
 
   const getTotalPl = (poolFund) => {
