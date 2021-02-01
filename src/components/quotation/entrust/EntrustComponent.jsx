@@ -130,7 +130,7 @@ const EntrustComponent = () => {
         // } catch (e) {
         //   console.log(e);
         // }
-      }, 10000);
+      }, 3000);
     }
     return () => {
       clearInterval(timer);
