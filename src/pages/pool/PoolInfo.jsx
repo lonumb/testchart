@@ -541,13 +541,13 @@ const PoolInfo = () => {
                       </span>
                     </div>
                     <div className="form-ele-desc">
-                      {t('textAvailable')}: {tokenBalanceList.length > index ? Tools.fromWei(tokenBalanceList[index], item.decimals) : '--' }
+                      {t('textAvailable')}: {tokenBalanceList.length > index ? Tools.fromWei(tokenBalanceList[index], item.decimals) : '--' } {item.symbol}
                       {/* <span className="link-btn" onClick={() => dispatch({ type: Types.RECHARGE_VISIBLE, payload: { visible: !rechargeVisible, code: 'BTC' } })}>
                         {t('textRecharge')}
                       </span> */}
                     </div>
                     <div className="form-ele-gain">
-                      {t('poolGain')}: {item._tokenToLpAmount ? Tools.fromWei(item._tokenToLpAmount, item.decimals) : '--'}
+                      {t('poolGain')}: {item._tokenToLpAmount ? Tools.fromWei(item._tokenToLpAmount, item.decimals) : '--'} {item.symbol} LP Token
                     </div>
 
                     {
@@ -573,7 +573,7 @@ const PoolInfo = () => {
                     </div>
                     <div className="form-ele-desc">{t('textAvailable')}: {lptokenBalanceList.length > index ? Tools.fromWei(lptokenBalanceList[index], item.decimals) : '--' } {item.symbol} LP Token</div>
                     <div className="form-ele-gain">
-                      {t('poolGain')}: {item._lpAmountToTokenAmount ? Tools.fromWei(item._lpAmountToTokenAmount, item.lpdecimals) : '--'}
+                      {t('poolGain')}: {item._lpAmountToTokenAmount ? Tools.fromWei(item._lpAmountToTokenAmount, item.lpdecimals) : '--'} {item.symbol}
                     </div>
 
                     {
