@@ -23,6 +23,7 @@ import WithdrawModal from '../account/Withdraw';
 import RechargeModal from '../account/Recharge';
 import ConnectModal from '../wallet/Connect';
 import SureModal from '../modal/sureModal';
+import Notice from '../modal/Notice';
 import './header.scss';
 
 const HeaderComponent = () => {
@@ -41,6 +42,7 @@ const HeaderComponent = () => {
 
   const [network, setNetwork] = useState(false);
   const [lang, setLang] = useState('en-US');
+  const [noticeVisible, setNoticeVisible] = useState(false);
 
   // 复制地址
   function copyAddrFunc() {
@@ -52,6 +54,10 @@ const HeaderComponent = () => {
       (err) => console.log('fail')
     );
   }
+
+  useEffect(() => {
+    setNoticeVisible(!(localStorage.getItem('hide_notice_modal') || false));
+  }, []);
 
   useEffect(() => {
     if (supportedChainIds.indexOf(chainId) != -1) {
@@ -228,6 +234,12 @@ const HeaderComponent = () => {
       <RechargeModal></RechargeModal>
       <ConnectModal></ConnectModal>
       <SureModal></SureModal>
+      <Notice visible={noticeVisible} onClick={checked => {
+        if (checked) {
+          localStorage.setItem('hide_notice_modal', true);
+        }
+        setNoticeVisible(false);
+      }}></Notice>
     </div>
   );
 };
