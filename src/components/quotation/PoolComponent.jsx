@@ -9,9 +9,10 @@ import * as HttpUtil from '../../utils/HttpUtil';
 
 let poolProxyContract;
 const PoolComponent = () => {
+  
   const { t } = useTranslation();
   const { active, library, account, chainId } = useWeb3React();
-  const poolRef = useRef();
+  const poolRef = useRef(0);
   const [ poolHeight, setPoolHeight ] = useState(0);
   const { poolInfo } = useSelector((state) => state.contract);
   const [ positionInfo, setPositionInfo ] = useState({});
@@ -83,7 +84,7 @@ const PoolComponent = () => {
 
   useEffect(() => {
     // 设置列表高度
-    setPoolHeight(poolRef.current.clientHeight - 65);
+    setPoolHeight(poolRef.current.scrollHeight - 65);
   }, []);
 
   const getData = async () => {
@@ -155,10 +156,10 @@ const PoolComponent = () => {
     <div className="pool" ref={poolRef}>
       <div className="title-box">{t('navPool')}({poolInfo.symbol})</div>
       <div className="rate-box">
-        <div className="block-column block-red" style={{ height: `${poolHeight}px` }}>
+        <div className="block-column block-red">
           <div className="block" style={{ height: `${getLongFormatPositionRate(poolFund)}%` }}></div>
         </div>
-        <div className="block-column block-green" style={{ height: `${poolHeight}px` }}>
+        <div className="block-column block-green" >
           <div className="block" style={{ height: `${getShortFormatPositionRate(poolFund)}%` }}></div>
         </div>
         <div className="block-info">

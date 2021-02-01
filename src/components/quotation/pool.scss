@@ -13,11 +13,14 @@
     color: #f4f9ff;
     font-size: 14px;
     font-weight: 500;
+    position: absolute;
   }
+
   .rate-box {
     display: flex;
     box-sizing: border-box;
-    margin: 12px 10px;
+    padding: 47px 10px 12px;
+    height: 100%;
     .block-column {
       width: 12px;
       background: linear-gradient(180deg, #424c71 0%, #1f253d 100%);
