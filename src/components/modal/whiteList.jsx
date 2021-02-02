@@ -2,27 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dialog from '@material-ui/core/Dialog';
 import './white.scss'
+
 const WhiteList = (props) => {
     const { t } = useTranslation();
 
     const { visible, title} = props;
-    const [checked, setChecked] = useState(0);
+    const [content, setContent] = useState('');
 
-  return (
-      <div>
+    return (
+        <div>
             <Dialog onClose={props.onClose} visible={true} title={title} open={visible} className="whiteList">
                 <div className="whiteListModal" visible={true}>
-                    <h3>白名单校验</h3>
-                    <input type="text" placeholder='请输入您的Telegram ID'/>
-                    <span>例：@teemofinance</span>
+                    <h3>{t('Whitelist_check_title')}</h3>
+                    <input type="text" placeholder={t('Whitelist_check_hint')} value={content} onChange={e=> setContent(e.target.value)}/>
+                    <span>{t('Whitelist_check_hint2')}</span>
                     <div className='whiteButton'>
-                        <button>校验</button>
+                        <button onClick={e => {
+                            if (props.onClick) {
+                                props.onClick(content);
+                            }
+                        }}>{t('Whitelist_check_button')}</button>
                     </div>
                 </div>
             </Dialog>
-      </div>
-
-  )
+        </div>
+    )
 };
 
 export default WhiteList;

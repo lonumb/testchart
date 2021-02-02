@@ -17,6 +17,7 @@ import { actionRechargeModal, actionWithdrawModal, actionWalletModal } from '../
 import { injected, walletconnect } from '../wallet/Connectors';
 import { supportedChainIds, chainConfig, isSupportedChainId, ensumeChainId } from '../../components/wallet/Config'
 import { langList, getLang, switchLang } from '../../i18n/LangUtil';
+import * as HttpUtil from '../../utils/HttpUtil';
 
 import OwnPopover from '../popover/OwnPopover';
 import WithdrawModal from '../account/Withdraw';
@@ -24,6 +25,7 @@ import RechargeModal from '../account/Recharge';
 import ConnectModal from '../wallet/Connect';
 import SureModal from '../modal/sureModal';
 import Notice from '../modal/Notice';
+import WhiteList from '../modal/whiteList';
 import './header.scss';
 
 const HeaderComponent = () => {
@@ -42,7 +44,8 @@ const HeaderComponent = () => {
 
   const [network, setNetwork] = useState(false);
   const [lang, setLang] = useState('en-US');
-  const [noticeVisible, setNoticeVisible] = useState(false);
+  const [noticeVisible, setNoticeVisible] = useState(null);
+  const [whiteListVisible, setWhiteListVisible] = useState(null);
 
   // 复制地址
   function copyAddrFunc() {
@@ -56,8 +59,16 @@ const HeaderComponent = () => {
   }
 
   useEffect(() => {
-    setNoticeVisible(!(localStorage.getItem('hide_notice_modal') || false));
+    //localStorage.setItem('white_list_content', content);
+    var content = localStorage.getItem('white_list_content');
+    setWhiteListVisible(!content);
   }, []);
+
+  useEffect(() => {
+    if (whiteListVisible == false) {
+      setNoticeVisible(!(localStorage.getItem('hide_notice_modal') || false));
+    }
+  }, [whiteListVisible]);
 
   useEffect(() => {
     if (supportedChainIds.indexOf(chainId) != -1) {
@@ -82,6 +93,23 @@ const HeaderComponent = () => {
   const onLangClick = (lang) => {
     setLang(lang);
     switchLang(lang);
+  };
+
+  const onWhiteListContentChanged = (content) => {
+    if (!content) return;
+    HttpUtil.URLENCODED_GET('/api/order/querywhitelist.do', {chainId, type: 'twitter', info: content}).then((res) => {
+      console.log(res);
+      if (res.success) {
+        setWhiteListVisible(false);
+        localStorage.setItem('hide_white_list_modal', true);
+        localStorage.setItem('white_list_content', content);
+      } else {
+        alert(t('Whitelist_check_failed'));
+      }
+    }).catch((e) => {
+      console.log(e);
+      alert(t('NetworkErr'));
+    });
   };
 
   return (
@@ -240,6 +268,7 @@ const HeaderComponent = () => {
         }
         setNoticeVisible(false);
       }}></Notice>
+      <WhiteList visible={whiteListVisible} onClick={content=> onWhiteListContentChanged(content)}></WhiteList>
     </div>
   );
 };
