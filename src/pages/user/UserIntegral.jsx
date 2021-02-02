@@ -8,6 +8,7 @@ import MineContract from '../../common/contract/MineContract';
 import { fromWei } from 'web3-utils';
 import { mineEnabled } from '../../utils/Config'
 import { useSelector, useDispatch } from 'react-redux';
+import { ensumeChainId, chainConfig } from '../../components/wallet/Config'
 
 let bonusRecordContract;
 let mineContract;
@@ -18,6 +19,7 @@ const UserIntegral = ()=>{
     const [ bonus, setBonus ] = useState({});
     const [ allPendingTeemo, setAllPendingTeemo ] = useState(null);
     const { poolList } = useSelector((state) => state.contract);
+    const [refreshDataObj, setRefreshDataObj] = useState({});
 
     function isAvailable() {
         return active && account;
@@ -65,6 +67,22 @@ const UserIntegral = ()=>{
             mineContract = null;
         }
     }, [active, library, account, poolList]);
+
+    useEffect(() => {
+        let timer = undefined;
+        if (!timer) {
+          timer = setInterval(async () => {
+            setRefreshDataObj({});
+          }, chainConfig[ensumeChainId(chainId)].blockTime);
+        }
+        return () => {
+          clearInterval(timer);
+        };
+      }, []);
+    
+    useEffect(() => {
+        getDataFunc();
+    }, [refreshDataObj])
 
     const Langs = Lang.getLang()
 
