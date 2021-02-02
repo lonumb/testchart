@@ -4,13 +4,20 @@ import './UserIntegral.scss';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
 import BonusRecordContract from '../../common/contract/BonusRecordContract';
+import MineContract from '../../common/contract/MineContract';
 import { fromWei } from 'web3-utils';
+import { mineEnabled } from '../../utils/Config'
+import { useSelector, useDispatch } from 'react-redux';
+
 let bonusRecordContract;
+let mineContract;
 
 const UserIntegral = ()=>{
     const { t } = useTranslation();
     const { active, library, account, chainId } = useWeb3React();
     const [ bonus, setBonus ] = useState({});
+    const [ allPendingTeemo, setAllPendingTeemo ] = useState(null);
+    const { poolList } = useSelector((state) => state.contract);
 
     function isAvailable() {
         return active && account;
@@ -21,13 +28,18 @@ const UserIntegral = ()=>{
         if (!isAvailable()) {
             return Promise.error('not available');
         }
-        return bonusRecordContract.getBonus().then((res) => {
-            console.log('UserIntegral setBonus: ', res);
-            setBonus(res);
-            return res;
-        }).catch((e) => {
-            console.log(e);
-        });
+        return Promise.all([
+            bonusRecordContract.getBonus().then((res) => {
+                console.log('UserIntegral setBonus: ', res);
+                setBonus(res);
+                return res;
+            }),
+            (mineEnabled ? mineContract.getAllPoolPendingTeemo(poolList) : Promise.resolve(null)).then((res) => {
+                console.log('UserIntegral setAllPendingTeemo: ', res);
+                setAllPendingTeemo(res);
+                return res;
+            }),
+        ]);
     }
 
     const getDataFunc = async () => {
@@ -35,8 +47,9 @@ const UserIntegral = ()=>{
         while (retryCount < 5) {
             try {
                 await getData();
-                return
+                break;
             } catch (e) {
+                console.log(e);
                 retryCount++;
             }
         }
@@ -45,11 +58,13 @@ const UserIntegral = ()=>{
     useEffect(async () => {
         if (active && account) {
             bonusRecordContract = new BonusRecordContract(library, chainId, account);
+            mineContract = new MineContract(library, chainId, account);
             getDataFunc();
         } else {
             bonusRecordContract = null;
+            mineContract = null;
         }
-    }, [active, library, account]);
+    }, [active, library, account, poolList]);
 
     const Langs = Lang.getLang()
 
@@ -59,7 +74,7 @@ const UserIntegral = ()=>{
                 <div className='TextHeader'>
                     <div className='TextHeaderLeft'>
                         <span className="text-one">{t('Teemo_test_title1')}</span>
-                        <span className="text-two">{ bonus.userLBonus ? fromWei(bonus.userLBonus) : '--' }</span>
+                        <span className="text-two">{ mineEnabled ? (allPendingTeemo ? fromWei(allPendingTeemo) : '--') : (bonus.userLBonus ? fromWei(bonus.userLBonus) : '--') }</span>
                         <span className="text-three">{t('Teemo_test_calculate_rule3')} 2021-02-06 </span>
                     </div>
                     <div className='TextHeaderRight'>

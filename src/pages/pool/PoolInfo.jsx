@@ -15,13 +15,12 @@ import * as Tools from '../../utils/Tools';
 import { fromWei, toBN, toWei } from 'web3-utils';
 import { MAX_UINT256_VALUE } from '../../utils/Constants'
 import { actionTransactionHashModal } from '../../store/actions/CommonAction';
-
 import './poolInfo.scss';
-
 import { useSelector, useDispatch } from 'react-redux';
 import * as Types from '../../store/types';
 import { PanToolSharp } from '@material-ui/icons';
 import * as HttpUtil from '../../utils/HttpUtil';
+import { mineEnabled } from '../../utils/Config'
 
 const Accordion = withStyles({
   root: {
@@ -58,8 +57,6 @@ let poolProxyContract = null;
 let fundContract = null;
 let erc20Contract = null;
 let mineContract = null;
-
-const isMine = true;//是否挖矿
 
 const PoolInfo = () => {
   const { t } = useTranslation();
@@ -102,7 +99,7 @@ const PoolInfo = () => {
       //totalAmountPromises.push(fundContract.getPoolTotalAmount(poolInfo));
       userFundPromises.push(fundContract.getUserFundInfo(poolInfo));
       tokenBalancePromises.push(poolProxyContract.getBalanceByPoolInfo(poolInfo));
-      if (isMine) {
+      if (mineEnabled) {
         lptokenBalancePromises.push(new MineContract(library, chainId, account).getUserInfo(poolInfo).then((res) => {
           return res.amount;
         }));
@@ -420,7 +417,7 @@ const PoolInfo = () => {
     if (!isAvailable() || !poolInfo._tokenBalanceInput) return;
 
     var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-    teemoPoolContract.lpDeposit(poolInfo, Tools.toWei(poolInfo._tokenBalanceInput, poolInfo.decimals), isMine)
+    teemoPoolContract.lpDeposit(poolInfo, Tools.toWei(poolInfo._tokenBalanceInput, poolInfo.decimals), mineEnabled)
     .on('transactionHash', function (hash) {
       actionTransactionHashModal({ visible: true, hash })(dispatch);
     })
@@ -446,7 +443,7 @@ const PoolInfo = () => {
   const stopMine = (poolInfo, index) => {
     if (!isAvailable() || !poolInfo._lptokenBalanceInput) return;
     var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
-    teemoPoolContract.stopMine(poolInfo, Tools.toWei(poolInfo._lptokenBalanceInput, poolInfo.decimals), isMine)
+    teemoPoolContract.stopMine(poolInfo, Tools.toWei(poolInfo._lptokenBalanceInput, poolInfo.decimals), mineEnabled)
     .on('transactionHash', function (hash) {
       actionTransactionHashModal({ visible: true, hash })(dispatch);
     })
@@ -467,7 +464,7 @@ const PoolInfo = () => {
                 <div className="line"></div>
                 <div className="title-item">
                   <label htmlFor="">{t('poolTotal')}</label>
-                  <div className="num">{getPoolFundByPoolAddr(item.poolAddr) ? Tools.toStringAsFixed(getPoolFundByPoolAddr(item.poolAddr).f_token_amount, getAmountDecimal()) : '--' } { item.symbol }</div>
+                  <div className="num">{getPoolFundByPoolAddr(item.poolAddr) ? Tools.toStringAsFixed(getPoolFundByPoolAddr(item.poolAddr).f_token_amount, getAmountDecimal()) : '--' }  { item.symbol }</div>
                 </div>
                 {/* <div className="title-item">
                   <label htmlFor="">{t('poolYearProfit')}</label>
@@ -579,10 +576,10 @@ const PoolInfo = () => {
                     </div>
 
                     {
-                      isMine && (<button className="btn-primary" onClick={e=> stopMine(item, index)}>{t('btnUnlock')}</button>)
+                      mineEnabled && (<button className="btn-primary" onClick={e=> stopMine(item, index)}>{t('btnUnlock')}</button>)
                     }
                     {
-                      !isMine && (tokenAllowanceList.length < index ? (<div></div>) 
+                      !mineEnabled && (tokenAllowanceList.length < index ? (<div></div>) 
                       : isLptokenApproved(item, index) ? (<button className="btn-primary" onClick={e=> withdraw(item, index)}>{t('btnUnlock')}</button>) 
                       : (<button className="btn-default" onClick={e=> lptokenApprove(item, index)}>{lptokenApprovingObj[item.lptokenAddr] == true ? t('btnAuthing') : t('btnAuth')}</button>)
                       )
