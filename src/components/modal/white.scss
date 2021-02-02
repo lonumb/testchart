@@ -1,0 +1,44 @@
+.MuiDialog-root.whiteList{
+    background:rgba(15, 18, 31,.5);
+    .whiteListModal{
+        width: 384px;
+        height: 282px;
+        background: #252B44;
+        color: #FFFFFF;
+        overflow-x: visible;
+        h3{
+            text-align: center;
+            margin: 28px 0 24px;
+            font-size: 20px;
+        }
+        input{
+            width: 335px;
+            height: 40px;
+            background: #1F253D;
+            border: 1px solid #455069;
+            border-radius: 2px;
+            margin: 0 24px;
+            padding-left: 12px;
+            box-sizing: border-box;
+            color: #FFFFFF;
+        }
+        span{
+            display: inline-block;
+            margin-left:24px;
+            margin-top: 4px;
+            color: #FFFFFF;
+        }
+        .whiteButton{
+            text-align: center;
+            margin-top: 69px;
+            button{
+                width: 336px;
+                height: 48px;
+                background: #0081FF;
+                border-radius: 3px;
+                text-align: center;
+                line-height: 48px;
+            }
+        }
+    }
+}

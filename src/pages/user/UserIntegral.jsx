@@ -4,7 +4,7 @@ import './UserIntegral.scss';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
 import BonusRecordContract from '../../common/contract/BonusRecordContract';
-import { fromWei } from 'web3-utils';
+import { fromWei } from 'web3-utils'
 let bonusRecordContract;
 
 const UserIntegral = ()=>{
@@ -88,7 +88,6 @@ const UserIntegral = ()=>{
                 <span className='userIntegral-bottom-four'>{t('Teemo_test_title1')}</span>
                 <span className='userIntegral-bottom-five'>{t('Teemo_test_calculate_rule1')}</span>
             </div>
-
         </div>
     )
 }
