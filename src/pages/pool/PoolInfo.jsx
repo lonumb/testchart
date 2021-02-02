@@ -78,7 +78,8 @@ const PoolInfo = () => {
   const [ positionInfoList, setPositionInfoList ] = useState([]);
   const [ poolFundList, setPoolFundList ] = useState([]);
   const [ refreshObj, setRefreshObj ] = useState({});
-  
+  const [expanded, setExpanded] = React.useState('panel0');
+
   function isAvailable() {
     return active && account && poolList;
   }
@@ -453,11 +454,15 @@ const PoolInfo = () => {
     });
   };
 
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
+
   return (
     <div className="pool-info-wrap">
       <div className="pool-info-box">
         {poolList.map((item, index) => (
-          <Accordion key={`ddd${index}`}>
+          <Accordion key={`ddd${index}`} expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <div className="pool-title-box">
                 <h1 className="name">{t('poolName', { p: item.symbol })}</h1>
