@@ -48,6 +48,8 @@ export const products = [
     },
 ];
 
+export const mineEnabled = true;
+
 export const getConfigByChainID = (chainId) => {
     return Object.assign({}, config[chainId], chainConfig[chainId]);
 };

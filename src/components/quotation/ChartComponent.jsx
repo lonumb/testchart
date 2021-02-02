@@ -16,6 +16,7 @@ import './chart.scss';
 let datafeeds = new DataFeeds();
 let widget = null;
 let chartOption = {
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   debug: false,
   autosize: true,
   // symbol: 'AAPL',

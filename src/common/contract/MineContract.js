@@ -1,5 +1,6 @@
 import Mine from './abi/Mine.json';
-import BaseContract from './BaseContract'
+import BaseContract from './BaseContract';
+import * as Tools from '../../utils/Tools';
 
 class MineContract extends BaseContract {
   constructor(...args) {
@@ -17,6 +18,33 @@ class MineContract extends BaseContract {
     let contract = this.getContract(poolInfo.mineAddr);
     if (!contract) return;
     return contract.methods.userInfo(this._userAddress).call();
+  }
+
+  pendingTeemo(poolInfo) {
+    let contract = this.getContract(poolInfo.mineAddr);
+    if (!contract) return;
+    return contract.methods.pendingTeemo(this._userAddress).call();
+  }
+
+  async getAllPoolPendingTeemo(poolList) {
+    if (!this._web3 || !poolList || poolList.length == 0) return;
+    let promises = [];
+    for (let pool of poolList) {
+      promises.push(this.pendingTeemo(pool));
+    }
+    // var array = await Promise.all(promises);
+    // let sum = 0;
+    // for (let balanceOf of (array || [])) {
+    //   sum = Tools.plus(sum, balanceOf);
+    // }
+    // return sum;
+    return Promise.all(promises).then((res) => {
+      let sum = 0;
+      for (let balanceOf of (res || [])) {
+        sum = Tools.plus(sum, balanceOf);
+      }
+      return sum;
+    });
   }
 }
 

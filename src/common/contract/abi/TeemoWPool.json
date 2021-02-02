@@ -1225,26 +1225,6 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_symbol",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_price",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateTicker",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function",
-    "hash": "0x0282ad67ba4ffefb0a16cffb8c3547b21d03f89c84517ec19ca7feeb2f52dd08",
-    "shortHash": "0x0282ad67"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "_to",
         "type": "address"

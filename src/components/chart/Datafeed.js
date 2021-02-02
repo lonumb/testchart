@@ -1,4 +1,5 @@
 import ChartUtil from './ChartUtil';
+import { products } from '../../utils/Config'
 
 // 其它方法已删除 想要获取详细信息请查看官方文档
 class DataFeeds {
@@ -35,11 +36,15 @@ class DataFeeds {
   }
 
   resolveSymbol(symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
+    var config = products.find((item) => item.pair == symbolName.toLowerCase());
+    var pricescale = 100;
+    if (config) {
+      pricescale = Math.pow(10, config.decimal);
+    }
     setTimeout(function () {
       const newSymbol = Object.assign(
         {},
         {
-          timezone: 'Asia/Shanghai',
           minmov: 1,
           minmov2: 0,
           pointvalue: 1,
@@ -52,7 +57,7 @@ class DataFeeds {
           description: '',
           has_intraday: true,
           supported_resolutions: ['1', '3', '5', '15', '30', '60', '120', '240', '360', '480', '720', '1D', '3D', '1W', '1M'],
-          pricescale: 100, //价格精度
+          pricescale, //价格精度
           volume_precision: 4, //数量精度
         },
         {

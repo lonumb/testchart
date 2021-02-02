@@ -70,8 +70,12 @@ const EntrustComponent = () => {
     }
     return Promise.all([
       poolProxyContract.getAllOrder(poolList).then((res) => {
-        console.log('EntrustComponent getAllOrder: ', res);
-        res.forEach((item) => {
+        var orders = res || [];
+        orders.sort((a, b) => {
+          return b.openTime - a.openTime;
+        });
+        console.log('EntrustComponent getAllOrder: ', orders);
+        orders.forEach((item) => {
             //平仓单
             if (item.openPrice != 0) {
               if (item.closePrice == 0) {
@@ -126,7 +130,7 @@ const EntrustComponent = () => {
         // } catch (e) {
         //   console.log(e);
         // }
-      }, 10000);
+      }, 3000);
     }
     return () => {
       clearInterval(timer);
@@ -260,6 +264,7 @@ const EntrustComponent = () => {
   }
 
   const calcForceClosePrice = (order) => {
+    if (order && order.lever == 1) return '--';
     var price = Tools.calcForceClosePrice(order);
     if (price) {
       return formatPrice(price, order.symbol);
