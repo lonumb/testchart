@@ -54,6 +54,30 @@
           bottom: -15px;
         }
       }
+      .noColor{
+        color: #aeb9d8;
+        &:hover {
+          color: #aeb9d8;
+          &::after {
+            content: ' ';
+            position: absolute;
+            background: transparent;
+            height: 3px;
+            width: 100%;
+            left: 0;
+            bottom: -15px;
+          }
+        }
+        &::after {
+          content: ' ';
+          position: absolute;
+          background: transparent;
+          height: 3px;
+          width: 100%;
+          left: 0;
+          bottom: -15px;
+        }
+      }
     }
   }
   .news {

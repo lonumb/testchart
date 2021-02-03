@@ -104,9 +104,9 @@ const HeaderComponent = () => {
             {t('navAccount')}
           </NavLink>
         </li>
-        {/* <li className="item">
-          <NavLink to="#" target="_blank">{t('Help_big_title')}</NavLink>
-        </li> */}
+        <li className="item">
+          <a href="https://help.teemo.finance/" className='noColor' target="_blank">{t('Help_big_title')}</a>
+        </li>
         {/* <li className="item">
           <a href="">{t('navPublic')}</a>
         </li>
