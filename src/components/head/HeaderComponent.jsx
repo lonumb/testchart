@@ -97,7 +97,7 @@ const HeaderComponent = () => {
 
   const onWhiteListContentChanged = (content) => {
     if (!content) return;
-    HttpUtil.URLENCODED_GET('/api/order/querywhitelist.do', {chainId, type: 'twitter', info: content}).then((res) => {
+    HttpUtil.URLENCODED_GET('/api/order/querywhitelist.do', {chainId, type: 'telegram', info: content}).then((res) => {
       console.log(res);
       if (res.success) {
         setWhiteListVisible(false);
