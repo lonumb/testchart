@@ -6,9 +6,9 @@ import { useWeb3React } from '@web3-react/core';
 import BonusRecordContract from '../../common/contract/BonusRecordContract';
 import MineContract from '../../common/contract/MineContract';
 import { fromWei } from 'web3-utils';
-import { mineEnabled } from '../../utils/Config'
 import { useSelector, useDispatch } from 'react-redux';
 import { ensumeChainId, chainConfig } from '../../components/wallet/Config'
+import * as Tools from '../../utils/Tools'
 
 let bonusRecordContract;
 let mineContract;
@@ -19,7 +19,7 @@ const UserIntegral = ()=>{
     const [ bonus, setBonus ] = useState({});
     const [ allPendingTeemo, setAllPendingTeemo ] = useState(null);
     const { poolList } = useSelector((state) => state.contract);
-    const [refreshDataObj, setRefreshDataObj] = useState({});
+    const [ refreshDataObj, setRefreshDataObj] = useState({});
 
     function isAvailable() {
         return active && account;
@@ -36,7 +36,7 @@ const UserIntegral = ()=>{
                 setBonus(res);
                 return res;
             }),
-            (mineEnabled ? mineContract.getAllPoolPendingTeemo(poolList) : Promise.resolve(null)).then((res) => {
+            mineContract.getAllPoolPendingTeemo(poolList).then((res) => {
                 console.log('UserIntegral setAllPendingTeemo: ', res);
                 setAllPendingTeemo(res);
                 return res;
@@ -92,7 +92,7 @@ const UserIntegral = ()=>{
                 <div className='TextHeader'>
                     <div className='TextHeaderLeft'>
                         <span className="text-one">{t('Teemo_test_title1')}</span>
-                        <span className="text-two">{ mineEnabled ? (allPendingTeemo ? fromWei(allPendingTeemo) : '--') : (bonus.userLBonus ? fromWei(bonus.userLBonus) : '--') }</span>
+                        <span className="text-two">{ (bonus && bonus.userLBonus && allPendingTeemo) ? fromWei(Tools.plus(bonus.userLBonus, allPendingTeemo)) : '--' }</span>
                         <span className="text-three">{t('Teemo_test_calculate_rule3')} 2021-02-06 </span>
                     </div>
                     <div className='TextHeaderRight'>
