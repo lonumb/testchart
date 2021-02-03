@@ -50,7 +50,7 @@ class PoolProxyContract extends BaseContract {
             }
             //目前都是2
             var openDecimal = 2;
-            temp.push({ 
+            var pool = { 
               poolAddr, 
               tokenAddr, 
               lptokenAddr: poolAddr, 
@@ -63,7 +63,12 @@ class PoolProxyContract extends BaseContract {
               lpdecimals: 18,
               erc20Pool,
               openDecimal,
-            });
+            };
+            if (erc20Pool) {
+              temp.push(pool);
+            } else {
+              temp = [pool].concat(temp);
+            }
           });
         }
         return temp;

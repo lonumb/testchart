@@ -247,7 +247,10 @@
   "Notice_button1": "Detail",
   "Notice_button2": "I have acknowledged.",
   "Whitelist_check_title": "Whitelist Verification",
-  "Whitelist_check_hint": "Please enter your Telegram ID. For example: @XXXX",
+  "Whitelist_check_hint": "Please enter your Telegram ID",
+  "Whitelist_check_hint2": "For example: @XXXX",
   "Whitelist_check_button": "Verify",
-  "Help_big_title": "Help"
+  "Help_big_title": "Help",
+  "Whitelist_check_failed": "ID is not on the whitelist",
+  "NetworkErr": "Network error"
 }
