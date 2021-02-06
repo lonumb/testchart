@@ -4,8 +4,8 @@
 
 ## `yarn build`
 
-# 池子总量加上一定阈值
+# 部署
 
-- FundContract.getPoolTotalAmount
-- PoolProxyContract.getAllPositionInfo
-- PoolProxyContract.getPositionInfo
+- 确认好合约地址，配置文件路径src/utils/Config.js
+- 执行sh build-prod.sh
+- 输出的产物目录build/
