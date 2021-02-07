@@ -59,9 +59,8 @@ const HeaderComponent = () => {
   }
 
   useEffect(() => {
-    //localStorage.setItem('white_list_content', content);
-    var content = localStorage.getItem('white_list_content');
-    setWhiteListVisible(!content);
+    // var content = localStorage.getItem('white_list_content');
+    // setWhiteListVisible(!content);
   }, []);
 
   useEffect(() => {
