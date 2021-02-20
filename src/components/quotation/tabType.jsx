@@ -4,7 +4,7 @@ const TabType = (props) =>{
     const [launch , setLaunch] = useState(false);
 
     useEffect(() => {
-        window.addEventListener('click', function(){setLaunch(!launch)})
+        window.addEventListener('click', function(){setLaunch(false)})
       },[])
     function switchOption(index,value,e) {
         e.nativeEvent.stopImmediatePropagation()
