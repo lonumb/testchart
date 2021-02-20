@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 const TabType = (props) =>{
     const [launch , setLaunch] = useState(false);
 
-
-    function switchOption(index,value) {
+    useEffect(() => {
+        window.addEventListener('click', function(){setLaunch(!launch)})
+      },[])
+    function switchOption(index,value,e) {
+        e.nativeEvent.stopImmediatePropagation()
         if(index === props.index){
+            setLaunch(!launch)
             return
         }
         setLaunch(!launch)
         props.onChange(index,value)
     }
-
-    function openTab(){
+    function openTab(e){
+        e.nativeEvent.stopImmediatePropagation()
         setLaunch(!launch)
     }
 
@@ -24,7 +28,7 @@ const TabType = (props) =>{
 
     return(
         <div className="tabs">
-            <div className = "tab-box" onClick={()=>openTab()}>
+            <div className = "tab-box" onClick={(e)=>openTab(e)}>
                 <div>
                     {obj[0].name}
                 </div>
@@ -32,10 +36,10 @@ const TabType = (props) =>{
                     <ExpandMoreRoundedIcon/>
                 </div>
             </div>
-            <ul className= {launch ? "list":"lists"}>
+            <ul className= {launch ? "list":"lists"} >
                 {props.list.map((v,i)=>{
                     return (
-                        <li className={props.index === i ? 'active' : ''} onClick={() => switchOption(i,v.value)} key={'dy'+i}>
+                        <li className={props.index === i ? 'active' : ''} onClick={(e) => switchOption(i,v.value,e)} key={'dy'+i}>
                             {v.name}
                         </li>
                     )}
