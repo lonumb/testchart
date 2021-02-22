@@ -40,7 +40,7 @@ const TabType = (props) =>{
             <ul className= {launch ? "list":"lists"} >
                 {props.list.map((v,i)=>{
                     return (
-                        <li className={props.index === i ? 'active' : ''} onClick={(e) => switchOption(i,v.symbol,e)} key={'dy'+i}>
+                        <li className={props.index === i ? 'active' : ''} onClick={(e) => switchOption(i,v.value?v.value:v.symbol,e)} key={'dy'+i}>
                             {v.symbol ? v.symbol : v.name}
                         </li>
                     )}

@@ -52,8 +52,8 @@
       .list{
         position: absolute;
         top: 30px;
-        width: 110%;
-        left: 6px;
+        width: 338%;
+        left: -155px;
         z-index: 12;
         background: #20253C;
         border-top: none;
@@ -164,8 +164,8 @@
     }
 
     .form-ele-disable {
-      background: #788aae;
-      border: 1px solid rgba(0, 0, 0, 0.15);
+      background: #0F121F;
+      border: 1px solid #252B44;
       border-radius: 2px;
       height: 30px;
       padding: 0 12px;
@@ -181,7 +181,7 @@
         display: flex;
         width: 100%;
         flex: 1;
-        color: #f4f9ff;
+        color: #788AAE;
         text-align: right;
         padding: 0;
         &::placeholder {
