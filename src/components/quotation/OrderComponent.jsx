@@ -49,6 +49,7 @@ const OrderComponent = (props) => {
     { "name": t('orderLimit'), "key": 'limit', 'value': OPEN_TYPE_LIMIT },
   ]
   const [status, setStatus] = useState(0);
+  const [symbols,setSymbols] = useState(0)
   const rechargeVisible = useSelector((state) => state.common.recharge.visible);
   const { poolList, poolInfo } = useSelector((state) => state.contract);
   const { productInfo } = useSelector((state) => state.trade);
@@ -231,8 +232,10 @@ const OrderComponent = (props) => {
   }, []);
 
   // 池子切换
-  function switchPoolInfo(symbol) {
-    let obj = poolList.find((item) => item.symbol === symbol);
+  function switchPoolInfo(index,val) {
+    console.log(val,123123123812653812635182356)
+    setSymbols(index)
+    let obj = poolList.find((item) => item.symbol === val);
     actionPoolInfo(obj)(dispatch);
   }
 
@@ -479,11 +482,12 @@ const OrderComponent = (props) => {
         <div className="form-ele-sl">
           <label htmlFor="">{t('orderPaymentLabel')}</label>
           <span></span>
-          <select value={poolInfo.symbol} onChange={(e) => switchPoolInfo(e.target.value)}>
+          {/* <select value={poolInfo.symbol} onChange={(e) => switchPoolInfo(e.target.value)}>
             {poolList.map((item) => {
               return <option key={item.symbol} value={item.symbol}>{item.symbol}</option>;
             })}
-          </select>
+          </select> */}
+          <TabType list={poolList} index={symbols} onChange={(index,value)=>switchPoolInfo(index,value)} />
         </div>
 
         {/* <div className="form-ele-desc">
