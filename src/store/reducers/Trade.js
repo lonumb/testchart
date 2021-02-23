@@ -10,6 +10,7 @@ const defaultState = {
   quote: {},
   quoteMap: {},
   tickerAll: { '1D': {} },
+  tradeHistoryList: [],
 };
 
 const tradeReducer = (state = defaultState, action) => {
@@ -21,6 +22,39 @@ const tradeReducer = (state = defaultState, action) => {
       nextState = { ...state, productList };
       break;
 
+    case Types.TRADE_HISTORY_LIST:
+        let { tradeHistoryList = [] } = params;
+        nextState = { ...state, tradeHistoryList };
+        window.localStorage.setItem("tradeHistoryList", JSON.stringify(tradeHistoryList));
+        break;
+
+    case Types.ADD_TRADE_HISTORY:
+        if (params.tradeHistory) {
+          let l = state.tradeHistoryList.concat([params.tradeHistory]);
+
+          nextState = { ...state, tradeHistoryList: l };
+          window.localStorage.setItem("tradeHistoryList", JSON.stringify(l));
+        }
+        break;
+
+    case Types.REMOVE_TRADE_HISTORY:
+      let list = state.tradeHistoryList.filter((item) => item.hash != params.hash );
+      nextState = { ...state, tradeHistoryList: list };
+      window.localStorage.setItem("tradeHistoryList", JSON.stringify(list));
+      break;
+    
+    case Types.UPDATE_TRADE_HISTORY:
+      if (params.tradeHistory) {
+        let a = new Array(state.tradeHistoryList);
+        let history = a.find((item) => item.hash != params.tradeHistory );
+        for (let key of Object.keys(params.tradeHistory)) {
+          history[key] = params.tradeHistory[key];
+        }
+        nextState = { ...state, tradeHistoryList : a };
+        window.localStorage.setItem("tradeHistoryList", JSON.stringify(a));
+      }
+      break;
+      
     case Types.PRODUCT_INFO:
       let { loading, product = {} } = params;
 

@@ -27,6 +27,8 @@ import SureModal from '../modal/sureModal';
 import Notice from '../modal/Notice';
 import WhiteList from '../modal/whiteList';
 import './header.scss';
+import { actionTradeHistoryList } from '../../store/actions/TradeAction'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const HeaderComponent = () => {
   const { t } = useTranslation();
@@ -37,6 +39,7 @@ const HeaderComponent = () => {
 
   const context = useWeb3React();
   const { active, account, library, connector, deactivate, chainId } = context;
+  const { tradeHistoryList } = useSelector((state) => state.trade);
 
   const popupStateLang = usePopupState({ variant: 'popover', popupId: 'langPopover' });
   const popupStateWallet = usePopupState({ variant: 'popover', popupId: 'walletPopover' });
@@ -45,6 +48,7 @@ const HeaderComponent = () => {
   const [network, setNetwork] = useState(false);
   const [lang, setLang] = useState('en-US');
   const [noticeVisible, setNoticeVisible] = useState(null);
+  //const [pendingCount, setPendingCount] = useState(0);
   const [whiteListVisible, setWhiteListVisible] = useState(null);
 
   // 复制地址
@@ -82,6 +86,12 @@ const HeaderComponent = () => {
     setLang(getLang());
   }, []);
 
+  // useEffect(() => {
+  //   var list = tradeHistoryList.filter((item) => item.pending);
+  //   alert(list.length);
+  //   setPendingCount(list.length);
+  // }, [tradeHistoryList]);
+
   const getConnectionUrl = (library) => {
     if (connector === injected && window.ethereum && window.ethereum.isMathWallet) {
       return 'mathWallet';
@@ -109,6 +119,10 @@ const HeaderComponent = () => {
       console.log(e);
       alert(t('NetworkErr'));
     });
+  };
+
+  const openExplorer = (hash) => {
+    window.open(`${chainConfig[ensumeChainId(chainId)].explorerUrl}/tx/${hash}`);
   };
 
   return (
@@ -147,16 +161,51 @@ const HeaderComponent = () => {
         <Notifications />
       </div> */}
       
-      {/* {active && (
+      {active && tradeHistoryList && tradeHistoryList.filter((item) => item.pending).length > 0 && (
         <div className="order-status" {...bindToggle(popupStateOrder)} {...bindHover(popupStateOrder)}>
-          1 Pending...
+          {tradeHistoryList.filter((item) => item.pending).length} Pending...
           <OwnPopover {...bindPopover(popupStateOrder)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
             <ul className="order-status-list">
               <li className="title">
-                <span>最近7笔交易</span>
-                <span>清空</span>
+                <span>{t('Last_seven_trade', {p : tradeHistoryList.filter((item) => item.pending).length})}</span>
+                <span onClick={e=> actionTradeHistoryList([])(dispatch)}>{t('Claer')}</span>
               </li>
-              <li className="item">
+
+              {tradeHistoryList.map((item, index) => {
+                if (item.type == 'open_market_swap' || item.type == 'open_limit_swap') {
+                  return (
+                    <li className="item" onClick={e=> openExplorer(item.hash)}>
+                      <span>{item.symbol.toUpperCase()} {t('textBuild')}</span>
+                      <span>
+                        {!item.pending ? <CircularProgress /> : <CheckCircleOutline />}
+                      </span>
+                    </li>
+                  );
+                }
+                if (item.type == 'close_order') {
+                  return (
+                    <li className="item" onClick={e=> openExplorer(item.hash)}>
+                      <span>{item.symbol.toUpperCase()} {t('textClose')}</span>
+                      <span>
+                        {item.pending ? <CircularProgress /> : <CheckCircleOutline />}
+                      </span>
+                    </li>
+                  );
+                }
+                if (item.type == 'approve') {
+                  return (
+                    <li className="item" onClick={e=> openExplorer(item.hash)}>
+                      <span>{item.symbol.toUpperCase()} {t('btnAuth')}</span>
+                      <span>
+                        {item.pending ? <CircularProgress /> : <CheckCircleOutline />}
+                      </span>
+                    </li>
+                  );
+                }
+                return (<div></div>);
+              })}
+
+              {/* <li className="item">
                 <span>USDT/ETH 建仓</span>
                 <span>
                   <CheckCircleOutline />
@@ -167,12 +216,12 @@ const HeaderComponent = () => {
                 <span>
                   <CheckCircleOutline />
                 </span>
-              </li>
-              <li className="no-data">暂无交易记录</li>
+              </li> */}
+              {tradeHistoryList.length == 0 && <li className="no-data">{t('no_record')}</li>}
             </ul>
           </OwnPopover>
         </div>
-      )} */}
+      )}
 
       <div className="language" {...bindToggle(popupStateLang)} {...bindHover(popupStateLang)}>
         {langList[lang].t} <ExpandMoreRoundedIcon />

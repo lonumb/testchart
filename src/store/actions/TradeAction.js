@@ -56,6 +56,30 @@ export const actionProductList = () => {
   // };
 };
 
+export const actionTradeHistoryList = (tradeHistoryList) => {
+  return (dispatch) => {
+    dispatch(createAction(Types.TRADE_HISTORY_LIST)({ tradeHistoryList }));  
+  };
+};
+
+export const actionAddTradeHistory = (tradeHistory) => {
+  return (dispatch) => {
+    dispatch(createAction(Types.ADD_TRADE_HISTORY)({ tradeHistory }));  
+  };
+};
+
+export const actionRemoveTradeHistory = (hash) => {
+  return (dispatch) => {
+    dispatch(createAction(Types.REMOVE_TRADE_HISTORY)({ hash }));  
+  };
+};
+
+export const actionUpdateTradeHistory = (tradeHistory) => {
+  return (dispatch) => {
+    dispatch(createAction(Types.UPDATE_TRADE_HISTORY)({ tradeHistory }));  
+  };
+};
+
 /**
  * 获取产品信息action
  */

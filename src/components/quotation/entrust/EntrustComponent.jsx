@@ -20,7 +20,7 @@ import { fromWei, toBN, toWei } from 'web3-utils';
 import * as Tools from '../../../utils/Tools';
 import { emitter } from '../../../utils/event';
 import * as HttpUtil from '../../../utils/HttpUtil'
-import { ensumeChainId } from '../../wallet/Config'
+import { actionAddTradeHistory, actionUpdateTradeHistory } from '../../../store/actions/TradeAction'
 
 // 止盈比例列表
 const profitRateList = [25, 50, 75, 100, 150, 200];
@@ -161,15 +161,20 @@ const EntrustComponent = () => {
   //平仓
   const onCloseOrderClick = (order) => {
     if (!order || order.openPrice == 0) return;
+    let tradeHistory = { type: 'close_order', symbol: order.symbol, pending: true };
     teemoPoolContract
     .closeMarketSwap(order.poolInfo, order)
     .on('transactionHash', function (hash) {
+      tradeHistory.hash = hash;
+      actionAddTradeHistory(tradeHistory)(dispatch);
       localStorage.setItem(`orderCloseProcessing_${order.orderId}`, true);
       orderCloseProcessingMark[order.orderId] = true;
       setOrderCloseProcessingMark(orderCloseProcessingMark);
       actionTransactionHashModal({ visible: true, hash})(dispatch);
     })
     .on('receipt', async (receipt) => {
+      tradeHistory.pending = false;
+      actionUpdateTradeHistory(tradeHistory)(dispatch);
       emitter.emit('refreshBalance');
       console.log('平仓成功');
       setRefreshDataObj({});
