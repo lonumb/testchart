@@ -31,7 +31,7 @@ const TabType = (props) =>{
         <div className="tabs">
             <div className = "tab-box" onClick={(e)=>openTab(e)}>
                 <div>
-                    {obj[0].symbol ? obj[0].symbol : obj[0].name}
+                    {obj.length>0 && (obj[0].symbol ? obj[0].symbol : obj[0].name)}
                 </div>
                 <div className="icones">
                     <ExpandMoreRoundedIcon/>
