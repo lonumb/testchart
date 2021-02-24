@@ -109,25 +109,25 @@ const PoolComponent = () => {
     }
   }, [refreshObj]);
 
-  useEffect(async () => {
-    try {
-      await getData();
-    } catch (e) {
-      console.log(e);
-    }
-  }, [quote]);
-
-  // useEffect(() => {
-  //   let timer = undefined;
-  //   if (!timer) {
-  //     timer = setInterval(async () => {
-  //       setRefreshObj({});
-  //     }, 1000);
+  // useEffect(async () => {
+  //   try {
+  //     await getData();
+  //   } catch (e) {
+  //     console.log(e);
   //   }
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, []);
+  // }, [quote]);
+
+  useEffect(() => {
+    let timer = undefined;
+    if (!timer) {
+      timer = setInterval(async () => {
+        setRefreshObj({});
+      }, 1000);
+    }
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   const getLongFormatPositionRate = () => {
     if (!poolFund || !poolFund.f_pool_addr || poolFund.f_token_amount_long == 0) return '0';

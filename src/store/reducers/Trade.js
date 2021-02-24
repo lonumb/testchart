@@ -10,17 +10,50 @@ const defaultState = {
   quote: {},
   quoteMap: {},
   tickerAll: { '1D': {} },
+  tradeHistoryList: [],
 };
 
 const tradeReducer = (state = defaultState, action) => {
   let nextState = {};
   let params = action.payload;
+  let list = state.tradeHistoryList || [];
   switch (action.type) {
     case Types.PRODUCT_LIST:
       let { productList = [] } = params;
       nextState = { ...state, productList };
       break;
 
+    case Types.TRADE_HISTORY_LIST:
+        let { tradeHistoryList = [] } = params;
+        nextState = { ...state, tradeHistoryList };
+        window.localStorage.setItem("tradeHistoryList", JSON.stringify(tradeHistoryList));
+        break;
+
+    case Types.ADD_TRADE_HISTORY:
+        if (params.tradeHistory) {
+          list = [params.tradeHistory].concat(list);
+          nextState = { ...state, tradeHistoryList: list };
+          window.localStorage.setItem("tradeHistoryList", JSON.stringify(list));
+        }
+        break;
+
+    case Types.UPDATE_TRADE_HISTORY:
+      if (params.tradeHistory) {
+        list.find((item) => {
+          if (item.hash == params.tradeHistory.hash) {
+            for (let key of Object.keys(params.tradeHistory)) {
+              item[key] = params.tradeHistory[key];
+            }
+            list = [].concat(list);
+            window.localStorage.setItem("tradeHistoryList", JSON.stringify(list));
+            return true;
+          }
+          return false;
+        });
+        nextState = { ...state, tradeHistoryList : list };
+      }
+      break;
+      
     case Types.PRODUCT_INFO:
       let { loading, product = {} } = params;
 

@@ -23,6 +23,7 @@ import { fromWei, toBN, toWei } from 'web3-utils';
 import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Constants'
 import { emitter } from '../../utils/event';
 import TabType from './tabType'
+import { actionAddTradeHistory, actionUpdateTradeHistory } from '../../store/actions/TradeAction'
 
 // import { makeStyles } from '@material-ui/core/styles';
 // 建仓类型: 市价
@@ -287,14 +288,19 @@ const OrderComponent = (props) => {
   // 授权
   function approveToPool() {
     if (!erc20Contract || approving) return;
+    let tradeHistory = { type: 'approve', symbol: poolInfo.symbol, pending: true };
     erc20Contract
     .approve(account, poolInfo.tokenAddr, poolInfo.poolAddr)      
     .on('error', function (error) {})
     .on('transactionHash', function (hash) {
+      tradeHistory.hash = hash;
+      actionAddTradeHistory(tradeHistory)(dispatch);
       setApproving(true);
       console.log('approve transactionHash: ', hash);
     })
     .on('receipt', (receipt) => {
+      tradeHistory.pending = false;
+      actionUpdateTradeHistory(tradeHistory)(dispatch);
       setApproving(false);
       setAllowance(MAX_UINT256_VALUE);
       console.log('approve receipt: ', receipt);
@@ -412,15 +418,19 @@ const OrderComponent = (props) => {
         }
         maxPrice = toWei((fromWei(maxPrice) * (1 - slippage)).toString());
       }
+      let tradeHistory = { type: 'open_market_swap', symbol, pending: true };
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openMarketSwap(poolInfo, fee, symbol, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss, maxPrice)
       .on('transactionHash', function (hash) {
+        tradeHistory.hash = hash;
+        actionAddTradeHistory(tradeHistory)(dispatch);
         actionTransactionHashModal({ visible: true, hash})(dispatch);
       })
       .on('receipt', async (receipt) => {
+        tradeHistory.pending = false;
+        actionUpdateTradeHistory(tradeHistory)(dispatch);
         emitter.emit('refreshOrder');
         console.log('市价建仓成功');
-
         await getData();
       });
     } else {
@@ -444,12 +454,17 @@ const OrderComponent = (props) => {
           return alert(t('stopLossLTHint') + stopLoss);
         }
       }
+      let tradeHistory = { type: 'open_limit_swap', symbol, pending: true };
       var teemoPoolContract = new TeemoPoolContract(library, chainId, account);
       teemoPoolContract.openLimitSwap(poolInfo, fee, symbol, newPrice, openPrice, tokenAmount, fixedLever, bsflag, fixedTakeProfit, fixedStopLoss)
       .on('transactionHash', function (hash) {
+        tradeHistory.hash = hash;
+        actionAddTradeHistory(tradeHistory)(dispatch);
         actionTransactionHashModal({ visible: true, hash})(dispatch);
       })
       .on('receipt', async (receipt) => {
+        tradeHistory.pending = false;
+        actionUpdateTradeHistory(tradeHistory)(dispatch);
         emitter.emit('refreshOrder');
         console.log('限价建仓成功');
         await getData();

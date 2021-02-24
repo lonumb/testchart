@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
@@ -27,7 +27,33 @@ import SureModal from '../modal/sureModal';
 import Notice from '../modal/Notice';
 import WhiteList from '../modal/whiteList';
 import './header.scss';
+import { actionTradeHistoryList } from '../../store/actions/TradeAction'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Web3 from 'web3';
+import { actionUpdateTradeHistory } from '../../store/actions/TradeAction'
+import useInterval from '../interval';
 
+// function useInterval(callback, delay) {
+//   const savedCallback = useRef();
+
+//   // 保存新回调
+//   useEffect(() => {
+//     savedCallback.current = callback;
+//   });
+
+//   // 建立 interval
+//   useEffect(() => {
+//     function tick() {
+//       savedCallback.current();
+//     }
+//     if (delay !== null) {
+//       let id = setInterval(tick, delay);
+//       return () => clearInterval(id);
+//     }
+//   }, [delay]);
+// }
+
+var web3 = null;
 const HeaderComponent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -37,6 +63,7 @@ const HeaderComponent = () => {
 
   const context = useWeb3React();
   const { active, account, library, connector, deactivate, chainId } = context;
+  const { tradeHistoryList } = useSelector((state) => state.trade);
 
   const popupStateLang = usePopupState({ variant: 'popover', popupId: 'langPopover' });
   const popupStateWallet = usePopupState({ variant: 'popover', popupId: 'walletPopover' });
@@ -45,8 +72,9 @@ const HeaderComponent = () => {
   const [network, setNetwork] = useState(false);
   const [lang, setLang] = useState('en-US');
   const [noticeVisible, setNoticeVisible] = useState(null);
+  const [pendingCount, setPendingCount] = useState(0);
   const [whiteListVisible, setWhiteListVisible] = useState(null);
-
+  //const [web3, setWeb3] = useState(null);
   // 复制地址
   function copyAddrFunc() {
     window.navigator.clipboard.writeText(account).then(
@@ -69,18 +97,36 @@ const HeaderComponent = () => {
     }
   }, [whiteListVisible]);
 
-  useEffect(() => {
+  useEffect(async () => {
     if (supportedChainIds.indexOf(chainId) != -1) {
       setNetwork(false);
+      if (library && library.provider) {
+        web3 = new Web3(library.provider);
+      }
     } else {
       // 显示网络错误
       setNetwork(true);
     }
-  }, [active, chainId]);
+  }, [active, chainId, library]);
 
   useEffect(() => {
     setLang(getLang());
   }, []);
+
+  useInterval(() => {
+    if (!web3) return;
+    var list = tradeHistoryList.filter((item) => item.pending);
+    for (let history of list) {
+      web3.eth.getTransactionReceipt(history.hash).then((res) => {
+        if (res) {
+          history.pending = false;
+          actionUpdateTradeHistory(history)(dispatch);
+        }
+      }).catch((e) => {
+        console.log(e);
+      });
+    }
+  }, 3000);
 
   const getConnectionUrl = (library) => {
     if (connector === injected && window.ethereum && window.ethereum.isMathWallet) {
@@ -109,6 +155,10 @@ const HeaderComponent = () => {
       console.log(e);
       alert(t('NetworkErr'));
     });
+  };
+
+  const openExplorer = (hash) => {
+    window.open(`${chainConfig[ensumeChainId(chainId)].explorerUrl}/tx/${hash}`);
   };
 
   return (
@@ -146,17 +196,52 @@ const HeaderComponent = () => {
       {/* <div className="news">
         <Notifications />
       </div> */}
-      
-      {/* {active && (
+      {/* && tradeHistoryList.filter((item) => item.pending).length > 0 */}
+      {active && tradeHistoryList && (
         <div className="order-status" {...bindToggle(popupStateOrder)} {...bindHover(popupStateOrder)}>
-          1 Pending...
+          {tradeHistoryList.filter((item) => item.pending).length} Pending...
           <OwnPopover {...bindPopover(popupStateOrder)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
             <ul className="order-status-list">
               <li className="title">
-                <span>最近7笔交易</span>
-                <span>清空</span>
+                <span>{t('Last_seven_trade', {p : tradeHistoryList.filter((item) => item.pending).length})}</span>
+                <span onClick={e=> actionTradeHistoryList([])(dispatch)}>{t('Claer')}</span>
               </li>
-              <li className="item">
+
+              {tradeHistoryList.map((item, index) => {
+                if (item.type == 'open_market_swap' || item.type == 'open_limit_swap') {
+                  return (
+                    <li key={index} className="item" onClick={e=> openExplorer(item.hash)}>
+                      <span>{item.symbol.toUpperCase()} {t('textBuild')}</span>
+                      <span>
+                        {item.pending ? <CircularProgress size="18px" /> : <CheckCircleOutline />}
+                      </span>
+                    </li>
+                  );
+                }
+                if (item.type == 'close_order') {
+                  return (
+                    <li key={index} className="item" onClick={e=> openExplorer(item.hash)}>
+                      <span>{item.symbol.toUpperCase()} {t('textClose')}</span>
+                      <span>
+                        {item.pending ? <CircularProgress size="18px" /> : <CheckCircleOutline />}
+                      </span>
+                    </li>
+                  );
+                }
+                if (item.type == 'approve') {
+                  return (
+                    <li key={index} className="item" onClick={e=> openExplorer(item.hash)}>
+                      <span>{item.symbol.toUpperCase()} {t('btnAuth')}</span>
+                      <span>
+                        {item.pending ? <CircularProgress size="18px" /> : <CheckCircleOutline />}
+                      </span>
+                    </li>
+                  );
+                }
+                return (<div></div>);
+              })}
+
+              {/* <li className="item">
                 <span>USDT/ETH 建仓</span>
                 <span>
                   <CheckCircleOutline />
@@ -167,12 +252,12 @@ const HeaderComponent = () => {
                 <span>
                   <CheckCircleOutline />
                 </span>
-              </li>
-              <li className="no-data">暂无交易记录</li>
+              </li> */}
+              {tradeHistoryList.length == 0 && <li className="no-data">{t('no_record')}</li>}
             </ul>
           </OwnPopover>
         </div>
-      )} */}
+      )}
 
       <div className="language" {...bindToggle(popupStateLang)} {...bindHover(popupStateLang)}>
         {langList[lang].t} <ExpandMoreRoundedIcon />
