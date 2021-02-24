@@ -16,6 +16,7 @@ const defaultState = {
 const tradeReducer = (state = defaultState, action) => {
   let nextState = {};
   let params = action.payload;
+  let list = state.tradeHistoryList || [];
   switch (action.type) {
     case Types.PRODUCT_LIST:
       let { productList = [] } = params;
@@ -30,28 +31,26 @@ const tradeReducer = (state = defaultState, action) => {
 
     case Types.ADD_TRADE_HISTORY:
         if (params.tradeHistory) {
-          let l = state.tradeHistoryList.concat([params.tradeHistory]);
-
-          nextState = { ...state, tradeHistoryList: l };
-          window.localStorage.setItem("tradeHistoryList", JSON.stringify(l));
+          list = [params.tradeHistory].concat(list);
+          nextState = { ...state, tradeHistoryList: list };
+          window.localStorage.setItem("tradeHistoryList", JSON.stringify(list));
         }
         break;
 
-    case Types.REMOVE_TRADE_HISTORY:
-      let list = state.tradeHistoryList.filter((item) => item.hash != params.hash );
-      nextState = { ...state, tradeHistoryList: list };
-      window.localStorage.setItem("tradeHistoryList", JSON.stringify(list));
-      break;
-    
     case Types.UPDATE_TRADE_HISTORY:
       if (params.tradeHistory) {
-        let a = new Array(state.tradeHistoryList);
-        let history = a.find((item) => item.hash != params.tradeHistory );
-        for (let key of Object.keys(params.tradeHistory)) {
-          history[key] = params.tradeHistory[key];
-        }
-        nextState = { ...state, tradeHistoryList : a };
-        window.localStorage.setItem("tradeHistoryList", JSON.stringify(a));
+        list.find((item) => {
+          if (item.hash == params.tradeHistory.hash) {
+            for (let key of Object.keys(params.tradeHistory)) {
+              item[key] = params.tradeHistory[key];
+            }
+            list = [].concat(list);
+            window.localStorage.setItem("tradeHistoryList", JSON.stringify(list));
+            return true;
+          }
+          return false;
+        });
+        nextState = { ...state, tradeHistoryList : list };
       }
       break;
       

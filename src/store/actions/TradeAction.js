@@ -68,12 +68,6 @@ export const actionAddTradeHistory = (tradeHistory) => {
   };
 };
 
-export const actionRemoveTradeHistory = (hash) => {
-  return (dispatch) => {
-    dispatch(createAction(Types.REMOVE_TRADE_HISTORY)({ hash }));  
-  };
-};
-
 export const actionUpdateTradeHistory = (tradeHistory) => {
   return (dispatch) => {
     dispatch(createAction(Types.UPDATE_TRADE_HISTORY)({ tradeHistory }));  
