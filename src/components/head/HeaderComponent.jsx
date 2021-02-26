@@ -33,6 +33,8 @@ import Web3 from 'web3';
 import { actionUpdateTradeHistory } from '../../store/actions/TradeAction'
 import useInterval from '../interval';
 
+import CardBox from '../notice'
+
 // function useInterval(callback, delay) {
 //   const savedCallback = useRef();
 
@@ -353,6 +355,9 @@ const HeaderComponent = () => {
         setNoticeVisible(false);
       }}></Notice>
       <WhiteList visible={whiteListVisible} onClick={content=> onWhiteListContentChanged(content)}></WhiteList>
+
+      <CardBox />
+
     </div>
   );
 };

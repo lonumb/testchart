@@ -9,7 +9,7 @@ import { fromWei } from 'web3-utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { ensumeChainId, chainConfig } from '../../components/wallet/Config'
 import * as Tools from '../../utils/Tools'
-import CardBox from "../../components/title"
+import CardBox from "../../components/notice"
 let bonusRecordContract;
 let mineContract;
 
@@ -121,7 +121,7 @@ const UserIntegral = ()=>{
                 <span className='userIntegral-bottom-four'>{t('Teemo_test_title1')}</span>
                 <span className='userIntegral-bottom-five'>{t('Teemo_test_calculate_rule1')}</span>
             </div>
-            {/* <CardBox content="点我"/> */}
+            <CardBox content="点我"/>
         </div>
     )
 }

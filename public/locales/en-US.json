@@ -187,7 +187,7 @@
   "PL": "P/L: {{p}}",
   "Funding": "Funding: {{p}}",
   "Position_Fee": "Position: {{p}}",
-  "Last_seven_trade": "Last 7 trades",
+  "Last_seven_trade": "Last {{p}} trades",
   "no_record": "No Record",
   "Claer": "Clear",
   "Open_messege": "{{p}}Open",

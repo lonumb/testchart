@@ -32,7 +32,6 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0x180f0757854806c9a34593da5c64a873cba569aec09163b8d21fc20db72c3882",
     "shortHash": "0x180f0757"
   },
@@ -48,9 +47,23 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0xcaa6fea486da381bcf4a11666c30b57212576a7fd6b6057ff24487d2b367d577",
     "shortHash": "0xcaa6fea4"
+  },
+  {
+    "inputs": [],
+    "name": "factoryAddr",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "hash": "0x963671bead1830e577fae90ec7fa258a8728b6b042c9c67ee21eace3ae0074db",
+    "shortHash": "0x963671be"
   },
   {
     "inputs": [],
@@ -64,7 +77,6 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0xa9f8d181e9a2e01a033334c79573beace16ca93be0eb651d756f339df4c8485d",
     "shortHash": "0xa9f8d181"
   },
@@ -80,7 +92,6 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0x4904240baf410134292981087ce045bd70a97bd619ccf2b1422fceecc10dfa3e",
     "shortHash": "0x4904240b"
   },
@@ -96,7 +107,6 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0x8da5cb5b36e7f68c1d2e56001220cdbdd3ba2616072f718acfda4a06441a807d",
     "shortHash": "0x8da5cb5b"
   },
@@ -121,7 +131,6 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0x48cd4cb1f54ab0b90362e73c5beb912a5cf401f098fd6202fd80334cdae1c619",
     "shortHash": "0x48cd4cb1"
   },
@@ -137,7 +146,6 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0x912a9c283648521de1658523ee76e6daf2806eaba709f37f39c3268c12b9cbf4",
     "shortHash": "0x912a9c28"
   },
@@ -153,7 +161,6 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0xff50abdc1ceedaaaa807b7a01b121ea5d75ee3c4410d5acd1b6a45e47db254dd",
     "shortHash": "0xff50abdc"
   },
@@ -195,7 +202,6 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0x1959a0023e291dec73ec0ff032b1ee381e31f58d82fa65f54257fc49da80d28f",
     "shortHash": "0x1959a002"
   },
@@ -204,6 +210,11 @@
       {
         "internalType": "address",
         "name": "_minerToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_factoryAddr",
         "type": "address"
       },
       {
@@ -221,8 +232,8 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function",
-    "hash": "0x7a1ac61e7b8496015017d4f8e3a8ab24d101f70482c42a4af0aef13db05c5fa4",
-    "shortHash": "0x7a1ac61e"
+    "hash": "0xeb990c59bcbc4850999ce4fd336d954ec1c6dbecf8d336dcb2a10d5c61fb975c",
+    "shortHash": "0xeb990c59"
   },
   {
     "inputs": [
@@ -242,7 +253,6 @@
     ],
     "stateMutability": "view",
     "type": "function",
-    "constant": true,
     "hash": "0x5c7e86f6cf59bf075d684388941721d78c68461dfbf60d24207f64afdbf51be9",
     "shortHash": "0x5c7e86f6"
   },
@@ -312,7 +322,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_rate",
+        "name": "_teemoPerBlock",
         "type": "uint256"
       },
       {

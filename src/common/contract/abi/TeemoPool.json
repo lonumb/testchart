@@ -31,6 +31,12 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "userAddr",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "tokenAmount",
         "type": "uint256"
@@ -38,8 +44,8 @@
     ],
     "name": "CancelLimitSwap",
     "type": "event",
-    "hash": "0xde92ebff3e22b9f7cb899264130ad9f45c1b3c0dd3cd3b222814e343fafa22b9",
-    "shortHash": "0xde92ebff"
+    "hash": "0xbf54b902218fc149f4c12eb2111d86d5778eca6d4812b08523ff90e4afc51462",
+    "shortHash": "0xbf54b902"
   },
   {
     "anonymous": false,
@@ -103,15 +109,15 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "symbol",
-        "type": "string"
-      },
-      {
-        "indexed": false,
         "internalType": "address",
         "name": "userAddr",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
       },
       {
         "indexed": false,
@@ -146,8 +152,8 @@
     ],
     "name": "CloseMarketSwap",
     "type": "event",
-    "hash": "0x7d64bc21fe86404e6138c66e57c9ea9a4b38b128061ee6313470a3f34279c190",
-    "shortHash": "0x7d64bc21"
+    "hash": "0x81e56f965bfc540d6c8542d2184d30595b57774c9738fe587992cfc59460b305",
+    "shortHash": "0x81e56f96"
   },
   {
     "anonymous": false,
@@ -238,6 +244,12 @@
       },
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "userAddr",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "openPrice",
         "type": "uint256"
@@ -257,8 +269,8 @@
     ],
     "name": "OpenLimitSwap",
     "type": "event",
-    "hash": "0xeae46f182658347d1b88eec7b2d83f5fea66e85aaa291d3960dd5409f0c5825f",
-    "shortHash": "0xeae46f18"
+    "hash": "0xa881f7b4bc36fffc76c402d9c02e173e0af2878aa07e7c3b671455421842f88c",
+    "shortHash": "0xa881f7b4"
   },
   {
     "anonymous": false,
@@ -268,6 +280,12 @@
         "internalType": "bytes32",
         "name": "orderID",
         "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "userAddr",
+        "type": "address"
       },
       {
         "indexed": false,
@@ -302,8 +320,8 @@
     ],
     "name": "OpenMarketSwap",
     "type": "event",
-    "hash": "0xac67ce90c4fc449ad9f07eff46bafa11abb977e7625f3df64d28cfd8ec645268",
-    "shortHash": "0xac67ce90"
+    "hash": "0x528bc510357651a8840014fd3c63c2149803b806790db00671081030a8cd5e06",
+    "shortHash": "0x528bc510"
   },
   {
     "anonymous": false,

@@ -19,5 +19,6 @@ export const decodeEventLog = (log) => {
     let inputs = abi.inputs;
     var res = abicoder.decodeLog(inputs, log.data, log.topics.slice(1, log.topics.length));
     res._name = abi.name;
+    res._origin = log;
     return res;
 };

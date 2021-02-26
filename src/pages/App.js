@@ -31,16 +31,6 @@ function App() {
     }
   }, [library, account]);
 
-  // useEffect(async () => {
-  //   console.log("哈哈");
-  //   if (tradeHistoryList.length > 0) return;
-  //   let str = window.localStorage.getItem('tradeHistoryList');
-  //   if (str) {
-  //     let list = JSON.parse(str) || [];
-  //     actionTradeHistoryList()(dispatch, list);
-  //   }
-  // });
-
   return <AppRouter />;
 }
 

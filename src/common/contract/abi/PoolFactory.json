@@ -246,21 +246,6 @@
   },
   {
     "inputs": [],
-    "name": "emergency",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "hash": "0xcaa6fea486da381bcf4a11666c30b57212576a7fd6b6057ff24487d2b367d577",
-    "shortHash": "0xcaa6fea4"
-  },
-  {
-    "inputs": [],
     "name": "feeReceiver",
     "outputs": [
       {
@@ -843,6 +828,31 @@
     "type": "function",
     "hash": "0x2fc94b97f2684c8441495b1de74913dea20e2a9b8c51dfcbee1f2f7e601de122",
     "shortHash": "0x2fc94b97"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_poolAddr",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_teemoPerBlock",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_withUpdate",
+        "type": "bool"
+      }
+    ],
+    "name": "setMine",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "hash": "0xc58b1b070c694f84d2f1b8e808f0959de944164dd5de567a8a4e897612c262cb",
+    "shortHash": "0xc58b1b07"
   },
   {
     "inputs": [
