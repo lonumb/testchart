@@ -4,7 +4,7 @@ import Edit from '@material-ui/icons/Edit';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import OwnTooltip from '../../tooltip/OwnTooltip';
 import OwnDialogModal from '../../modal/OwnDialog';
-
+import Web3 from 'web3';
 import './entrust.scss';
 import { actionWalletModal } from '../../../store/actions/CommonAction';
 import { actionTransactionHashModal } from '../../../store/actions/CommonAction';
@@ -31,6 +31,7 @@ let teemoPoolContract;
 let swapTradeContract;
 let poolProxyContract;
 
+//var web3 = null;
 const EntrustComponent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -147,16 +148,34 @@ const EntrustComponent = () => {
       swapTradeContract = new SwapTradeContract(library, chainId, account);
       poolProxyContract = new PoolProxyContract(library, chainId, account);
       getDataFunc();
+
     } else {
       setOrderList([]);
       setLimitOrderList([]);
     }
-    // let teemoContract = new TeemoContract(library, poolInfo.tokenAddr);
-    // // 持仓列表
-    // teemoContract.queryAllOrderList(account).then((res) => {
-    //   console.log('持仓列表:', res);
-    // });
   }, [active, library, account, poolInfo]);
+
+  // useEffect(() => {
+  //   var subscription;
+  //   if (active && account && library && library.provider && poolList.length > 0) {
+  //       var web3 = new Web3(library.provider);
+  //       subscription = web3.eth.subscribe('logs', {
+  //         address: poolList.map((item) => item.poolAddr),
+  //       }, (error, result) => {
+  //         if (!error) {
+  //             console.log(result);
+  //         }
+  //       });
+  //   }
+  //   return () => {
+  //     if (subscription) {
+  //       subscription.unsubscribe((error, success) => {
+  //         if (success)
+  //             console.log('Successfully unsubscribed!');
+  //       });
+  //     }
+  //   };
+  // }, [active, library, account, poolList]);
 
   //平仓
   const onCloseOrderClick = (order) => {

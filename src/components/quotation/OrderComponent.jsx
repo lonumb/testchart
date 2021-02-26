@@ -10,6 +10,7 @@ import { useWeb3React } from '@web3-react/core';
 import * as Types from '../../store/types';
 import { actionPoolInfo } from '../../store/actions/ContractAction';
 import { actionTransactionHashModal } from '../../store/actions/CommonAction';
+import Web3 from 'web3';
 
 import './order.scss';
 import PoolProxyContract from '../../common/contract/PoolProxyContract';
@@ -20,10 +21,11 @@ import QuoteFactoryContract from '../../common/contract/QuoteFactoryContract';
 import FundContract from '../../common/contract/FundContract';
 import * as Tools from '../../utils/Tools';
 import { fromWei, toBN, toWei } from 'web3-utils';
-import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Constants'
+import { BSFLAG_LONG, BSFLAG_SHORT, MAX_UINT256_VALUE } from '../../utils/Constants';
 import { emitter } from '../../utils/event';
-import TabType from './tabType'
-import { actionAddTradeHistory, actionUpdateTradeHistory } from '../../store/actions/TradeAction'
+import TabType from './tabType';
+import { actionAddTradeHistory, actionUpdateTradeHistory } from '../../store/actions/TradeAction';
+import { decodeEventLog } from '../../common/contract/abi';
 
 // import { makeStyles } from '@material-ui/core/styles';
 // 建仓类型: 市价
@@ -226,6 +228,29 @@ const OrderComponent = (props) => {
       setAllowance(null);
     }
   }, [active, library, account, poolInfo]);
+
+  // useEffect(() => {
+  //   var subscription;
+  //   if (active && account && library && library.provider && poolList.length > 0) {
+  //       var web3 = new Web3(library.provider);
+  //       subscription = web3.eth.subscribe('logs', {
+  //         address: poolList.map((item) => item.poolAddr),
+  //       }, (error, result) => {
+  //         if (!error) {
+  //           var log = decodeEventLog(result);
+  //           console.log(log);
+  //         }
+  //       });
+  //   }
+  //   return () => {
+  //     if (subscription) {
+  //       subscription.unsubscribe((error, success) => {
+  //         if (success)
+  //             console.log('Successfully unsubscribed!');
+  //       });
+  //     }
+  //   };
+  // }, [active, library, account, poolList]);
 
   useEffect(() => {
     // 设置列表高度
