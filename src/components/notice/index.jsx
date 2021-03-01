@@ -106,7 +106,7 @@ function MyApp(props) {
                 } else if (log._name === 'TradeLimitSwap') {
                     enqueueSnackbar(
                         <div>
-                            <p className="title_first">{t('Close_new')}</p>
+                            <p className="title_first">{t('Limit_order_new')}</p>
                             <a onClick={e=> openExplorer(log._origin.transactionHash)}>{t('Show_in_browser')}&nbsp;<img src="/imgs/icon_scan.png" alt=""/></a>
                         </div>
                     );
